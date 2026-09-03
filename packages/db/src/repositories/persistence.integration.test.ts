@@ -22,6 +22,7 @@ import {
 import { OutboxJobRepository } from "../jobs/repository.js";
 import { ClaimRailStateRepository } from "./state.js";
 import { ClaimRepository } from "./claims.js";
+import { SubscriptionRepository } from "./subscriptions.js";
 import type { PersistWalletTransitionInput } from "./types.js";
 
 const databaseUrl = process.env.TEST_DATABASE_URL;
@@ -497,6 +498,66 @@ describePostgres("PostgreSQL persistence", () => {
     });
     expect(recovered).toMatchObject({ id: first.id, leaseOwner: "worker-c", attempts: 2 });
     expect(await new OutboxJobRepository(context.db).complete(first.id, "worker-c")).toBe(true);
+  });
+
+  it("consumes an ownership challenge once and stores an encrypted webhook route", async () => {
+    const repository = new SubscriptionRepository(context.db);
+    const challengeId = "0d904bb5-4a5f-442d-a3fe-734646d50d58";
+    const challengeHash = "ab".repeat(32);
+    const createdAt = new Date("2026-09-03T12:00:00.000Z");
+    await repository.createWebhookChallenge({
+      id: challengeId,
+      ownerAddress: WALLET,
+      destination: "https://agent.example.test/claimrail",
+      eventTypes: ["wallet.claimable", "claim.confirmed"],
+      challengeHash,
+      expiresAt: new Date(createdAt.getTime() + 60_000),
+      createdAt,
+    });
+    expect(await repository.getPendingChallenge(challengeId)).toMatchObject({
+      ownerAddress: WALLET,
+      eventTypes: ["wallet.claimable", "claim.confirmed"],
+      challengeHash,
+    });
+    const activated = await repository.activateWebhook({
+      challengeId,
+      expectedChallengeHash: challengeHash,
+      secretHash: "cd".repeat(32),
+      secretCiphertext: "v1.iv.tag.ciphertext",
+      verifiedAt: new Date(createdAt.getTime() + 1_000),
+    });
+    expect(activated).toMatchObject({
+      ownerAddress: WALLET,
+      destination: "https://agent.example.test/claimrail",
+      eventTypes: ["wallet.claimable", "claim.confirmed"],
+    });
+    await expect(
+      repository.activateWebhook({
+        challengeId,
+        expectedChallengeHash: challengeHash,
+        secretHash: "cd".repeat(32),
+        secretCiphertext: "v1.iv.tag.ciphertext",
+        verifiedAt: new Date(createdAt.getTime() + 2_000),
+      }),
+    ).rejects.toThrow("already used");
+    const stored = await context.pool.query<{
+      secret_hash: string;
+      secret_ciphertext: string;
+      audit_count: string;
+    }>(
+      `select
+        subscription.secret_hash,
+        subscription.secret_ciphertext,
+        (select count(*) from audit_records where subject_id = subscription.id::text) as audit_count
+      from subscriptions as subscription
+      where subscription.id = $1`,
+      [activated.id],
+    );
+    expect(stored.rows[0]).toEqual({
+      secret_hash: "cd".repeat(32),
+      secret_ciphertext: "v1.iv.tag.ciphertext",
+      audit_count: "1",
+    });
   });
 
   it("backs off failures and dead-letters at the bounded attempt limit", async () => {

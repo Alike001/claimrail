@@ -9,6 +9,8 @@ const endpoints = [
   ["POST", "/api/v1/claims/submissions", "Durably record a broadcast hash as pending"],
   ["GET", "/api/v1/claims/:claimId", "Receipt, payout, gas, and verification evidence"],
   ["GET", "/api/v1/wallets/:address/history", "Outcomes, claim receipts, and honest PnL coverage"],
+  ["POST", "/api/v1/subscriptions/challenges", "Create an owner-bound webhook challenge"],
+  ["POST", "/api/v1/subscriptions/verify", "Verify the signature and activate delivery"],
 ] as const;
 
 export default function DocumentationPage() {
@@ -84,6 +86,26 @@ export default function DocumentationPage() {
             observation time, and verified block. Writes are never reported as confirmed until
             receipt and post-state reconciliation agree.
           </p>
+        </section>
+
+        <section className="docs-section two-column" id="webhooks">
+          <div>
+            <p className="eyebrow">signed delivery</p>
+            <h2>Permission to notify is separate from permission to move money.</h2>
+          </div>
+          <div className="prose">
+            <p>
+              A webhook owner signs a readable, ten-minute challenge containing the wallet,
+              destination, selected event types, chain, expiry, and nonce. The signature proves who
+              configured the route; it cannot approve DreamDEX, trade, or redeem.
+            </p>
+            <p>
+              Deliveries use a separate 32-byte HMAC secret over <code>timestamp.body</code>. The
+              endpoint receives a versioned signature, rejects stale timestamps, and compares the
+              signature before trusting the payload. ClaimRail encrypts the delivery secret at rest
+              and shows it only when the route is activated.
+            </p>
+          </div>
         </section>
 
         <section className="docs-section permission-section" id="manual-claim">

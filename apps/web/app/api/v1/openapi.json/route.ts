@@ -2,7 +2,7 @@ const document = {
   openapi: "3.1.0",
   info: {
     title: "ClaimRail API",
-    version: "0.2.0",
+    version: "0.3.0",
     description:
       "Evidence-aware wallet, settlement, and owner-signed DreamDEX claim-planning endpoints.",
   },
@@ -82,6 +82,28 @@ const document = {
         responses: {
           "200": { description: "Lossless settlement receipt" },
           "404": { description: "Claim receipt not found" },
+        },
+      },
+    },
+    "/api/v1/subscriptions/challenges": {
+      post: {
+        summary: "Create a short-lived wallet ownership challenge for an HTTPS webhook",
+        description:
+          "The human-readable message pins the owner, chain, destination, event filters, expiry, and nonce. It grants no trading or claim authority.",
+        responses: {
+          "201": { description: "Challenge to sign with the owner wallet" },
+          "409": { description: "The wallet already has a verified webhook binding" },
+        },
+      },
+    },
+    "/api/v1/subscriptions/verify": {
+      post: {
+        summary: "Verify wallet ownership and activate the webhook route",
+        description:
+          "Supports EIP-191 EOA and smart-account signatures. The HMAC secret is returned once and retained only as an authenticated encrypted value plus hash.",
+        responses: {
+          "201": { description: "Verified webhook subscription and return-once signing secret" },
+          "409": { description: "Challenge mismatch, expiry, reuse, or invalid wallet proof" },
         },
       },
     },

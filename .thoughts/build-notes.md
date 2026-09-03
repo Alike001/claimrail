@@ -218,7 +218,7 @@ Remaining live stop condition:
 
 - A dedicated funded owner must broadcast a controlled Shannon claim through ClaimRail. That real hash must progress from pending to its evidence-backed terminal receipt. No private key will be supplied to ClaimRail.
 
-## 2026-09-03 — Phase 8 foundation started
+## 2026-09-03 — Phase 8 in progress
 
 Delivered:
 
@@ -226,7 +226,19 @@ Delivered:
 - Added a versioned webhook envelope carrying delivery identity, attempt number, timestamp, and the canonical event without recalculating settlement state.
 - Added framework-neutral Web Crypto HMAC-SHA256 signing and verification using the `timestamp.rawBody` construction, a `v1=` signature prefix, constant-work comparison, a five-minute default replay window, and a 32-byte minimum secret.
 - Added regressions proving intact timely payload acceptance plus tampered-body and stale-timestamp rejection.
+- Added short-lived, one-use webhook ownership challenges whose readable EIP-191 message pins the owner, Somnia chain, HTTPS destination, selected canonical events, expiry, and random nonce while explicitly granting no financial permission.
+- Added viem public-client verification for EOA, ERC-1271, ERC-6492, and ERC-8010-compatible account signatures against Shannon.
+- Added durable notification bindings and filtered webhook subscriptions, authenticated AES-256-GCM encryption for stored signing secrets, hashes for secret identification, and immutable subscription audit entries.
+- Added `POST /api/v1/subscriptions/challenges` and `POST /api/v1/subscriptions/verify`, OpenAPI discovery, and negative validation for insecure destinations and malformed ownership proofs.
+- Added the responsive `/notifications` delivery-control frontend with a working wallet-signature webhook flow and honest next-adapter states for browser and Telegram.
+
+Verified:
+
+- 134 root tests pass, including subscription schema, message, HMAC, encrypted-secret, replay, and tamper regressions.
+- Eight ephemeral PostgreSQL integration tests pass, including atomic single-use challenge consumption and encrypted webhook persistence.
+- Seventeen desktop/mobile Playwright checks pass with one intentional desktop skip; the notification page was visually inspected at `1536×1024` and `390×844`.
+- Root formatting, lint, typecheck, production build, and the isolated Event Contract probe typecheck pass.
 
 Not yet active:
 
-- Subscription ownership challenges, encrypted destinations/secrets, outbound webhook transport, browser push, Telegram linking, delivery console, and live multi-surface delivery remain the next Phase 8 slice.
+- Outbound webhook transport, bounded delivery retry/dead-letter/replay, browser push, Telegram linking, the developer delivery console, and live multi-surface delivery remain the next Phase 8 slice.

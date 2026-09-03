@@ -59,6 +59,21 @@ test("serves discovery and validated API errors", async ({ request }) => {
 
   const invalidReceipt = await request.get("/api/v1/claims/not-a-claim-id");
   expect(invalidReceipt.status()).toBe(400);
+
+  const insecureWebhook = await request.post("/api/v1/subscriptions/challenges", {
+    data: {
+      owner: address,
+      kind: "webhook",
+      destination: "http://agent.example.test/claimrail",
+      eventTypes: ["wallet.claimable"],
+    },
+  });
+  expect(insecureWebhook.status()).toBe(400);
+
+  const invalidVerification = await request.post("/api/v1/subscriptions/verify", {
+    data: { challengeId: "not-a-uuid", message: "challenge", signature: "0x1234" },
+  });
+  expect(invalidVerification.status()).toBe(400);
 });
 
 test("documents the settlement and signing boundary", async ({ page }) => {
@@ -98,4 +113,13 @@ test("mobile navigation is operable", async ({ page }, testInfo) => {
   await page.getByRole("button", { name: "Open navigation" }).click();
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Close navigation" })).toBeVisible();
+});
+
+test("presents notification delivery without overstating unfinished adapters", async ({ page }) => {
+  await page.goto("/notifications");
+  await expect(page.getByRole("heading", { name: "Don’t watch the market." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Signed webhook" })).toBeVisible();
+  await expect(page.getByText("message signature only · no gas")).toBeVisible();
+  await expect(page.getByText("next adapter")).toHaveCount(2);
+  await expect(page.getByRole("button", { name: "connect owner wallet →" })).toBeVisible();
 });

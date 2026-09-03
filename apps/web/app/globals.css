@@ -4,6 +4,7 @@
 @import "../src/styles/docs.css";
 @import "../src/styles/receipt.css";
 @import "../src/styles/history.css";
+@import "../src/styles/notifications.css";
 @import "../src/styles/responsive.css";
 
 :root {
