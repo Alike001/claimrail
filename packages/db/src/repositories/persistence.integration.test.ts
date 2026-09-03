@@ -563,6 +563,152 @@ describePostgres("PostgreSQL persistence", () => {
     });
   });
 
+  it("activates an encrypted browser route and leases it only to an enabled transport", async () => {
+    const repository = new SubscriptionRepository(context.db);
+    const challengeId = "1d904bb5-4a5f-442d-a3fe-734646d50d58";
+    const challengeHash = "ae".repeat(32);
+    const endpointFingerprint = "bf".repeat(32);
+    const createdAt = new Date("2026-09-03T12:00:00.000Z");
+    await repository.createBrowserChallenge({
+      id: challengeId,
+      ownerAddress: WALLET,
+      endpointFingerprint,
+      eventTypes: ["wallet.claimable"],
+      subscriptionCiphertext: "v1.browser.encrypted",
+      challengeHash,
+      expiresAt: new Date(createdAt.getTime() + 60_000),
+      createdAt,
+    });
+    expect(await repository.getPendingBrowserChallenge(challengeId)).toMatchObject({
+      endpointFingerprint,
+      subscriptionCiphertext: "v1.browser.encrypted",
+      eventTypes: ["wallet.claimable"],
+    });
+    const activated = await repository.activateBrowser({
+      challengeId,
+      expectedChallengeHash: challengeHash,
+      verifiedAt: new Date(createdAt.getTime() + 1_000),
+    });
+    expect(activated).toMatchObject({
+      ownerAddress: WALLET,
+      endpointFingerprint,
+    });
+    await new ClaimRailStateRepository(context.db).persistWalletTransition(transitionInput());
+    const deliveries = new DeliveryRepository(context.db);
+    expect(await deliveries.materializeEvent(`0x${"78".repeat(32)}`, createdAt)).toBe(1);
+    expect(
+      await deliveries.leaseNext({
+        workerId: "webhook-only",
+        leaseMs: 1_000,
+        now: createdAt,
+      }),
+    ).toBeNull();
+    const leased = await deliveries.leaseNext({
+      workerId: "browser-worker",
+      leaseMs: 1_000,
+      enabledKinds: ["browser"],
+      now: createdAt,
+    });
+    expect(leased).toMatchObject({
+      kind: "browser",
+      destination: endpointFingerprint,
+      secretCiphertext: "v1.browser.encrypted",
+    });
+    if (leased === null) throw new Error("expected browser delivery lease");
+    expect(
+      await deliveries.fail({
+        deliveryId: leased.id,
+        workerId: leased.leaseOwner,
+        attempt: leased.attempt,
+        error: "BrowserPushExpired",
+        httpStatus: 410,
+        terminal: true,
+        now: new Date(createdAt.getTime() + 2_000),
+      }),
+    ).toBe("dead");
+    const stored = await context.pool.query<{
+      raw_endpoint_count: string;
+      audits: string;
+      active: boolean;
+    }>(
+      `select
+        (select count(*) from subscriptions where destination like 'https://%') as raw_endpoint_count,
+        (select count(*) from audit_records where subject_id = $1::text) as audits,
+        (select active from subscriptions where id = $1::uuid) as active`,
+      [activated.id],
+    );
+    expect(stored.rows[0]).toEqual({ raw_endpoint_count: "0", audits: "1", active: false });
+  });
+
+  it("consumes a Telegram link once without storing the raw chat ID", async () => {
+    const repository = new SubscriptionRepository(context.db);
+    const challengeId = "2d904bb5-4a5f-442d-a3fe-734646d50d58";
+    const challengeHash = "ce".repeat(32);
+    const linkTokenHash = "df".repeat(32);
+    const chatFingerprint = "e0".repeat(32);
+    const createdAt = new Date("2026-09-03T12:00:00.000Z");
+    await repository.createTelegramChallenge({
+      id: challengeId,
+      ownerAddress: WALLET,
+      eventTypes: ["wallet.claimable"],
+      challengeHash,
+      expiresAt: new Date(createdAt.getTime() + 60_000),
+      createdAt,
+    });
+    expect(await repository.getPendingTelegramChallenge(challengeId)).toMatchObject({
+      ownerAddress: WALLET,
+      eventTypes: ["wallet.claimable"],
+      challengeHash,
+    });
+    await repository.markTelegramProofVerified({
+      challengeId,
+      expectedChallengeHash: challengeHash,
+      linkTokenHash,
+      linkExpiresAt: new Date(createdAt.getTime() + 120_000),
+      verifiedAt: new Date(createdAt.getTime() + 1_000),
+    });
+    expect(
+      await repository.activateTelegramLink({
+        linkTokenHash: "00".repeat(32),
+        chatFingerprint,
+        chatCiphertext: "v1.telegram.encrypted",
+        now: new Date(createdAt.getTime() + 2_000),
+      }),
+    ).toBeNull();
+    const activated = await repository.activateTelegramLink({
+      linkTokenHash,
+      chatFingerprint,
+      chatCiphertext: "v1.telegram.encrypted",
+      now: new Date(createdAt.getTime() + 2_000),
+    });
+    expect(activated).toEqual({ ownerAddress: WALLET });
+    expect(
+      await repository.activateTelegramLink({
+        linkTokenHash,
+        chatFingerprint,
+        chatCiphertext: "v1.telegram.encrypted",
+        now: new Date(createdAt.getTime() + 3_000),
+      }),
+    ).toBeNull();
+    const stored = await context.pool.query<{
+      destination: string;
+      secret_ciphertext: string;
+      raw_chat_count: string;
+      audit_count: string;
+    }>(
+      `select destination, secret_ciphertext,
+        (select count(*) from subscriptions where destination = '123456789') as raw_chat_count,
+        (select count(*) from audit_records where subject_id = subscription.id::text) as audit_count
+       from subscriptions as subscription where kind = 'telegram'`,
+    );
+    expect(stored.rows[0]).toEqual({
+      destination: chatFingerprint,
+      secret_ciphertext: "v1.telegram.encrypted",
+      raw_chat_count: "0",
+      audit_count: "1",
+    });
+  });
+
   it("fans out each canonical event once and retries its webhook independently", async () => {
     const subscriptionsRepository = new SubscriptionRepository(context.db);
     const challengeId = "c742d9c7-b1af-4e14-b90f-bf58355318ad";

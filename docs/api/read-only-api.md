@@ -21,11 +21,23 @@ from a partial or failed scan.
 - `GET /api/v1/claims/:claimId` — returns the aggregate claim state and every batch receipt,
   including nonce, attempts, block, gas, actual collateral, owed fallback, and proof metadata.
   Add `?download=1` for a JSON attachment.
+- `GET /api/v1/subscriptions/browser/config` — reports whether VAPID browser delivery is configured
+  and returns only the public application-server key.
+- `POST /api/v1/subscriptions/browser/challenges` — encrypts a standards-shaped PushSubscription and
+  returns a readable wallet challenge pinned to its endpoint fingerprint and event preferences.
+- `POST /api/v1/subscriptions/browser/verify` — consumes the ownership proof and activates delivery
+  to that browser. Raw endpoint and browser encryption keys are never returned by list APIs.
+- `POST /api/v1/subscriptions/telegram/challenges` — creates a readable, owner-bound Telegram
+  notification challenge.
+- `POST /api/v1/subscriptions/telegram/verify` — verifies the wallet proof and returns a ten-minute
+  one-time `/start` link. Only the link-token hash is stored.
+- `POST /api/v1/subscriptions/telegram/webhook` — accepts Telegram updates only with the configured
+  secret header, consumes the one-time token, and stores the resulting chat ID encrypted.
 - `POST /api/v1/access/challenges` — creates a short-lived, non-financial ownership message for the
   delivery console.
 - `POST /api/v1/access/verify` — consumes that message once and returns a 15-minute opaque token
   scoped to delivery reads and dead-letter replay. Only its hash is stored.
-- `GET /api/v1/deliveries` — lists webhook delivery states for the authenticated route owner.
+- `GET /api/v1/deliveries` — lists delivery states for the authenticated route owner.
 - `GET /api/v1/deliveries/:deliveryId` — returns the exact canonical event plus every stored send
   attempt, HTTP status, signing version, timestamp, and failure reason.
 - `POST /api/v1/deliveries/:deliveryId/replay` — requeues an owned delivery only when it is dead. It

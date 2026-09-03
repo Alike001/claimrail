@@ -75,6 +75,32 @@ test("serves discovery and validated API errors", async ({ request }) => {
   });
   expect(invalidVerification.status()).toBe(400);
 
+  const browserConfig = await request.get("/api/v1/subscriptions/browser/config");
+  await expect(browserConfig).toBeOK();
+  expect(await browserConfig.json()).toMatchObject({ available: false, publicKey: null });
+
+  const invalidBrowserSubscription = await request.post(
+    "/api/v1/subscriptions/browser/challenges",
+    {
+      data: {
+        owner: address,
+        kind: "browser",
+        subscription: {
+          endpoint: "http://push.example.test/subscription",
+          keys: { p256dh: "a".repeat(65), auth: "b".repeat(22) },
+        },
+        eventTypes: ["wallet.claimable"],
+      },
+    },
+  );
+  expect(invalidBrowserSubscription.status()).toBe(400);
+
+  const invalidTelegramSubscription = await request.post(
+    "/api/v1/subscriptions/telegram/challenges",
+    { data: { owner: "not-an-address", kind: "telegram", eventTypes: [] } },
+  );
+  expect(invalidTelegramSubscription.status()).toBe(400);
+
   const invalidAccessChallenge = await request.post("/api/v1/access/challenges", {
     data: { owner: "not-an-address" },
   });
@@ -134,7 +160,10 @@ test("presents notification delivery without overstating unfinished adapters", a
   await expect(page.getByRole("heading", { name: "Don’t watch the market." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Signed webhook" })).toBeVisible();
   await expect(page.getByText("message signature only · no gas")).toBeVisible();
-  await expect(page.getByText("next adapter")).toHaveCount(2);
+  await expect(page.getByRole("heading", { name: "Browser" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Telegram" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "connect", exact: true })).toHaveCount(2);
+  await expect(page.getByText("next adapter")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "connect owner wallet →" })).toBeVisible();
 });
 

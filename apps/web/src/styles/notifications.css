@@ -94,6 +94,45 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+.channel-stack article > button {
+  align-self: start;
+  min-width: 92px;
+  padding: 7px 10px;
+  color: var(--signal);
+  background: transparent;
+  border: 1px solid var(--signal);
+  cursor: pointer;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.channel-stack article > button:disabled {
+  color: var(--muted);
+  border-color: var(--border);
+  cursor: not-allowed;
+}
+.browser-channel > div > p.channel-success,
+.browser-channel > div > p.channel-error,
+.telegram-channel > div > p.channel-error {
+  margin-bottom: 0;
+  font: 11px/1.45 var(--mono);
+}
+.browser-channel > div > p.channel-success {
+  color: var(--signal);
+}
+.browser-channel > div > p.channel-error {
+  color: #ff8cab;
+}
+.telegram-channel > div > p.channel-error {
+  color: #ff8cab;
+}
+.channel-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--signal);
+  font-size: 12px;
+  text-transform: uppercase;
+  text-underline-offset: 4px;
+}
 .form-copy {
   max-width: 680px;
   margin: 26px 0 38px 68px;
@@ -306,7 +345,8 @@
     grid-template-columns: 36px 1fr;
   }
   .form-heading > b,
-  .channel-stack article > b {
+  .channel-stack article > b,
+  .channel-stack article > button {
     grid-column: 2;
     width: fit-content;
   }

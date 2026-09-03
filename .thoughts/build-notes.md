@@ -284,3 +284,47 @@ Not yet active:
 - Browser push, Telegram linking, and a real external receiver demonstration remain the next Phase
   8 delivery adapters. A controlled live ClaimRail claim and receipt is still required for the Phase
   6/7 live stop condition.
+
+## 2026-09-03 — Phase 8 human notification adapters complete
+
+Delivered:
+
+- Added standards-based browser push with a public VAPID discovery endpoint, explicit user-action
+  permission request, service-worker subscription, owner-signed endpoint fingerprint, encrypted
+  PushSubscription storage, user-visible canonical-event copy, and focus/open click behavior.
+- Added Telegram private-chat linking through an owner-signed challenge and ten-minute one-time
+  `/start` link. Only the start-token hash is stored before Telegram's authenticated webhook returns
+  the chat ID, which is then encrypted before persistence.
+- Added worker transports for browser and Telegram alongside signed webhooks. VAPID `404/410` and
+  Telegram `403` responses dead-letter and deactivate the stale destination instead of retrying it
+  forever; other failures retain bounded retry behavior.
+- Generalized the authenticated delivery console to identify webhook, browser, and Telegram routes
+  without exposing raw push endpoints, browser keys, chat IDs, or bot tokens.
+- Replaced the notification roadmap placeholders with working browser and Telegram setup controls,
+  while retaining the explicit “permission to notify, nothing financial” boundary.
+- Documented all adapter endpoints, environment requirements, Telegram webhook registration, and
+  the VAPID generation path in OpenAPI, the web documentation, and worker operations guide.
+
+Verified:
+
+- 148 unit tests pass across 25 files, including PushSubscription contracts, VAPID delivery,
+  one-time Telegram challenges, Telegram transport copy, secret redaction, and revoked-destination
+  classification.
+- Thirteen ephemeral PostgreSQL integration tests pass, including encrypted browser activation,
+  kind-specific leasing, terminal route deactivation, single-use Telegram linking, and proof that
+  raw endpoint/chat destinations are absent from subscription rows.
+- Core coverage remains 100% statements/lines; 23 DreamDEX coverage tests and six signer-free
+  integration tests pass. The production build exposes all browser and Telegram routes.
+- Nineteen Playwright checks pass across desktop and mobile Chromium with one intentional desktop
+  skip. A cold-compiler rerun confirmed the previously timing-bound mobile history assertion.
+- The updated notification page was inspected at `1536×1024` and `390×844` beside the approved V3
+  concept: the monospaced rail identity, black/lime hierarchy, violet trust boundary, rectangular
+  controls, and mobile single-column sequencing remain aligned. The intentional deviation is that
+  Browser and Telegram now show real connect actions instead of roadmap labels.
+
+Still requires external credentials/live proof:
+
+- VAPID keys and a Telegram bot/webhook must be configured before a real device can receive either
+  channel. No live delivery is claimed from deterministic transport tests alone.
+- A controlled live ClaimRail claim and evidence-backed receipt remains the Phase 6/7 live stop
+  condition.

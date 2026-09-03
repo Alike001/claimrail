@@ -107,6 +107,64 @@ const document = {
         },
       },
     },
+    "/api/v1/subscriptions/browser/config": {
+      get: {
+        summary: "Discover browser-push availability and its public VAPID key",
+        responses: { "200": { description: "Public browser-delivery configuration" } },
+      },
+    },
+    "/api/v1/subscriptions/browser/challenges": {
+      post: {
+        summary: "Create an owner-bound browser notification challenge",
+        description:
+          "Encrypts the PushSubscription and pins its endpoint fingerprint, event filters, wallet, chain, expiry, and nonce in a readable message.",
+        responses: {
+          "201": { description: "Browser challenge to sign with the owner wallet" },
+          "400": { description: "Malformed or insecure PushSubscription" },
+          "503": { description: "Browser delivery is not configured" },
+        },
+      },
+    },
+    "/api/v1/subscriptions/browser/verify": {
+      post: {
+        summary: "Verify wallet ownership and activate this browser",
+        responses: {
+          "201": { description: "Encrypted browser-push route activated" },
+          "409": { description: "Challenge mismatch, expiry, reuse, or invalid wallet proof" },
+        },
+      },
+    },
+    "/api/v1/subscriptions/telegram/challenges": {
+      post: {
+        summary: "Create an owner-bound Telegram notification challenge",
+        responses: {
+          "201": { description: "Telegram challenge to sign with the owner wallet" },
+          "503": { description: "Telegram linking is not configured" },
+        },
+      },
+    },
+    "/api/v1/subscriptions/telegram/verify": {
+      post: {
+        summary: "Verify wallet ownership and issue a one-time Telegram link",
+        description:
+          "Returns a ten-minute bot deep link. Only a hash of the one-time start token is stored.",
+        responses: {
+          "201": { description: "One-time Telegram deep link" },
+          "409": { description: "Challenge mismatch, expiry, reuse, or invalid wallet proof" },
+        },
+      },
+    },
+    "/api/v1/subscriptions/telegram/webhook": {
+      post: {
+        summary: "Consume an authenticated Telegram bot update",
+        description:
+          "Validates Telegram's secret-token header, consumes the one-time link, and stores the chat ID encrypted.",
+        responses: {
+          "200": { description: "Update accepted" },
+          "401": { description: "Invalid Telegram webhook secret" },
+        },
+      },
+    },
     "/api/v1/access/challenges": {
       post: {
         summary: "Create a delivery-console ownership challenge",

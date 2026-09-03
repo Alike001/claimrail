@@ -6,7 +6,7 @@ import { decryptSecret, type LeasedWebhookDelivery } from "@claimrail/db";
 export interface WebhookDispatchResult {
   readonly providerMessageId: string;
   readonly httpStatus: number;
-  readonly signatureVersion: "v1";
+  readonly signatureVersion: string;
   readonly requestTimestamp: number;
 }
 
@@ -93,6 +93,7 @@ export function createWebhookTransport(input: {
   const fetcher = input.fetcher ?? fetch;
   const guardDestination = input.guardDestination ?? guardPublicHttpsDestination;
   return async (delivery: LeasedWebhookDelivery): Promise<WebhookDispatchResult> => {
+    if (delivery.kind !== "webhook") throw new Error("WebhookKindMismatch");
     await guardDestination(delivery.destination);
     const secret = decryptSecret(delivery.secretCiphertext, input.encryptionKey);
     const sentAt = new Date();

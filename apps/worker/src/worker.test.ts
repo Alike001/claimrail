@@ -28,6 +28,10 @@ describe("worker runtime", () => {
       CLAIMRAIL_RUN_ONCE: "true",
       CLAIMRAIL_SYNC_WALLET: "0xe1da3bdd4189fdefb2ef8a73bd37a4083f284477",
       CLAIMRAIL_SECRET_ENCRYPTION_KEY: "secret-that-must-not-be-logged",
+      CLAIMRAIL_VAPID_SUBJECT: "mailto:ops@example.test",
+      CLAIMRAIL_VAPID_PUBLIC_KEY: "public-vapid-key",
+      CLAIMRAIL_VAPID_PRIVATE_KEY: "private-vapid-key",
+      CLAIMRAIL_TELEGRAM_BOT_TOKEN: "telegram-bot-token-that-must-not-be-logged",
     });
     const publicConfig = publicWorkerConfig(config);
     expect(publicConfig).toMatchObject({
@@ -35,10 +39,13 @@ describe("worker runtime", () => {
       runOnce: true,
       shannonWalletSyncEnabled: true,
       webhookDeliveryEnabled: true,
+      browserPushDeliveryEnabled: true,
+      telegramDeliveryEnabled: true,
     });
     expect(JSON.stringify(publicConfig)).not.toContain("secret");
     expect(JSON.stringify(publicConfig)).not.toContain("0xe1da");
     expect(JSON.stringify(publicConfig)).not.toContain("secret-that");
+    expect(JSON.stringify(publicConfig)).not.toContain("telegram-bot-token");
   });
 
   it("runs all four lanes and records error classes without error messages", async () => {
@@ -80,6 +87,7 @@ describe("worker runtime", () => {
       id: "0d904bb5-4a5f-442d-a3fe-734646d50d58",
       subscriptionId: "c742d9c7-b1af-4e14-b90f-bf58355318ad",
       destination: "https://agent.example.test/claimrail",
+      kind: "webhook",
       secretCiphertext: "v1.iv.tag.ciphertext",
       attempt: 1,
       maxAttempts: 8,

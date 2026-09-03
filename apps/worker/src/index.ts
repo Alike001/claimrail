@@ -14,6 +14,8 @@ import { createDeliveryDispatchJob } from "./jobs/delivery-dispatch.js";
 import { createMarketLifecycleJob } from "./jobs/market-lifecycle.js";
 import { createWalletScanJob } from "./jobs/wallet-scan.js";
 import { WorkerRuntime } from "./runtime.js";
+import { createBrowserPushTransport } from "./browser-push-transport.js";
+import { createTelegramTransport } from "./telegram-transport.js";
 import { createWebhookTransport } from "./webhook-transport.js";
 
 async function closeWithin(close: () => Promise<void>, timeoutMs = 5_000): Promise<void> {
@@ -37,6 +39,29 @@ async function main(): Promise<void> {
     maxConnections: 8,
   });
   const gateway = new DreamDexSdkGateway(SHANNON_DREAMDEX);
+  const webhookTransport =
+    config.secretEncryptionKey === undefined
+      ? undefined
+      : createWebhookTransport({ encryptionKey: config.secretEncryptionKey });
+  const browserTransport =
+    config.secretEncryptionKey === undefined || config.vapid === undefined
+      ? undefined
+      : createBrowserPushTransport({
+          encryptionKey: config.secretEncryptionKey,
+          vapid: config.vapid,
+        });
+  const telegramTransport =
+    config.secretEncryptionKey === undefined || config.telegramBotToken === undefined
+      ? undefined
+      : createTelegramTransport({
+          encryptionKey: config.secretEncryptionKey,
+          botToken: config.telegramBotToken,
+        });
+  const enabledKinds = [
+    ...(webhookTransport ? (["webhook"] as const) : []),
+    ...(browserTransport ? (["browser"] as const) : []),
+    ...(telegramTransport ? (["telegram"] as const) : []),
+  ];
   const runtime = new WorkerRuntime({
     "market-lifecycle": createMarketLifecycleJob(),
     "wallet-scan": createWalletScanJob(
@@ -61,9 +86,20 @@ async function main(): Promise<void> {
       deliveryRepository: new DeliveryRepository(database.db),
       workerId: config.workerId,
       leaseMs: config.leaseMs,
-      ...(config.secretEncryptionKey === undefined
+      ...(enabledKinds.length === 0
         ? {}
-        : { dispatch: createWebhookTransport({ encryptionKey: config.secretEncryptionKey }) }),
+        : {
+            enabledKinds,
+            dispatch: async (delivery) => {
+              if (delivery.kind === "webhook" && webhookTransport)
+                return webhookTransport(delivery);
+              if (delivery.kind === "browser" && browserTransport)
+                return browserTransport(delivery);
+              if (delivery.kind === "telegram" && telegramTransport)
+                return telegramTransport(delivery);
+              throw new Error("DeliveryTransportUnavailable");
+            },
+          }),
     }),
   });
   const stop = new AbortController();

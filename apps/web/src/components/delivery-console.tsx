@@ -143,6 +143,8 @@ function DeliveryInspector({
           <dd>{detail.eventId}</dd>
           <dt>event type</dt>
           <dd>{detail.eventType}</dd>
+          <dt>channel</dt>
+          <dd>{detail.kind}</dd>
           <dt>owner</dt>
           <dd>{detail.owner}</dd>
           <dt>endpoint</dt>
@@ -450,7 +452,10 @@ export function DeliveryConsole({
                           {item.eventType}
                         </td>
                         <td>{short(item.owner)}</td>
-                        <td title={item.destination}>{short(item.destination, 29, 8)}</td>
+                        <td title={item.destination}>
+                          {item.kind === "webhook" ? "" : `${item.kind}:`}
+                          {short(item.destination, 29, 8)}
+                        </td>
                         <td>
                           <Status value={item.status} />
                         </td>

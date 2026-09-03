@@ -14,16 +14,18 @@ export interface DeliveryDispatchOptions {
   readonly workerId: string;
   readonly leaseMs: number;
   readonly dispatch?: WebhookDispatcher;
+  readonly enabledKinds?: readonly ("webhook" | "browser" | "telegram")[];
 }
 
 export function createDeliveryDispatchJob(options: DeliveryDispatchOptions): WorkerJob {
   return async () => {
     if (options.dispatch === undefined) {
-      return { status: "idle", detail: "webhook delivery encryption key is not configured" };
+      return { status: "idle", detail: "no delivery transport is configured" };
     }
     const delivery = await options.deliveryRepository.leaseNext({
       workerId: options.workerId,
       leaseMs: options.leaseMs,
+      ...(options.enabledKinds ? { enabledKinds: options.enabledKinds } : {}),
     });
     if (delivery !== null) {
       try {
@@ -53,6 +55,10 @@ export function createDeliveryDispatchJob(options: DeliveryDispatchOptions): Wor
             : {}),
           ...(error instanceof Error && "requestTimestamp" in error
             ? { requestTimestamp: Number(error.requestTimestamp) }
+            : {}),
+          ...(error instanceof Error &&
+          (error.name === "BrowserPushExpired" || error.name === "TelegramDestinationRevoked")
+            ? { terminal: true }
             : {}),
         });
         throw error;

@@ -9,6 +9,7 @@ function delivery(secret: string, encryptionKey: string): LeasedWebhookDelivery 
     id: randomUUID(),
     subscriptionId: randomUUID(),
     destination: "https://agent.example.test/claimrail",
+    kind: "webhook",
     secretCiphertext: encryptSecret(secret, encryptionKey),
     attempt: 2,
     maxAttempts: 8,

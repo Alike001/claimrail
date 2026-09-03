@@ -16,6 +16,7 @@ export interface LeasedWebhookDelivery {
   readonly id: string;
   readonly subscriptionId: string;
   readonly destination: string;
+  readonly kind: "webhook" | "browser" | "telegram";
   readonly secretCiphertext: string;
   readonly attempt: number;
   readonly maxAttempts: number;
@@ -29,6 +30,7 @@ export interface StoredDeliveryListItem {
   readonly eventType: CanonicalDeliveryEvent["type"];
   readonly owner: string;
   readonly destination: string;
+  readonly kind: "webhook" | "browser" | "telegram";
   readonly status: "pending" | "delivering" | "delivered" | "failed" | "dead";
   readonly attemptCount: number;
   readonly maxAttempts: number;
@@ -60,6 +62,7 @@ interface DeliveryLeaseRow extends Record<string, unknown> {
   readonly id: string;
   readonly subscriptionId: string;
   readonly destination: string;
+  readonly kind: "webhook" | "browser" | "telegram";
   readonly secretCiphertext: string;
   readonly attempt: number;
   readonly maxAttempts: number;
@@ -127,7 +130,6 @@ export class DeliveryRepository {
         .where(
           and(
             eq(subscriptions.ownerAddress, owner),
-            eq(subscriptions.kind, "webhook"),
             eq(subscriptions.active, true),
             isNotNull(subscriptions.verifiedAt),
             isNotNull(subscriptions.secretCiphertext),
@@ -156,11 +158,14 @@ export class DeliveryRepository {
   async leaseNext(input: {
     readonly workerId: string;
     readonly leaseMs: number;
+    readonly enabledKinds?: readonly ("webhook" | "browser" | "telegram")[];
     readonly now?: Date;
   }): Promise<LeasedWebhookDelivery | null> {
     if (input.workerId.trim() === "") throw new Error("workerId is required");
     const leaseMs = positiveMilliseconds(input.leaseMs, "leaseMs");
     const now = input.now ?? new Date();
+    const enabledKinds = input.enabledKinds ?? ["webhook"];
+    if (enabledKinds.length === 0) return null;
     const leaseExpiresAt = new Date(now.getTime() + leaseMs);
     return this.db.transaction(async (tx) => {
       const result = await tx.execute<DeliveryLeaseRow>(sql`
@@ -171,6 +176,11 @@ export class DeliveryRepository {
           where subscription.active = true
             and subscription.verified_at is not null
             and subscription.secret_ciphertext is not null
+            and (
+              (subscription.kind = 'webhook' and ${enabledKinds.includes("webhook")})
+              or (subscription.kind = 'browser' and ${enabledKinds.includes("browser")})
+              or (subscription.kind = 'telegram' and ${enabledKinds.includes("telegram")})
+            )
             and delivery.attempt_count < delivery.max_attempts
             and coalesce(delivery.next_attempt_at, delivery.created_at) <= ${now}
             and (
@@ -195,6 +205,7 @@ export class DeliveryRepository {
           delivery.id,
           delivery.subscription_id as "subscriptionId",
           subscription.destination,
+          subscription.kind,
           subscription.secret_ciphertext as "secretCiphertext",
           delivery.attempt_count as attempt,
           delivery.max_attempts as "maxAttempts",
@@ -291,13 +302,18 @@ export class DeliveryRepository {
     readonly httpStatus?: number;
     readonly signatureVersion?: string;
     readonly requestTimestamp?: number;
+    readonly terminal?: boolean;
     readonly now?: Date;
     readonly baseBackoffMs?: number;
     readonly maxBackoffMs?: number;
   }): Promise<"failed" | "dead" | "not_owned"> {
     const now = input.now ?? new Date();
     const rows = await this.db
-      .select({ attemptCount: deliveries.attemptCount, maxAttempts: deliveries.maxAttempts })
+      .select({
+        attemptCount: deliveries.attemptCount,
+        maxAttempts: deliveries.maxAttempts,
+        subscriptionId: deliveries.subscriptionId,
+      })
       .from(deliveries)
       .where(
         and(
@@ -309,7 +325,7 @@ export class DeliveryRepository {
       .limit(1);
     const delivery = rows[0];
     if (delivery === undefined) return "not_owned";
-    const dead = delivery.attemptCount >= delivery.maxAttempts;
+    const dead = input.terminal === true || delivery.attemptCount >= delivery.maxAttempts;
     const base = positiveMilliseconds(input.baseBackoffMs ?? 1_000, "baseBackoffMs");
     const cap = positiveMilliseconds(input.maxBackoffMs ?? 300_000, "maxBackoffMs");
     const exponent = Math.min(Math.max(delivery.attemptCount - 1, 0), 20);
@@ -351,6 +367,12 @@ export class DeliveryRepository {
             eq(deliveryAttempts.attemptNumber, input.attempt),
           ),
         );
+      if (input.terminal === true) {
+        await tx
+          .update(subscriptions)
+          .set({ active: false, updatedAt: now })
+          .where(eq(subscriptions.id, delivery.subscriptionId));
+      }
       return dead ? ("dead" as const) : ("failed" as const);
     });
   }
@@ -368,6 +390,7 @@ export class DeliveryRepository {
           eventType: canonicalEvents.type,
           owner: subscriptions.ownerAddress,
           destination: subscriptions.destination,
+          kind: subscriptions.kind,
           status: deliveries.status,
           attemptCount: deliveries.attemptCount,
           maxAttempts: deliveries.maxAttempts,
@@ -387,7 +410,6 @@ export class DeliveryRepository {
         .where(
           and(
             eq(subscriptions.ownerAddress, owner),
-            eq(subscriptions.kind, "webhook"),
             eq(subscriptions.active, true),
             isNotNull(subscriptions.verifiedAt),
           ),
@@ -430,6 +452,7 @@ export class DeliveryRepository {
         eventType: canonicalEvents.type,
         owner: subscriptions.ownerAddress,
         destination: subscriptions.destination,
+        kind: subscriptions.kind,
         status: deliveries.status,
         attemptCount: deliveries.attemptCount,
         maxAttempts: deliveries.maxAttempts,
@@ -491,6 +514,7 @@ export class DeliveryRepository {
       eventType: row.eventType,
       owner: row.owner,
       destination: row.destination,
+      kind: row.kind,
       status: row.status,
       attemptCount: row.attemptCount,
       maxAttempts: row.maxAttempts,

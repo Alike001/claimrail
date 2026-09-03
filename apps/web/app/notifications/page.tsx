@@ -1,5 +1,7 @@
 import { Header } from "@/src/components/header";
 import { WebhookSubscriptionForm } from "@/src/components/webhook-subscription-form";
+import { BrowserSubscriptionForm } from "@/src/components/browser-subscription-form";
+import { TelegramSubscriptionForm } from "@/src/components/telegram-subscription-form";
 
 export default function NotificationsPage() {
   return (
@@ -29,22 +31,8 @@ export default function NotificationsPage() {
         <div className="notifications-grid">
           <WebhookSubscriptionForm />
           <aside className="channel-stack" aria-label="Notification channel roadmap">
-            <article>
-              <span>02</span>
-              <div>
-                <h2>Browser</h2>
-                <p>Claimable alerts on this device with per-wallet preferences.</p>
-              </div>
-              <b>next adapter</b>
-            </article>
-            <article>
-              <span>03</span>
-              <div>
-                <h2>Telegram</h2>
-                <p>One-time private chat linking, protected by the same ownership proof.</p>
-              </div>
-              <b>next adapter</b>
-            </article>
+            <BrowserSubscriptionForm />
+            <TelegramSubscriptionForm />
             <section className="signature-note">
               <p className="eyebrow">what you sign</p>
               <h3>Permission to notify. Nothing financial.</h3>
