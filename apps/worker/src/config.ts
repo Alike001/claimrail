@@ -5,6 +5,7 @@ export interface WorkerConfig {
   readonly pollIntervalMs: number;
   readonly leaseMs: number;
   readonly syncWallet?: string;
+  readonly secretEncryptionKey?: string;
 }
 
 function required(environment: NodeJS.ProcessEnv, name: string): string {
@@ -30,6 +31,7 @@ function boolean(value: string | undefined, fallback: boolean, name: string): bo
 
 export function readWorkerConfig(environment: NodeJS.ProcessEnv = process.env): WorkerConfig {
   const syncWallet = environment.CLAIMRAIL_SYNC_WALLET?.trim();
+  const secretEncryptionKey = environment.CLAIMRAIL_SECRET_ENCRYPTION_KEY?.trim();
   return {
     databaseUrl: required(environment, "DATABASE_URL"),
     workerId: environment.CLAIMRAIL_WORKER_ID?.trim() || `claimrail-${process.pid}`,
@@ -41,6 +43,7 @@ export function readWorkerConfig(environment: NodeJS.ProcessEnv = process.env): 
     ),
     leaseMs: positiveInteger(environment.CLAIMRAIL_LEASE_MS, 30_000, "CLAIMRAIL_LEASE_MS"),
     ...(syncWallet ? { syncWallet } : {}),
+    ...(secretEncryptionKey ? { secretEncryptionKey } : {}),
   };
 }
 
@@ -51,5 +54,6 @@ export function publicWorkerConfig(config: WorkerConfig) {
     pollIntervalMs: config.pollIntervalMs,
     leaseMs: config.leaseMs,
     shannonWalletSyncEnabled: config.syncWallet !== undefined,
+    webhookDeliveryEnabled: config.secretEncryptionKey !== undefined,
   };
 }

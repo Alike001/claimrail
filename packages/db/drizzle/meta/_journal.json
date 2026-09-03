@@ -50,6 +50,13 @@
       "when": 1788465124847,
       "tag": "0006_busy_typhoid_mary",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1788467772322,
+      "tag": "0007_next_thor",
+      "breakpoints": true
     }
   ]
 }

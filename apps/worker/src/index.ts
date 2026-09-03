@@ -3,6 +3,7 @@ import {
   ClaimRepository,
   createDatabase,
   databaseReadiness,
+  DeliveryRepository,
   OutboxJobRepository,
 } from "@claimrail/db";
 import { ClaimRailReadService, DreamDexSdkGateway, SHANNON_DREAMDEX } from "@claimrail/dreamdex";
@@ -13,6 +14,7 @@ import { createDeliveryDispatchJob } from "./jobs/delivery-dispatch.js";
 import { createMarketLifecycleJob } from "./jobs/market-lifecycle.js";
 import { createWalletScanJob } from "./jobs/wallet-scan.js";
 import { WorkerRuntime } from "./runtime.js";
+import { createWebhookTransport } from "./webhook-transport.js";
 
 async function closeWithin(close: () => Promise<void>, timeoutMs = 5_000): Promise<void> {
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -55,9 +57,13 @@ async function main(): Promise<void> {
       leaseMs: config.leaseMs,
     }),
     "delivery-dispatch": createDeliveryDispatchJob({
-      repository: new OutboxJobRepository(database.db),
+      outboxRepository: new OutboxJobRepository(database.db),
+      deliveryRepository: new DeliveryRepository(database.db),
       workerId: config.workerId,
       leaseMs: config.leaseMs,
+      ...(config.secretEncryptionKey === undefined
+        ? {}
+        : { dispatch: createWebhookTransport({ encryptionKey: config.secretEncryptionKey }) }),
     }),
   });
   const stop = new AbortController();

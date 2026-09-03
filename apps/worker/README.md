@@ -5,7 +5,7 @@ The worker is the long-running boundary between live DreamDEX/Somnia reads and C
 - `wallet-scan`: opt-in live Shannon wallet discovery, chain verification, and claimable-transition persistence.
 - `market-lifecycle`: scaffold for broader market polling in the read API phase.
 - `claim-receipt`: leases submitted hashes and verifies receipt, replacement, deployed redemption events, post-balances, settlement backing, actual payout, gas, and owed fallback state.
-- `delivery-dispatch`: durable outbox consumer; it refuses to lease work until a real delivery transport is configured.
+- `delivery-dispatch`: materializes one delivery per matching verified subscription, then leases, HMAC-signs, sends, retries, and dead-letters each webhook independently.
 
 The worker stores no private key and submits no transaction. Its health output excludes database URLs, public endpoints, watched addresses, and error messages.
 
@@ -24,4 +24,6 @@ DATABASE_URL=postgresql://... \
 
 Claim transactions use expiring PostgreSQL leases. A missing receipt is retried. A reverted or evidence-conflicting receipt fails. A dropped hash is marked `superseded` only when a verified submission nonce is lower than the owner's latest mined transaction count. Legacy submissions without a stored nonce remain pending rather than being guessed.
 
-For a continuous worker, use `pnpm dev:worker`. Optional settings are `CLAIMRAIL_WORKER_ID`, `CLAIMRAIL_POLL_INTERVAL_MS`, and `CLAIMRAIL_LEASE_MS`.
+For a continuous worker, use `pnpm dev:worker`. Set the same base64-encoded 32-byte `CLAIMRAIL_SECRET_ENCRYPTION_KEY` on the web and worker processes to activate signed webhook delivery. Generate a new key with `openssl rand -base64 32`; do not commit its value. Optional settings are `CLAIMRAIL_WORKER_ID`, `CLAIMRAIL_POLL_INTERVAL_MS`, and `CLAIMRAIL_LEASE_MS`.
+
+The outbound transport accepts HTTPS only, rejects credential-bearing or local/internal destinations, resolves every hostname before sending, and refuses any address set containing a non-public IP. It never follows redirects. A receiver gets `claimrail-delivery-id`, `claimrail-timestamp`, and `claimrail-signature` headers; the signature covers the exact `timestamp.rawBody` bytes.

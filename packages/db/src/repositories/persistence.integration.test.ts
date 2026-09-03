@@ -23,6 +23,7 @@ import { OutboxJobRepository } from "../jobs/repository.js";
 import { ClaimRailStateRepository } from "./state.js";
 import { ClaimRepository } from "./claims.js";
 import { SubscriptionRepository } from "./subscriptions.js";
+import { DeliveryRepository } from "./deliveries.js";
 import type { PersistWalletTransitionInput } from "./types.js";
 
 const databaseUrl = process.env.TEST_DATABASE_URL;
@@ -557,6 +558,95 @@ describePostgres("PostgreSQL persistence", () => {
       secret_hash: "cd".repeat(32),
       secret_ciphertext: "v1.iv.tag.ciphertext",
       audit_count: "1",
+    });
+  });
+
+  it("fans out each canonical event once and retries its webhook independently", async () => {
+    const subscriptionsRepository = new SubscriptionRepository(context.db);
+    const challengeId = "c742d9c7-b1af-4e14-b90f-bf58355318ad";
+    const createdAt = new Date("2026-09-03T12:00:00.000Z");
+    await subscriptionsRepository.createWebhookChallenge({
+      id: challengeId,
+      ownerAddress: WALLET,
+      destination: "https://agent.example.test/claimrail",
+      eventTypes: ["wallet.claimable"],
+      challengeHash: "ef".repeat(32),
+      expiresAt: new Date(createdAt.getTime() + 60_000),
+      createdAt,
+    });
+    await subscriptionsRepository.activateWebhook({
+      challengeId,
+      expectedChallengeHash: "ef".repeat(32),
+      secretHash: "cd".repeat(32),
+      secretCiphertext: "v1.iv.tag.ciphertext",
+      verifiedAt: new Date(createdAt.getTime() + 1_000),
+    });
+    const persisted = await new ClaimRailStateRepository(context.db).persistWalletTransition(
+      transitionInput(),
+    );
+    const repository = new DeliveryRepository(context.db);
+    expect(await repository.materializeEvent(`0x${"78".repeat(32)}`, createdAt)).toBe(1);
+    expect(await repository.materializeEvent(`0x${"78".repeat(32)}`, createdAt)).toBe(0);
+
+    const first = await repository.leaseNext({
+      workerId: "delivery-a",
+      leaseMs: 1_000,
+      now: createdAt,
+    });
+    if (first === null) throw new Error("expected a webhook delivery lease");
+    expect(first.event).toMatchObject({
+      id: `0x${"78".repeat(32)}`,
+      type: "wallet.claimable",
+      aggregateId: POSITION,
+    });
+    expect(first).toMatchObject({ attempt: 1, maxAttempts: 8 });
+    expect(
+      await repository.fail({
+        deliveryId: first.id,
+        workerId: first.leaseOwner,
+        error: "WebhookHttp503",
+        now: createdAt,
+        baseBackoffMs: 100,
+      }),
+    ).toBe("failed");
+    expect(
+      await repository.leaseNext({
+        workerId: "delivery-b",
+        leaseMs: 1_000,
+        now: new Date(createdAt.getTime() + 99),
+      }),
+    ).toBeNull();
+    const second = await repository.leaseNext({
+      workerId: "delivery-b",
+      leaseMs: 1_000,
+      now: new Date(createdAt.getTime() + 100),
+    });
+    if (second === null) throw new Error("expected a retried webhook delivery lease");
+    expect(second.attempt).toBe(2);
+    expect(
+      await repository.complete({
+        deliveryId: second.id,
+        workerId: second.leaseOwner,
+        providerMessageId: "receiver-42",
+        now: new Date(createdAt.getTime() + 110),
+      }),
+    ).toBe(true);
+    const stored = await context.pool.query<{
+      status: string;
+      attempt_count: number;
+      provider_message_id: string;
+      count: string;
+    }>(
+      `select status, attempt_count, provider_message_id,
+        (select count(*) from deliveries where event_id = $2) as count
+      from deliveries where id = $1`,
+      [second.id, persisted.eventCreated ? `0x${"78".repeat(32)}` : "missing"],
+    );
+    expect(stored.rows[0]).toEqual({
+      status: "delivered",
+      attempt_count: 2,
+      provider_message_id: "receiver-42",
+      count: "1",
     });
   });
 

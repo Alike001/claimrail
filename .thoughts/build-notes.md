@@ -231,14 +231,18 @@ Delivered:
 - Added durable notification bindings and filtered webhook subscriptions, authenticated AES-256-GCM encryption for stored signing secrets, hashes for secret identification, and immutable subscription audit entries.
 - Added `POST /api/v1/subscriptions/challenges` and `POST /api/v1/subscriptions/verify`, OpenAPI discovery, and negative validation for insecure destinations and malformed ownership proofs.
 - Added the responsive `/notifications` delivery-control frontend with a working wallet-signature webhook flow and honest next-adapter states for browser and Telegram.
+- Added idempotent canonical-event fan-out that derives the subscribed owner from wallet payloads or durable wallet/position/claim relationships and creates one delivery per matching route.
+- Added independent PostgreSQL delivery leases, attempt counters, expired-lease recovery, bounded exponential backoff, terminal dead-letter state, and 2xx-only completion so one failed endpoint never duplicates successful peers.
+- Activated the worker's signed webhook transport when the shared encryption key is configured. It decrypts only for an attempt, signs the exact versioned envelope, sends delivery/timestamp/signature headers, refuses redirects, and rejects non-HTTPS or non-public destinations.
+- Added end-to-end transport regressions that verify the receiver can authenticate the exact request body and that non-2xx responses remain retryable.
 
 Verified:
 
-- 134 root tests pass, including subscription schema, message, HMAC, encrypted-secret, replay, and tamper regressions.
-- Eight ephemeral PostgreSQL integration tests pass, including atomic single-use challenge consumption and encrypted webhook persistence.
+- 138 root tests pass, including subscription schema, message, HMAC, encrypted-secret, request-forgery guard, receiver verification, replay, retry, and tamper regressions.
+- Nine ephemeral PostgreSQL integration tests pass, including atomic single-use challenge consumption, encrypted webhook persistence, idempotent fan-out, independent retry, and successful completion.
 - Seventeen desktop/mobile Playwright checks pass with one intentional desktop skip; the notification page was visually inspected at `1536×1024` and `390×844`.
 - Root formatting, lint, typecheck, production build, and the isolated Event Contract probe typecheck pass.
 
 Not yet active:
 
-- Outbound webhook transport, bounded delivery retry/dead-letter/replay, browser push, Telegram linking, the developer delivery console, and live multi-surface delivery remain the next Phase 8 slice.
+- Manual dead-letter replay, browser push, Telegram linking, the developer delivery console, and live multi-surface delivery remain the next Phase 8 slice.

@@ -117,6 +117,9 @@ export const deliveries = pgTable(
     }),
     status: deliveryStatusEnum("status").default("pending").notNull(),
     attemptCount: integer("attempt_count").default(0).notNull(),
+    maxAttempts: integer("max_attempts").default(8).notNull(),
+    leaseOwner: text("lease_owner"),
+    leaseExpiresAt: timestampTz("lease_expires_at"),
     providerMessageId: text("provider_message_id"),
     lastError: text("last_error"),
     nextAttemptAt: timestampTz("next_attempt_at"),
@@ -127,7 +130,10 @@ export const deliveries = pgTable(
   (table) => [
     unique("deliveries_subscription_event_unique").on(table.subscriptionId, table.eventId),
     index("deliveries_status_next_idx").on(table.status, table.nextAttemptAt),
-    check("deliveries_attempt_count_nonnegative", sql`${table.attemptCount} >= 0`),
+    check(
+      "deliveries_attempts_valid",
+      sql`${table.attemptCount} >= 0 and ${table.maxAttempts} > 0`,
+    ),
   ],
 );
 

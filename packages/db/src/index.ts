@@ -4,6 +4,7 @@ export * from "./json.js";
 export * from "./repositories/state.js";
 export * from "./repositories/claims.js";
 export * from "./repositories/subscriptions.js";
+export * from "./repositories/deliveries.js";
 export * from "./secrets.js";
 export type * from "./repositories/types.js";
 export * from "./schema/index.js";
