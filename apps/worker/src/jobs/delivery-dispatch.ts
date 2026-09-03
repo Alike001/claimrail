@@ -1,9 +1,12 @@
 import { DeliveryRepository, OutboxJobRepository, type LeasedWebhookDelivery } from "@claimrail/db";
 import type { WorkerJob } from "../runtime.js";
 
-export type WebhookDispatcher = (
-  delivery: LeasedWebhookDelivery,
-) => Promise<{ readonly providerMessageId: string }>;
+export type WebhookDispatcher = (delivery: LeasedWebhookDelivery) => Promise<{
+  readonly providerMessageId: string;
+  readonly httpStatus: number;
+  readonly signatureVersion: string;
+  readonly requestTimestamp: number;
+}>;
 
 export interface DeliveryDispatchOptions {
   readonly outboxRepository: OutboxJobRepository;
@@ -28,7 +31,11 @@ export function createDeliveryDispatchJob(options: DeliveryDispatchOptions): Wor
         const completed = await options.deliveryRepository.complete({
           deliveryId: delivery.id,
           workerId: options.workerId,
+          attempt: delivery.attempt,
           providerMessageId: result.providerMessageId,
+          httpStatus: result.httpStatus,
+          signatureVersion: result.signatureVersion,
+          requestTimestamp: result.requestTimestamp,
         });
         if (!completed) throw new Error("DeliveryLeaseOwnershipError");
         return { status: "worked", detail: "signed webhook delivered", count: 1 };
@@ -36,7 +43,17 @@ export function createDeliveryDispatchJob(options: DeliveryDispatchOptions): Wor
         await options.deliveryRepository.fail({
           deliveryId: delivery.id,
           workerId: options.workerId,
+          attempt: delivery.attempt,
           error: error instanceof Error ? error.name : "UnknownError",
+          ...(error instanceof Error && "httpStatus" in error
+            ? { httpStatus: Number(error.httpStatus) }
+            : {}),
+          ...(error instanceof Error && "signatureVersion" in error
+            ? { signatureVersion: String(error.signatureVersion) }
+            : {}),
+          ...(error instanceof Error && "requestTimestamp" in error
+            ? { requestTimestamp: Number(error.requestTimestamp) }
+            : {}),
         });
         throw error;
       }

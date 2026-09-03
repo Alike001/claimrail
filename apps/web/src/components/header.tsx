@@ -8,8 +8,8 @@ export function Header({
   address,
   active = "inbox",
 }: {
-  readonly address?: string;
-  readonly active?: "inbox" | "history" | "notifications" | "docs";
+  readonly address?: string | undefined;
+  readonly active?: "inbox" | "history" | "notifications" | "developers" | "docs";
 }) {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const short = address ? `${address.slice(0, 6)}…${address.slice(-4)}` : "observe wallet";
@@ -35,7 +35,12 @@ export function Header({
         <Link className={active === "notifications" ? "active" : undefined} href="/notifications">
           notify
         </Link>
-        <Link href="/docs#api">developers</Link>
+        <Link
+          className={active === "developers" ? "active" : undefined}
+          href="/developers/deliveries"
+        >
+          developers
+        </Link>
         <Link className={active === "docs" ? "active" : undefined} href="/docs">
           docs
         </Link>

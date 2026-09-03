@@ -65,6 +65,9 @@ describe("webhook transport", () => {
     });
     await expect(dispatch(delivery(secret, encryptionKey))).resolves.toEqual({
       providerMessageId: "receiver-42",
+      httpStatus: 204,
+      signatureVersion: "v1",
+      requestTimestamp: expect.any(Number),
     });
     expect(fetcher).toHaveBeenCalledOnce();
   });

@@ -74,6 +74,19 @@ test("serves discovery and validated API errors", async ({ request }) => {
     data: { challengeId: "not-a-uuid", message: "challenge", signature: "0x1234" },
   });
   expect(invalidVerification.status()).toBe(400);
+
+  const invalidAccessChallenge = await request.post("/api/v1/access/challenges", {
+    data: { owner: "not-an-address" },
+  });
+  expect(invalidAccessChallenge.status()).toBe(400);
+
+  const unauthorizedDeliveries = await request.get("/api/v1/deliveries");
+  expect(unauthorizedDeliveries.status()).toBe(401);
+
+  const invalidDelivery = await request.get("/api/v1/deliveries/not-a-uuid", {
+    headers: { authorization: `Bearer ${"a".repeat(43)}` },
+  });
+  expect(invalidDelivery.status()).toBe(400);
 });
 
 test("documents the settlement and signing boundary", async ({ page }) => {
@@ -83,6 +96,7 @@ test("documents the settlement and signing boundary", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByText("Approval is broad. Redemption is exact.")).toBeVisible();
   await expect(page.getByText("/api/v1/claims/prepare", { exact: true })).toBeVisible();
+  await expect(page.getByText("/api/v1/deliveries", { exact: true })).toBeVisible();
   await expect(page.getByText("ClaimRail stores no wallet private key")).toBeVisible();
 });
 
@@ -122,4 +136,37 @@ test("presents notification delivery without overstating unfinished adapters", a
   await expect(page.getByText("message signature only · no gas")).toBeVisible();
   await expect(page.getByText("next adapter")).toHaveCount(2);
   await expect(page.getByRole("button", { name: "connect owner wallet →" })).toBeVisible();
+});
+
+test("inspects and filters the developer delivery ledger", async ({ page }) => {
+  await page.goto("/developers/deliveries?fixture=1");
+  await expect(page.getByRole("heading", { name: "Developer Delivery Console" })).toBeVisible();
+  await expect(page.getByText("verified UI fixture · no live delivery data")).toBeVisible();
+  await expect(page.locator(".delivery-table tbody tr")).toHaveCount(5);
+  await expect(page.getByRole("region", { name: "Selected delivery inspector" })).toContainText(
+    "claim.failed",
+  );
+  await expect(page.getByText("attempt 5")).toBeVisible();
+  await expect(page.getByRole("button", { name: "▷ replay dead letter" })).toBeDisabled();
+
+  await page
+    .locator(".delivery-table tbody tr")
+    .first()
+    .getByRole("button", { name: "inspect" })
+    .click();
+  await expect(page.getByRole("region", { name: "Selected delivery inspector" })).toContainText(
+    "wallet.claimable",
+  );
+
+  await page.getByRole("button", { name: "retrying 1" }).click();
+  await expect(page.locator(".delivery-table tbody tr")).toHaveCount(1);
+  await expect(page.locator(".delivery-table tbody tr")).toContainText("market.finalized");
+
+  await page.getByRole("button", { name: "dead 1" }).click();
+  await expect(page.locator(".delivery-table tbody tr")).toHaveCount(1);
+  await expect(page.locator(".delivery-table tbody tr")).toContainText("claim.failed");
+  await page.getByRole("button", { name: "inspect" }).click();
+  await expect(page.getByRole("region", { name: "Selected delivery inspector" })).toContainText(
+    "attempt 5",
+  );
 });

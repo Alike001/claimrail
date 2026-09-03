@@ -98,7 +98,12 @@ describe("worker runtime", () => {
       },
     } satisfies LeasedWebhookDelivery;
     const complete = vi.fn(async () => true);
-    const dispatch = vi.fn(async () => ({ providerMessageId: "receiver-42" }));
+    const dispatch = vi.fn(async () => ({
+      providerMessageId: "receiver-42",
+      httpStatus: 204,
+      signatureVersion: "v1",
+      requestTimestamp: 1_788_436_800,
+    }));
     const job = createDeliveryDispatchJob({
       outboxRepository: { leaseNext: vi.fn() } as unknown as OutboxJobRepository,
       deliveryRepository: {
@@ -114,7 +119,11 @@ describe("worker runtime", () => {
     expect(complete).toHaveBeenCalledWith({
       deliveryId: leased.id,
       workerId: "worker-a",
+      attempt: 1,
       providerMessageId: "receiver-42",
+      httpStatus: 204,
+      signatureVersion: "v1",
+      requestTimestamp: 1_788_436_800,
     });
   });
 

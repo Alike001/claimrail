@@ -9,6 +9,7 @@ These concepts were generated with the built-in image-generation tool on 2026-09
 - `settlement-evidence-v3.png` (`1536×1024`): a coordinated evidence ladder and compact proof list for a finalized Event Contract.
 - `mobile-settlement-inbox-v3.png` (`1537×1023`): the settlement inbox translated to a narrow mobile viewport while preserving the rail and ledger hierarchy.
 - `mobile-claim-tray-expanded-v3.png` (`852×1846`): the scrollable mobile claim-plan tray with approval scope and custody language.
+- `delivery-console-v1.png` (`1536×1024`): compact developer operations ledger with delivery-state totals, attempt timeline, canonical payload inspection, and dead-letter replay.
 
 The user approved these concepts on 2026-09-03. Together with `../claimrail-original-direction-v3.md`, they are the active implementation reference.
 

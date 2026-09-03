@@ -2,9 +2,9 @@ const document = {
   openapi: "3.1.0",
   info: {
     title: "ClaimRail API",
-    version: "0.3.0",
+    version: "0.4.0",
     description:
-      "Evidence-aware wallet, settlement, and owner-signed DreamDEX claim-planning endpoints.",
+      "Evidence-aware wallet, settlement, owner-signed claim planning, and signed delivery operations.",
   },
   servers: [{ url: "/" }],
   paths: {
@@ -107,8 +107,71 @@ const document = {
         },
       },
     },
+    "/api/v1/access/challenges": {
+      post: {
+        summary: "Create a delivery-console ownership challenge",
+        description:
+          "Issues a ten-minute readable message that grants no trading, claim, approval, or gas authority.",
+        responses: {
+          "201": { description: "Challenge to sign with the owner wallet" },
+          "400": { description: "Invalid wallet address" },
+        },
+      },
+    },
+    "/api/v1/access/verify": {
+      post: {
+        summary: "Exchange a valid wallet proof for short-lived console access",
+        description:
+          "Consumes the challenge once and returns a 15-minute token scoped to delivery reads and dead-letter replay.",
+        responses: {
+          "201": { description: "Owner-scoped bearer access" },
+          "409": { description: "Challenge mismatch, expiry, reuse, or invalid wallet proof" },
+        },
+      },
+    },
+    "/api/v1/deliveries": {
+      get: {
+        summary: "List webhook deliveries belonging to the authenticated owner",
+        security: [{ DeliveryConsoleBearer: [] }],
+        responses: {
+          "200": { description: "Delivery summary and owner-scoped ledger" },
+          "401": { description: "Missing, expired, or invalid access token" },
+        },
+      },
+    },
+    "/api/v1/deliveries/{deliveryId}": {
+      get: {
+        summary: "Inspect one owner-scoped delivery and its attempt history",
+        security: [{ DeliveryConsoleBearer: [] }],
+        parameters: [{ $ref: "#/components/parameters/DeliveryId" }],
+        responses: {
+          "200": { description: "Canonical event and delivery attempts" },
+          "404": { description: "Delivery is absent or belongs to another owner" },
+        },
+      },
+    },
+    "/api/v1/deliveries/{deliveryId}/replay": {
+      post: {
+        summary: "Requeue an authenticated owner's dead-letter delivery",
+        description:
+          "Adds a bounded retry allowance to the existing delivery. It does not create a financial transaction or duplicate the canonical event.",
+        security: [{ DeliveryConsoleBearer: [] }],
+        parameters: [{ $ref: "#/components/parameters/DeliveryId" }],
+        responses: {
+          "202": { description: "Dead letter accepted for another delivery attempt" },
+          "404": { description: "Delivery is absent, not dead, or belongs to another owner" },
+        },
+      },
+    },
   },
   components: {
+    securitySchemes: {
+      DeliveryConsoleBearer: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "opaque owner-scoped token",
+      },
+    },
     schemas: {
       Address: { type: "string", pattern: "^0x[0-9a-fA-F]{40}$" },
     },
@@ -130,6 +193,12 @@ const document = {
         in: "path",
         required: true,
         schema: { type: "string", pattern: "^claim:0x[0-9a-fA-F]{64}$" },
+      },
+      DeliveryId: {
+        name: "deliveryId",
+        in: "path",
+        required: true,
+        schema: { type: "string", format: "uuid" },
       },
     },
   },

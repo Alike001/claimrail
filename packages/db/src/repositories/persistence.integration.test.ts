@@ -24,6 +24,7 @@ import { ClaimRailStateRepository } from "./state.js";
 import { ClaimRepository } from "./claims.js";
 import { SubscriptionRepository } from "./subscriptions.js";
 import { DeliveryRepository } from "./deliveries.js";
+import { AccessRepository } from "./access.js";
 import type { PersistWalletTransitionInput } from "./types.js";
 
 const databaseUrl = process.env.TEST_DATABASE_URL;
@@ -218,7 +219,8 @@ describePostgres("PostgreSQL persistence", () => {
   beforeEach(async () => {
     await context.db.execute(sql`
       truncate table
-        deliveries, notification_bindings, subscriptions, outbox_jobs,
+        delivery_attempts, access_tokens, access_challenges, deliveries,
+        notification_bindings, subscriptions, outbox_jobs,
         canonical_events, claim_transactions, claim_entries, claims, position_scan_members,
         position_observations, positions, settlement_evidence,
         market_observations, markets, scan_runs, watched_wallets,
@@ -604,7 +606,11 @@ describePostgres("PostgreSQL persistence", () => {
       await repository.fail({
         deliveryId: first.id,
         workerId: first.leaseOwner,
+        attempt: first.attempt,
         error: "WebhookHttp503",
+        httpStatus: 503,
+        signatureVersion: "v1",
+        requestTimestamp: 1_788_441_200,
         now: createdAt,
         baseBackoffMs: 100,
       }),
@@ -627,7 +633,11 @@ describePostgres("PostgreSQL persistence", () => {
       await repository.complete({
         deliveryId: second.id,
         workerId: second.leaseOwner,
+        attempt: second.attempt,
         providerMessageId: "receiver-42",
+        httpStatus: 204,
+        signatureVersion: "v1",
+        requestTimestamp: 1_788_441_201,
         now: new Date(createdAt.getTime() + 110),
       }),
     ).toBe(true);
@@ -648,6 +658,157 @@ describePostgres("PostgreSQL persistence", () => {
       provider_message_id: "receiver-42",
       count: "1",
     });
+    const listed = await repository.listForOwner(WALLET);
+    expect(listed).toMatchObject({ activeRoutes: 1 });
+    expect(listed.deliveries).toHaveLength(1);
+    expect(listed.deliveries[0]).toMatchObject({
+      id: second.id,
+      eventType: "wallet.claimable",
+      status: "delivered",
+      attemptCount: 2,
+    });
+    const detail = await repository.getForOwner(second.id, WALLET);
+    expect(detail?.attempts).toEqual([
+      expect.objectContaining({
+        attempt: 1,
+        status: "failed",
+        httpStatus: 503,
+        signatureVersion: "v1",
+      }),
+      expect.objectContaining({
+        attempt: 2,
+        status: "delivered",
+        httpStatus: 204,
+        providerMessageId: "receiver-42",
+      }),
+    ]);
+    expect(
+      await repository.getForOwner(second.id, "0x0000000000000000000000000000000000000001"),
+    ).toBeNull();
+  });
+
+  it("requeues only an owner's dead webhook delivery and records the audit", async () => {
+    const subscriptionsRepository = new SubscriptionRepository(context.db);
+    const createdAt = new Date("2026-09-03T12:20:00.000Z");
+    const challengeId = "cc42d9c7-b1af-4e14-b90f-bf58355318ad";
+    await subscriptionsRepository.createWebhookChallenge({
+      id: challengeId,
+      ownerAddress: WALLET,
+      destination: "https://agent.example.test/dead-letter",
+      eventTypes: ["wallet.claimable"],
+      challengeHash: "aa".repeat(32),
+      expiresAt: new Date(createdAt.getTime() + 60_000),
+      createdAt,
+    });
+    await subscriptionsRepository.activateWebhook({
+      challengeId,
+      expectedChallengeHash: "aa".repeat(32),
+      secretHash: "bb".repeat(32),
+      secretCiphertext: "v1.iv.tag.ciphertext",
+      verifiedAt: createdAt,
+    });
+    await new ClaimRailStateRepository(context.db).persistWalletTransition(transitionInput());
+    const repository = new DeliveryRepository(context.db);
+    await repository.materializeEvent(`0x${"78".repeat(32)}`, createdAt);
+    await context.pool.query("update deliveries set max_attempts = 1");
+    const leased = await repository.leaseNext({
+      workerId: "dead-worker",
+      leaseMs: 1_000,
+      now: createdAt,
+    });
+    if (leased === null) throw new Error("expected dead-letter delivery lease");
+    expect(
+      await repository.fail({
+        deliveryId: leased.id,
+        workerId: leased.leaseOwner,
+        attempt: leased.attempt,
+        error: "WebhookHttp500",
+        httpStatus: 500,
+        now: createdAt,
+      }),
+    ).toBe("dead");
+    expect(
+      await repository.replayDead({
+        deliveryId: leased.id,
+        ownerAddress: "0x0000000000000000000000000000000000000001",
+        now: new Date(createdAt.getTime() + 1_000),
+      }),
+    ).toBeNull();
+    const replayed = await repository.replayDead({
+      deliveryId: leased.id,
+      ownerAddress: WALLET,
+      now: new Date(createdAt.getTime() + 1_000),
+    });
+    expect(replayed).toMatchObject({ attemptsRemaining: 8 });
+    const stored = await context.pool.query<{
+      status: string;
+      max_attempts: number;
+      audits: string;
+    }>(
+      `select status, max_attempts,
+        (select count(*) from audit_records where subject_id = $1::text) as audits
+       from deliveries where id = $1::uuid`,
+      [leased.id],
+    );
+    expect(stored.rows[0]).toEqual({ status: "failed", max_attempts: 9, audits: "1" });
+  });
+
+  it("consumes delivery-console challenges once and authenticates scoped tokens", async () => {
+    const repository = new AccessRepository(context.db);
+    const createdAt = new Date("2026-09-03T12:30:00.000Z");
+    const challengeId = "dd42d9c7-b1af-4e14-b90f-bf58355318ad";
+    await repository.createChallenge({
+      id: challengeId,
+      ownerAddress: WALLET,
+      purpose: "delivery_console",
+      messageHash: "a1".repeat(32),
+      expiresAt: new Date(createdAt.getTime() + 60_000),
+      createdAt,
+    });
+    expect(await repository.getPendingChallenge(challengeId)).toMatchObject({
+      ownerAddress: WALLET,
+      purpose: "delivery_console",
+    });
+    const token = await repository.consumeAndCreateToken({
+      challengeId,
+      expectedMessageHash: "a1".repeat(32),
+      tokenHash: "b2".repeat(32),
+      scopes: ["deliveries:read", "deliveries:replay"],
+      expiresAt: new Date(createdAt.getTime() + 120_000),
+      now: new Date(createdAt.getTime() + 1_000),
+    });
+    expect(token.ownerAddress).toBe(WALLET);
+    expect(
+      await repository.authenticate({
+        tokenHash: "b2".repeat(32),
+        scope: "deliveries:replay",
+        now: new Date(createdAt.getTime() + 2_000),
+      }),
+    ).toEqual({ ownerAddress: WALLET });
+    expect(
+      await repository.authenticate({
+        tokenHash: "b2".repeat(32),
+        scope: "not:granted",
+        now: new Date(createdAt.getTime() + 2_000),
+      }),
+    ).toBeNull();
+    await expect(
+      repository.consumeAndCreateToken({
+        challengeId,
+        expectedMessageHash: "a1".repeat(32),
+        tokenHash: "c3".repeat(32),
+        scopes: ["deliveries:read"],
+        expiresAt: new Date(createdAt.getTime() + 120_000),
+        now: new Date(createdAt.getTime() + 2_000),
+      }),
+    ).rejects.toThrow("already used or expired");
+    expect(
+      await repository.authenticate({
+        tokenHash: "b2".repeat(32),
+        scope: "deliveries:read",
+        now: new Date(createdAt.getTime() + 121_000),
+      }),
+    ).toBeNull();
   });
 
   it("backs off failures and dead-letters at the bounded attempt limit", async () => {

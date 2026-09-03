@@ -1,3 +1,5 @@
 export * from "./http/schemas.js";
 export * from "./events/webhook.js";
 export * from "./subscriptions/challenge.js";
+export * from "./access.js";
+export * from "./deliveries.js";

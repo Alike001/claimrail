@@ -21,6 +21,15 @@ from a partial or failed scan.
 - `GET /api/v1/claims/:claimId` — returns the aggregate claim state and every batch receipt,
   including nonce, attempts, block, gas, actual collateral, owed fallback, and proof metadata.
   Add `?download=1` for a JSON attachment.
+- `POST /api/v1/access/challenges` — creates a short-lived, non-financial ownership message for the
+  delivery console.
+- `POST /api/v1/access/verify` — consumes that message once and returns a 15-minute opaque token
+  scoped to delivery reads and dead-letter replay. Only its hash is stored.
+- `GET /api/v1/deliveries` — lists webhook delivery states for the authenticated route owner.
+- `GET /api/v1/deliveries/:deliveryId` — returns the exact canonical event plus every stored send
+  attempt, HTTP status, signing version, timestamp, and failure reason.
+- `POST /api/v1/deliveries/:deliveryId/replay` — requeues an owned delivery only when it is dead. It
+  adds a bounded retry allowance; it does not duplicate the canonical event or authorize finance.
 
 Invalid addresses or market IDs receive a `400`. Upstream DreamDEX/Somnia failures receive a `503`.
 Read responses use `Cache-Control: no-store` because settlement and wallet state can change.
@@ -47,3 +56,15 @@ when the indexer does not provide complete cost basis.
 
 Neither endpoint accepts a private key or signature. Production claim preparation requires
 `DATABASE_URL`; ClaimRail refuses to issue an ephemeral ready plan when durable storage is absent.
+
+## Delivery-console boundary
+
+Public wallet monitoring remains signature-free, but webhook destinations and failures are private
+operational data. Delivery endpoints therefore reject address parameters as authority. The owner
+first signs a readable challenge that explicitly excludes trades, claims, token approvals, and gas
+spending. A successful proof yields a 15-minute token with `deliveries:read` and
+`deliveries:replay` scopes. The web app keeps it only in memory, so a refresh requires a new proof.
+
+Replay is deliberately narrow: the delivery must belong to the authenticated owner and already be
+in the terminal `dead` state. The original delivery and canonical event identities stay unchanged;
+the worker receives eight additional bounded attempts and writes an immutable replay audit record.

@@ -137,6 +137,58 @@ export const deliveries = pgTable(
   ],
 );
 
+export const deliveryAttempts = pgTable(
+  "delivery_attempts",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    deliveryId: uuid("delivery_id")
+      .notNull()
+      .references(() => deliveries.id, { onDelete: "cascade" }),
+    attemptNumber: integer("attempt_number").notNull(),
+    status: text("status").notNull(),
+    httpStatus: integer("http_status"),
+    providerMessageId: text("provider_message_id"),
+    error: text("error"),
+    signatureVersion: text("signature_version"),
+    requestTimestamp: integer("request_timestamp"),
+    startedAt: timestampTz("started_at").notNull(),
+    finishedAt: timestampTz("finished_at"),
+  },
+  (table) => [
+    unique("delivery_attempts_delivery_number_unique").on(table.deliveryId, table.attemptNumber),
+    index("delivery_attempts_delivery_started_idx").on(table.deliveryId, table.startedAt),
+    check("delivery_attempts_number_positive", sql`${table.attemptNumber} > 0`),
+  ],
+);
+
+export const accessChallenges = pgTable(
+  "access_challenges",
+  {
+    id: uuid("id").primaryKey(),
+    ownerAddress: text("owner_address").notNull(),
+    purpose: text("purpose").notNull(),
+    messageHash: text("message_hash").notNull(),
+    expiresAt: timestampTz("expires_at").notNull(),
+    usedAt: timestampTz("used_at"),
+    createdAt: timestampTz("created_at").defaultNow().notNull(),
+  },
+  (table) => [index("access_challenges_owner_created_idx").on(table.ownerAddress, table.createdAt)],
+);
+
+export const accessTokens = pgTable(
+  "access_tokens",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    ownerAddress: text("owner_address").notNull(),
+    tokenHash: text("token_hash").notNull().unique(),
+    scopes: jsonb("scopes").$type<readonly string[]>().notNull(),
+    expiresAt: timestampTz("expires_at").notNull(),
+    revokedAt: timestampTz("revoked_at"),
+    createdAt: timestampTz("created_at").defaultNow().notNull(),
+  },
+  (table) => [index("access_tokens_owner_expires_idx").on(table.ownerAddress, table.expiresAt)],
+);
+
 export const notificationBindings = pgTable(
   "notification_bindings",
   {

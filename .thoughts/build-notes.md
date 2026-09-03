@@ -246,3 +246,41 @@ Verified:
 Not yet active:
 
 - Manual dead-letter replay, browser push, Telegram linking, the developer delivery console, and live multi-surface delivery remain the next Phase 8 slice.
+
+## 2026-09-03 — Phase 8 developer delivery operations complete
+
+Delivered:
+
+- Added durable per-attempt delivery evidence with status, HTTP status, provider message ID,
+  signature version, request timestamp, safe error, and start/finish times. Leasing creates the
+  attempt atomically; completion and failure close the exact worker-owned attempt.
+- Added single-use, ten-minute developer-console challenges and 15-minute owner-scoped access
+  tokens. The readable signature explicitly grants no trade, claim, approval, or gas authority; only
+  the token hash is stored.
+- Added owner-filtered delivery list and detail repositories, plus dead-only replay that preserves
+  the delivery/event identities, grants eight bounded attempts, and writes an immutable audit.
+- Added versioned access, delivery, attempt, and replay schemas plus authenticated REST endpoints
+  for challenge, verification, list, detail, and replay.
+- Added the responsive `/developers/deliveries` console with route and delivery totals, state tabs,
+  a full-width ledger, newest-first attempt timeline, exact canonical event JSON, and guarded
+  dead-letter replay.
+- Added a complete development-only console fixture with a visible non-live banner. Production
+  starts behind wallet proof and never exposes another owner's destinations or failures.
+- Updated OpenAPI, developer documentation, primary navigation, and the design fidelity ledger.
+
+Verified:
+
+- 140 unit tests pass across 21 files.
+- Eleven ephemeral PostgreSQL integration tests pass, including durable attempt metadata,
+  owner-filtered reads, wrong-owner replay refusal, dead-letter requeue/audit, challenge
+  single-consumption, scope enforcement, and token expiry.
+- Nineteen Playwright checks pass across desktop and mobile Chromium with one intentional
+  desktop skip for the mobile navigation test. The console filter and inspector interaction work at
+  both viewports; unauthenticated delivery APIs and invalid IDs fail closed.
+- The console was captured at `1536×1024` and `390×844` and inspected beside the generated concept.
+
+Not yet active:
+
+- Browser push, Telegram linking, and a real external receiver demonstration remain the next Phase
+  8 delivery adapters. A controlled live ClaimRail claim and receipt is still required for the Phase
+  6/7 live stop condition.

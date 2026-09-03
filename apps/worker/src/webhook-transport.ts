@@ -5,6 +5,20 @@ import { decryptSecret, type LeasedWebhookDelivery } from "@claimrail/db";
 
 export interface WebhookDispatchResult {
   readonly providerMessageId: string;
+  readonly httpStatus: number;
+  readonly signatureVersion: "v1";
+  readonly requestTimestamp: number;
+}
+
+export class WebhookDispatchError extends Error {
+  constructor(
+    readonly httpStatus: number,
+    readonly signatureVersion: "v1",
+    readonly requestTimestamp: number,
+  ) {
+    super("WebhookHttpError");
+    this.name = `WebhookHttp${httpStatus}`;
+  }
 }
 
 export type DestinationGuard = (destination: string) => Promise<void>;
@@ -113,12 +127,13 @@ export function createWebhookTransport(input: {
       clearTimeout(timeout);
     }
     if (!response.ok) {
-      const error = new Error("WebhookHttpError");
-      error.name = `WebhookHttp${response.status}`;
-      throw error;
+      throw new WebhookDispatchError(response.status, "v1", timestamp);
     }
     return {
       providerMessageId: response.headers.get("x-request-id") ?? `http:${response.status}`,
+      httpStatus: response.status,
+      signatureVersion: "v1",
+      requestTimestamp: timestamp,
     };
   };
 }

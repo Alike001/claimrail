@@ -11,6 +11,11 @@ const endpoints = [
   ["GET", "/api/v1/wallets/:address/history", "Outcomes, claim receipts, and honest PnL coverage"],
   ["POST", "/api/v1/subscriptions/challenges", "Create an owner-bound webhook challenge"],
   ["POST", "/api/v1/subscriptions/verify", "Verify the signature and activate delivery"],
+  ["POST", "/api/v1/access/challenges", "Request owner proof for delivery operations"],
+  ["POST", "/api/v1/access/verify", "Receive 15-minute owner-scoped access"],
+  ["GET", "/api/v1/deliveries", "List the owner's delivery ledger"],
+  ["GET", "/api/v1/deliveries/:deliveryId", "Inspect attempts and canonical payload"],
+  ["POST", "/api/v1/deliveries/:deliveryId/replay", "Requeue an owned dead letter"],
 ] as const;
 
 export default function DocumentationPage() {
@@ -104,6 +109,12 @@ export default function DocumentationPage() {
               endpoint receives a versioned signature, rejects stale timestamps, and compares the
               signature before trusting the payload. ClaimRail encrypts the delivery secret at rest
               and shows it only when the route is activated.
+            </p>
+            <p>
+              The <Link href="/developers/deliveries">delivery console</Link> requires a separate
+              non-financial wallet proof. It exchanges that proof for a 15-minute in-memory token,
+              reveals only the owner&apos;s routes, and permits replay only after a delivery reaches
+              the dead-letter state.
             </p>
           </div>
         </section>
