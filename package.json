@@ -1,0 +1,41 @@
+{
+  "name": "claimrail",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.1",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "dev": "pnpm --filter @claimrail/web dev",
+    "dev:worker": "pnpm --filter @claimrail/worker dev",
+    "format": "prettier --write \"apps/**/*.{ts,tsx,js,mjs,json,css,md}\" \"packages/**/*.{ts,tsx,js,mjs,json,css,md}\" \"scripts/**/*.{js,mjs}\" \"docs/**/*.md\" \"design/**/*.md\" \"fixtures/dreamdex/README.md\" \"fixtures/dreamdex/manifest.json\" \".thoughts/build-notes.md\" \"*.{json,yaml,mjs,md}\"",
+    "format:check": "prettier --check \"apps/**/*.{ts,tsx,js,mjs,json,css,md}\" \"packages/**/*.{ts,tsx,js,mjs,json,css,md}\" \"scripts/**/*.{js,mjs}\" \"docs/**/*.md\" \"design/**/*.md\" \"fixtures/dreamdex/README.md\" \"fixtures/dreamdex/manifest.json\" \".thoughts/build-notes.md\" \"*.{json,yaml,mjs,md}\"",
+    "lint": "eslint apps packages scripts --max-warnings=0",
+    "typecheck": "pnpm -r --if-present typecheck && node scripts/check-boundaries.mjs",
+    "test": "node scripts/verify-fixtures.mjs && vitest run --passWithNoTests",
+    "test:core:coverage": "pnpm --filter @claimrail/core test:coverage",
+    "test:dreamdex:coverage": "pnpm --filter @claimrail/dreamdex test:coverage",
+    "test:integration": "vitest run --config vitest.integration.config.ts --passWithNoTests",
+    "test:postgres": "node scripts/test-postgres.mjs",
+    "test:e2e": "playwright test",
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:core:coverage && pnpm test:dreamdex:coverage && pnpm test:integration && pnpm test:postgres && pnpm build",
+    "probe:typecheck": "npm --prefix probes/event-contracts run typecheck"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.0",
+    "@types/node": "26.4.1",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "@vitest/coverage-v8": "4.1.11",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.2.9",
+    "fast-check": "4.9.0",
+    "prettier": "3.9.6",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  }
+}

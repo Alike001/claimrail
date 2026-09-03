@@ -1,0 +1,12 @@
+packages:
+  - apps/*
+  - packages/*
+
+catalog:
+  typescript: 5.9.3
+  viem: 2.56.3
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true

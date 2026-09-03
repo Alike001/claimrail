@@ -1,0 +1,14 @@
+{
+  "name": "@claimrail/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test:coverage": "vitest run --config vitest.config.ts --coverage"
+  }
+}

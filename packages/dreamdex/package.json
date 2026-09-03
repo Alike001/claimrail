@@ -1,0 +1,22 @@
+{
+  "name": "@claimrail/dreamdex",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./write-abi": "./src/chain/write-abi.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test:coverage": "vitest run --config vitest.coverage.config.ts --coverage",
+    "smoke:shannon": "tsx src/smoke/shannon-readonly.ts"
+  },
+  "dependencies": {
+    "@claimrail/core": "workspace:*",
+    "@somnia-chain/markets-sdk": "0.29.0",
+    "graphql": "17.0.2",
+    "viem": "2.56.3"
+  }
+}

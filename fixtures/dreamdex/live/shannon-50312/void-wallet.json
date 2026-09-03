@@ -1,0 +1,329 @@
+{
+  "wallet": "0x9E5084c08E234c6F4FF639BAC27E8D5F4Bd02F5B",
+  "portfolio": {
+    "ok": true,
+    "value": {
+      "account": "0x9e5084c08e234c6f4ff639bac27e8d5f4bd02f5b",
+      "positions": [
+        {
+          "outcomeIndex": 0,
+          "tokenId": "4203261692015583048838421271136686221099456010722416744589428214726912",
+          "balance": "2400000000",
+          "market": {
+            "id": "0x0000000000000000000000000000000000000000000000000000000000000304",
+            "marketAddress": "0xa4018a84437f70d688d32e9d836efb21983d7091",
+            "poolAddress": "0x9be85b2ca04b03829a493ed039b9ff3015663526",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": null,
+            "strike": "0",
+            "expiry": "1784907000",
+            "winningOutcome": null,
+            "voided": true,
+            "quoteDecimals": 6,
+            "intervalSec": "900",
+            "interval": "15m"
+          }
+        },
+        {
+          "outcomeIndex": 1,
+          "tokenId": "4203261692015583048838421271136686221099456010722416744589428214726913",
+          "balance": "2400000000",
+          "market": {
+            "id": "0x0000000000000000000000000000000000000000000000000000000000000304",
+            "marketAddress": "0xa4018a84437f70d688d32e9d836efb21983d7091",
+            "poolAddress": "0x9be85b2ca04b03829a493ed039b9ff3015663526",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": null,
+            "strike": "0",
+            "expiry": "1784907000",
+            "winningOutcome": null,
+            "voided": true,
+            "quoteDecimals": 6,
+            "intervalSec": "900",
+            "interval": "15m"
+          }
+        }
+      ],
+      "openOrders": [],
+      "trades": [],
+      "tradesTruncated": false
+    }
+  },
+  "claimable": {
+    "ok": true,
+    "value": [
+      {
+        "marketId": "0x0000000000000000000000000000000000000000000000000000000000000304",
+        "pool": "0x9be85b2ca04b03829a493ed039b9ff3015663526",
+        "outcomeIdx": 0,
+        "amount": "2400000000",
+        "estPayout": "1200000000",
+        "status": "Finalized"
+      },
+      {
+        "marketId": "0x0000000000000000000000000000000000000000000000000000000000000304",
+        "pool": "0x9be85b2ca04b03829a493ed039b9ff3015663526",
+        "outcomeIdx": 1,
+        "amount": "2400000000",
+        "estPayout": "1200000000",
+        "status": "Finalized"
+      }
+    ]
+  },
+  "verifiedPositions": [
+    {
+      "indexed": {
+        "outcomeIndex": 0,
+        "tokenId": "4203261692015583048838421271136686221099456010722416744589428214726912",
+        "balance": "2400000000",
+        "market": {
+          "id": "0x0000000000000000000000000000000000000000000000000000000000000304",
+          "marketAddress": "0xa4018a84437f70d688d32e9d836efb21983d7091",
+          "poolAddress": "0x9be85b2ca04b03829a493ed039b9ff3015663526",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": null,
+          "strike": "0",
+          "expiry": "1784907000",
+          "winningOutcome": null,
+          "voided": true,
+          "quoteDecimals": 6,
+          "intervalSec": "900",
+          "interval": "15m"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xa4018A84437f70d688d32E9D836efb21983D7091",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "4203261692015583048838421271136686221099456010722416744589428214726912",
+          "noId": "4203261692015583048838421271136686221099456010722416744589428214726913",
+          "pool": "0x9be85b2Ca04B03829A493ED039B9Ff3015663526",
+          "nonce": "1",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 5,
+          "backing": "2454000000",
+          "finalized": true,
+          "expiry": "1784907000",
+          "decimals": 6,
+          "winningOutcome": 0,
+          "isResolved": false,
+          "isVoided": true,
+          "voidPolicy": null
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "2400000000"
+      }
+    },
+    {
+      "indexed": {
+        "outcomeIndex": 1,
+        "tokenId": "4203261692015583048838421271136686221099456010722416744589428214726913",
+        "balance": "2400000000",
+        "market": {
+          "id": "0x0000000000000000000000000000000000000000000000000000000000000304",
+          "marketAddress": "0xa4018a84437f70d688d32e9d836efb21983d7091",
+          "poolAddress": "0x9be85b2ca04b03829a493ed039b9ff3015663526",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": null,
+          "strike": "0",
+          "expiry": "1784907000",
+          "winningOutcome": null,
+          "voided": true,
+          "quoteDecimals": 6,
+          "intervalSec": "900",
+          "interval": "15m"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xa4018A84437f70d688d32E9D836efb21983D7091",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "4203261692015583048838421271136686221099456010722416744589428214726912",
+          "noId": "4203261692015583048838421271136686221099456010722416744589428214726913",
+          "pool": "0x9be85b2Ca04B03829A493ED039B9Ff3015663526",
+          "nonce": "1",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 5,
+          "backing": "2454000000",
+          "finalized": true,
+          "expiry": "1784907000",
+          "decimals": 6,
+          "winningOutcome": 0,
+          "isResolved": false,
+          "isVoided": true,
+          "voidPolicy": null
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "2400000000"
+      }
+    }
+  ],
+  "verifiedPositionLimit": 10,
+  "verifiedClaimables": [
+    {
+      "indexed": {
+        "marketId": "0x0000000000000000000000000000000000000000000000000000000000000304",
+        "pool": "0x9be85b2ca04b03829a493ed039b9ff3015663526",
+        "outcomeIdx": 0,
+        "amount": "2400000000",
+        "estPayout": "1200000000",
+        "status": "Finalized"
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xa4018A84437f70d688d32E9D836efb21983D7091",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "4203261692015583048838421271136686221099456010722416744589428214726912",
+          "noId": "4203261692015583048838421271136686221099456010722416744589428214726913",
+          "pool": "0x9be85b2Ca04B03829A493ED039B9Ff3015663526",
+          "nonce": "1",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 5,
+          "backing": "2454000000",
+          "finalized": true,
+          "expiry": "1784907000",
+          "decimals": 6,
+          "winningOutcome": 0,
+          "isResolved": false,
+          "isVoided": true,
+          "voidPolicy": null
+        }
+      },
+      "balance": {
+        "ok": true,
+        "value": "2400000000"
+      },
+      "settlement": {
+        "ok": true,
+        "value": {
+          "collateralToken": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "backing": "2454000000",
+          "finalized": true,
+          "voided": true,
+          "settlementFeeBpsTimes1k": "0",
+          "feeRecipient": "0xf685C1245b59800a9940131DC1952F39736DdC2a",
+          "pool": "0x9be85b2Ca04B03829A493ED039B9Ff3015663526",
+          "nonce": "1",
+          "payoutNumerators": [
+            "5000000",
+            "5000000"
+          ]
+        }
+      },
+      "verification": {
+        "marketKey": "16418990984435871284525083090377680551169750041884440408552453963777",
+        "outcomeBalance": "2400000000",
+        "payoutNumerator": "5000000",
+        "payoutDenominator": "10000000",
+        "expectedPayout": "1200000000",
+        "matchesIndexerEstimate": true,
+        "checks": {
+          "finalized": true,
+          "positiveBalance": true,
+          "positivePayout": true,
+          "amountWithinBalance": true,
+          "poolMatches": true,
+          "nonceMatches": true
+        }
+      }
+    },
+    {
+      "indexed": {
+        "marketId": "0x0000000000000000000000000000000000000000000000000000000000000304",
+        "pool": "0x9be85b2ca04b03829a493ed039b9ff3015663526",
+        "outcomeIdx": 1,
+        "amount": "2400000000",
+        "estPayout": "1200000000",
+        "status": "Finalized"
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xa4018A84437f70d688d32E9D836efb21983D7091",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "4203261692015583048838421271136686221099456010722416744589428214726912",
+          "noId": "4203261692015583048838421271136686221099456010722416744589428214726913",
+          "pool": "0x9be85b2Ca04B03829A493ED039B9Ff3015663526",
+          "nonce": "1",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 5,
+          "backing": "2454000000",
+          "finalized": true,
+          "expiry": "1784907000",
+          "decimals": 6,
+          "winningOutcome": 0,
+          "isResolved": false,
+          "isVoided": true,
+          "voidPolicy": null
+        }
+      },
+      "balance": {
+        "ok": true,
+        "value": "2400000000"
+      },
+      "settlement": {
+        "ok": true,
+        "value": {
+          "collateralToken": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "backing": "2454000000",
+          "finalized": true,
+          "voided": true,
+          "settlementFeeBpsTimes1k": "0",
+          "feeRecipient": "0xf685C1245b59800a9940131DC1952F39736DdC2a",
+          "pool": "0x9be85b2Ca04B03829A493ED039B9Ff3015663526",
+          "nonce": "1",
+          "payoutNumerators": [
+            "5000000",
+            "5000000"
+          ]
+        }
+      },
+      "verification": {
+        "marketKey": "16418990984435871284525083090377680551169750041884440408552453963777",
+        "outcomeBalance": "2400000000",
+        "payoutNumerator": "5000000",
+        "payoutDenominator": "10000000",
+        "expectedPayout": "1200000000",
+        "matchesIndexerEstimate": true,
+        "checks": {
+          "finalized": true,
+          "positiveBalance": true,
+          "positivePayout": true,
+          "amountWithinBalance": true,
+          "poolMatches": true,
+          "nonceMatches": true
+        }
+      }
+    }
+  ],
+  "settlementEvents": {
+    "PayoutOwed": {
+      "ok": true,
+      "value": []
+    },
+    "OwedClaimed": {
+      "ok": true,
+      "value": []
+    }
+  },
+  "eventRange": {
+    "fromBlock": "478576245",
+    "toBlock": "478586245",
+    "boundedLookback": "10000"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@claimrail/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "sync:shannon": "CLAIMRAIL_RUN_ONCE=true tsx src/index.ts",
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@claimrail/contracts": "workspace:*",
+    "@claimrail/core": "workspace:*",
+    "@claimrail/db": "workspace:*",
+    "@claimrail/dreamdex": "workspace:*",
+    "viem": "catalog:"
+  }
+}

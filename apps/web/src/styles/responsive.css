@@ -1,0 +1,356 @@
+@media (max-width: 1050px) {
+  header.site-header {
+    grid-template-columns: 1fr auto auto;
+    padding-inline: 18px;
+  }
+  header.site-header nav,
+  header.site-header .wallet-short {
+    display: none;
+  }
+  header.site-header .menu-button {
+    display: grid;
+    place-items: center;
+  }
+  header.site-header .network {
+    padding-right: 18px;
+  }
+  .wallet-band {
+    grid-template-columns: 1fr 1fr;
+  }
+  .wallet-band > * {
+    border: 0;
+    padding: 10px 12px;
+  }
+  .wallet-band .wallet-form {
+    grid-column: 1 / -1;
+    padding-inline: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .metric.provenance {
+    grid-column: 1 / -1;
+  }
+  .ledger-head {
+    display: none;
+  }
+  .ledger-row {
+    grid-template-columns: 1fr 1fr;
+    padding: 15px 0;
+    gap: 8px 20px;
+  }
+  .ledger-row > span {
+    white-space: normal;
+  }
+  .market-cell {
+    grid-column: 1 / -1;
+  }
+  .ledger-row span[data-label]::before {
+    content: attr(data-label) "  ";
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+  .tray-collapsed {
+    grid-template-columns: 220px 1fr 300px;
+  }
+  .ready-count .rail-mark {
+    display: none;
+  }
+  .evidence-main {
+    grid-template-columns: 1fr;
+  }
+  .evidence-ladder {
+    border-right: 0;
+    padding-right: 0;
+  }
+  .proof-list {
+    padding: 34px 0 0;
+  }
+  .evidence-context {
+    grid-template-columns: 1fr 1fr;
+  }
+  .evidence-context > * {
+    border: 0;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 700px) {
+  html body {
+    font-size: 13px;
+  }
+  .app-shell {
+    padding-bottom: 190px;
+  }
+  header.site-header {
+    height: 56px;
+    grid-template-columns: 1fr auto auto;
+    gap: 13px;
+  }
+  header.site-header .brand {
+    font-size: 20px;
+  }
+  header.site-header .brand .rail-mark {
+    width: 66px;
+  }
+  header.site-header .network {
+    padding-right: 12px;
+  }
+  header.site-header .menu-button {
+    width: 40px;
+    height: 40px;
+  }
+  .wallet-band {
+    min-height: 188px;
+    padding: 8px 14px;
+  }
+  .wallet-band .wallet-form {
+    padding-top: 0;
+  }
+  .wallet-form label,
+  .metric small {
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+  .wallet-control {
+    gap: 8px;
+  }
+  .wallet-control input {
+    font-size: 13px;
+  }
+  .wallet-control button {
+    min-width: 84px;
+  }
+  .metric {
+    padding: 6px 8px !important;
+  }
+  .metric strong {
+    font-size: 18px;
+  }
+  .metric.provenance {
+    padding-top: 2px !important;
+  }
+  .metric.provenance strong {
+    font-size: 14px;
+  }
+  .lifecycle {
+    min-height: 137px;
+    padding: 20px 10px 0;
+  }
+  .track {
+    top: 38px;
+    left: 22px;
+    right: 22px;
+    height: 20px;
+  }
+  .station-node {
+    width: 36px;
+    height: 36px;
+  }
+  .station-node i {
+    width: 14px;
+    height: 14px;
+  }
+  .station strong {
+    margin-top: 7px;
+    font-size: 13px;
+  }
+  .station small {
+    max-width: 80px;
+    margin-top: 2px;
+    font-size: 10px;
+    line-height: 1.25;
+    text-align: center;
+  }
+  .inbox {
+    padding: 0 14px;
+  }
+  .inbox h1 {
+    font-size: 21px;
+  }
+  .tabs {
+    height: 43px;
+    gap: 14px;
+  }
+  .tabs button {
+    font-size: 12px;
+  }
+  .ledger-row {
+    min-height: 0;
+    grid-template-columns: 1fr auto;
+    column-gap: 8px;
+    padding: 12px 0;
+  }
+  .market-cell {
+    grid-column: auto;
+  }
+  .rail-signal {
+    width: 28px;
+    height: 14px;
+    margin-right: 9px;
+  }
+  .rail-signal::after {
+    left: 9px;
+    top: -4px;
+    width: 12px;
+    height: 18px;
+  }
+  .ledger-row span[data-label="oracle / reason"] {
+    grid-column: 1 / -1;
+  }
+  .ledger-row span[data-label="return"] {
+    color: var(--success);
+  }
+  .ledger-row span[data-label="evidence"] {
+    text-align: right;
+  }
+  footer.status-footer {
+    display: none;
+  }
+  .claim-tray {
+    bottom: 0;
+  }
+  .tray-collapsed {
+    min-height: 158px;
+    padding: 12px 14px;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 54px 18px;
+    gap: 7px;
+  }
+  .ready-count {
+    border: 0;
+    font-size: 14px;
+  }
+  .ready-count .rail-mark {
+    display: inline-flex;
+    width: 80px;
+  }
+  .tray-total strong {
+    font-size: 21px;
+  }
+  .tray-total small {
+    display: none;
+  }
+  .tray-collapsed .primary-action {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-height: 52px;
+    font-size: 17px;
+  }
+  .tray-collapsed > small {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    font-size: 10px;
+  }
+  .claim-tray.expanded {
+    top: 95px;
+    max-height: none;
+  }
+  .tray-expanded {
+    padding: 14px 16px 24px;
+    grid-template-columns: 1fr;
+  }
+  .tray-title {
+    grid-template-columns: 1fr auto;
+    gap: 7px;
+  }
+  .tray-title strong {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 25px;
+  }
+  .tray-title button {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .tray-expanded > section,
+  .tray-expanded > section.transaction-plan {
+    padding: 18px 0;
+    border-left: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .transaction-plan dl {
+    grid-template-columns: 145px 1fr;
+  }
+  .custody-note {
+    grid-column: 1;
+  }
+  .approval-warning {
+    font-size: 12px;
+  }
+  .phase-note {
+    font-size: 10px;
+  }
+  .lookup {
+    min-height: calc(100vh - 56px);
+    padding: 50px 18px 90px;
+    display: block;
+  }
+  .lookup h1 {
+    font-size: 48px;
+  }
+  .lookup p {
+    margin: 24px 0;
+    font-size: 16px;
+  }
+  .lookup-rail {
+    margin-top: 70px;
+  }
+  .evidence-shell {
+    padding-bottom: 0;
+  }
+  .evidence-context {
+    padding: 8px 14px;
+    grid-template-columns: 1fr;
+  }
+  .evidence-context > * {
+    padding: 5px 0;
+  }
+  .evidence-main {
+    padding: 16px 14px;
+  }
+  .evidence-step {
+    min-height: 118px;
+    padding: 14px 0 14px 62px;
+    grid-template-columns: 1fr auto;
+    gap: 9px;
+  }
+  .evidence-step::before {
+    left: 20px;
+  }
+  .step-number {
+    left: 2px;
+    top: 22px;
+    width: 38px;
+    height: 38px;
+  }
+  .verified-label {
+    justify-content: flex-end;
+  }
+  .verified-label small {
+    text-align: right;
+  }
+  .step-source {
+    grid-column: 1 / -1;
+  }
+  .proof-row {
+    grid-template-columns: 118px 1fr auto;
+    gap: 8px;
+  }
+  .conclusion {
+    padding: 15px;
+    gap: 14px;
+  }
+  .conclusion p {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,0 +1,329 @@
+{
+  "0x0000000000000000000000000000000000000000000000000000000000010dcd": {
+    "indexed": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000010dcd",
+      "poolAddress": "0x92333a56d2db34448d9b789382761dcea9743b63",
+      "lastPrice": null,
+      "lastTradeAt": null,
+      "cumulativeBaseVolume": "0",
+      "cumulativeQuoteVolume": "0",
+      "tradeCount": "0",
+      "baseDecimals": 6,
+      "quoteDecimals": 6,
+      "createdAtTimestamp": "1788326330",
+      "createdAtBlock": "477532642",
+      "marketType": "BINARY",
+      "marketId": "0x0000000000000000000000000000000000000000000000000000000000010dcd",
+      "marketAddress": "0xe01b95a80cfd4140180f416d7bbeb1da6145be3f",
+      "yesTokenId": "3941547139615409025369437630911429958503865607086291819934492030664960",
+      "noTokenId": "3941547139615409025369437630911429958503865607086291819934492030664961",
+      "collateral": "0x70a86d8842fb63c4ad2b7cdddf530ebf1bb25d8e",
+      "asset": "DECEDO",
+      "question": "Will the Decedo safety rule be broken before expiry?",
+      "status": "Finalized",
+      "oracleQuestion": null,
+      "oracleQuestionId": "49052",
+      "strike": "0",
+      "tradingStart": "1788326417",
+      "expiry": "1788327453",
+      "winningOutcome": null,
+      "payoutNumerators": [
+        "5000000",
+        "5000000"
+      ],
+      "payoutDenominator": "10000000",
+      "resolvedAtBlock": "477543859",
+      "resolvedAtTimestamp": "1788327453",
+      "createdByTx": "0xf9357c7b86e6f8d413cb3b3210b6e4e15fab7292b7b5ca5d6092feffa2ce509b",
+      "creator": "0x0a3c305cc7645241aede654c75341a3b98af7d66",
+      "voided": true,
+      "backing": "0",
+      "nonce": "1",
+      "finalized": true,
+      "netBacking": "0",
+      "context": "0x000000000000000000000000d88681ff538b35e8c25cb57e7ead4f50964758c600000000000000000000000000000000000000000000000000000000000000019e1d18353f006c3691311001815a9d406625dd56b0184044d580da6efcc37ee4",
+      "intervalSec": "1036",
+      "interval": "1036s",
+      "mode": "reference",
+      "operatorId": 6,
+      "venueId": "0x697b2bd7bb2984c4e0dc14c79c987d37818484a62958b9c45a0e8b962f20650f",
+      "voidPolicy": 0
+    },
+    "onchain": {
+      "marketAddress": "0xe01b95a80CFd4140180F416D7BbEb1DA6145Be3F",
+      "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+      "yesId": "3941547139615409025369437630911429958503865607086291819934492030664960",
+      "noId": "3941547139615409025369437630911429958503865607086291819934492030664961",
+      "pool": "0x92333a56d2Db34448D9b789382761DCeA9743B63",
+      "nonce": "1",
+      "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+      "status": 5,
+      "backing": "0",
+      "finalized": true,
+      "expiry": "1788327453",
+      "decimals": 6,
+      "winningOutcome": 0,
+      "isResolved": false,
+      "isVoided": true,
+      "voidPolicy": 0,
+      "statusName": "Voided"
+    },
+    "rawMarket": {
+      "ok": true,
+      "value": {
+        "status": 5,
+        "statusName": "Voided",
+        "payoutNumerators": [
+          "5000000",
+          "5000000"
+        ],
+        "isResolved": false,
+        "isVoided": true,
+        "voidPolicy": 0
+      }
+    },
+    "settlementRecord": {
+      "ok": true,
+      "value": {
+        "collateralToken": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+        "backing": "0",
+        "finalized": true,
+        "voided": true,
+        "settlementFeeBpsTimes1k": "0",
+        "feeRecipient": "0xEF3A65C2AEA8BF92629c39A88f24b21a72877731",
+        "pool": "0x92333a56d2Db34448D9b789382761DCeA9743B63",
+        "nonce": "1",
+        "payoutNumerators": [
+          "5000000",
+          "5000000"
+        ]
+      }
+    },
+    "resolution": {
+      "ok": true,
+      "value": {
+        "events": [
+          {
+            "id": "477543859_14",
+            "market": "0x0000000000000000000000000000000000000000000000000000000000010dcd",
+            "kind": "Resolved",
+            "winningOutcome": null,
+            "payoutNumerators": [
+              "5000000",
+              "5000000"
+            ],
+            "payoutDenominator": "10000000",
+            "voided": true,
+            "blockNumber": "477543859",
+            "timestamp": "1788327453",
+            "txHash": "0x800837105eb07d4832719eb04aadc0a9baacb46e529d37954e56adba23aa7084"
+          }
+        ],
+        "reference": null,
+        "closingAnswer": {
+          "oracleQuestionId": "49052",
+          "numericValue": "0",
+          "outcomeLabel": "",
+          "voidReason": 1,
+          "resolvedAt": "1788327453",
+          "txHash": "0x8d8203fe47e563604e8fa1e18866932946cf38d793d191a658d70769b62e0dbd"
+        },
+        "openingAnswer": null,
+        "oracleAnswer": {
+          "oracleQuestionId": "49052",
+          "numericValue": "0",
+          "outcomeLabel": "",
+          "voidReason": 1,
+          "resolvedAt": "1788327453",
+          "txHash": "0x8d8203fe47e563604e8fa1e18866932946cf38d793d191a658d70769b62e0dbd"
+        }
+      }
+    },
+    "onchainResolutionPrice": {
+      "ok": true,
+      "value": {
+        "numericValue": "0",
+        "decimals": 2,
+        "voided": true,
+        "adapter": "0xe40db387cC98601Dd11bd634fF2f3AD5686dE32b",
+        "oracleQuestionId": "49052"
+      }
+    },
+    "statusHistory": {
+      "ok": true,
+      "value": [
+        {
+          "oldStatus": "Locked",
+          "newStatus": "Voided",
+          "blockNumber": "477543859",
+          "timestamp": "1788327453",
+          "txHash": "0x800837105eb07d4832719eb04aadc0a9baacb46e529d37954e56adba23aa7084"
+        }
+      ]
+    },
+    "eventRange": {
+      "fromBlock": "477532642",
+      "toBlock": "477553859",
+      "observedHead": "478584963",
+      "terminalTail": "10000",
+      "note": "Terminal-market logs are bounded after resolution; production ingestion persists the live stream"
+    },
+    "events": {
+      "market": {
+        "StatusChanged": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "StatusChanged",
+              "args": {
+                "oldStatus": 2,
+                "newStatus": 5
+              },
+              "address": "0xe01b95a80cfd4140180f416d7bbeb1da6145be3f",
+              "topics": [
+                "0xe1377aa21d49fa10bb9ece6a0cd4f75597a90a80c3750f7f7674967f49ab9a62",
+                "0x0000000000000000000000000000000000000000000000000000000000000002",
+                "0x0000000000000000000000000000000000000000000000000000000000000005"
+              ],
+              "data": "0x",
+              "blockNumber": "477543859",
+              "transactionHash": "0x800837105eb07d4832719eb04aadc0a9baacb46e529d37954e56adba23aa7084",
+              "transactionIndex": 5,
+              "blockHash": "0xcc4c1030675ac2efba42ed1b163fdf89b8f355fd1a37e20c0f2fda1f8b5342e2",
+              "logIndex": 13,
+              "removed": false
+            }
+          ]
+        },
+        "Resolved": {
+          "ok": true,
+          "value": []
+        },
+        "Voided": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "Voided",
+              "address": "0xe01b95a80cfd4140180f416d7bbeb1da6145be3f",
+              "topics": [
+                "0x8532e58d991813980022f4053d2c415195cde8ae51cfca6a78dadcf03d61c465"
+              ],
+              "data": "0x",
+              "blockNumber": "477543859",
+              "transactionHash": "0x800837105eb07d4832719eb04aadc0a9baacb46e529d37954e56adba23aa7084",
+              "transactionIndex": 5,
+              "blockHash": "0xcc4c1030675ac2efba42ed1b163fdf89b8f355fd1a37e20c0f2fda1f8b5342e2",
+              "logIndex": 12,
+              "removed": false
+            }
+          ]
+        }
+      },
+      "module": {
+        "MarketFinalized": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "MarketFinalized",
+              "args": {
+                "marketId": "0x0000000000000000000000000000000000000000000000000000000000010dcd",
+                "pool": "0x92333a56d2Db34448D9b789382761DCeA9743B63",
+                "marketKey": "15396668514122691505349365745747773275405725027680827421619109494785"
+              },
+              "address": "0x3ecc694cef705358864a646142ac17a90e29e388",
+              "topics": [
+                "0x8f396ac6cf2e01887362e2b39d8e56860042c604e5b1b481c87e6d9f90006e08",
+                "0x0000000000000000000000000000000000000000000000000000000000010dcd",
+                "0x00000000000000000000000092333a56d2db34448d9b789382761dcea9743b63"
+              ],
+              "data": "0x0000000092333a56d2db34448d9b789382761dcea9743b630000000000000001",
+              "blockNumber": "477543859",
+              "transactionHash": "0x800837105eb07d4832719eb04aadc0a9baacb46e529d37954e56adba23aa7084",
+              "transactionIndex": 5,
+              "blockHash": "0xcc4c1030675ac2efba42ed1b163fdf89b8f355fd1a37e20c0f2fda1f8b5342e2",
+              "logIndex": 17,
+              "removed": false
+            }
+          ]
+        },
+        "PoolReleased": {
+          "ok": true,
+          "value": []
+        }
+      },
+      "pool": {
+        "PoolFinalized": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "PoolFinalized",
+              "args": {
+                "marketNonce": "1",
+                "backing": "0"
+              },
+              "address": "0x92333a56d2db34448d9b789382761dcea9743b63",
+              "topics": [
+                "0x9f15802f3d01a772129264277df8d4179b39f69e1604da331602636c0985d45f",
+                "0x0000000000000000000000000000000000000000000000000000000000000001"
+              ],
+              "data": "0x0000000000000000000000000000000000000000000000000000000000000000",
+              "blockNumber": "477543859",
+              "transactionHash": "0x800837105eb07d4832719eb04aadc0a9baacb46e529d37954e56adba23aa7084",
+              "transactionIndex": 5,
+              "blockHash": "0xcc4c1030675ac2efba42ed1b163fdf89b8f355fd1a37e20c0f2fda1f8b5342e2",
+              "logIndex": 15,
+              "removed": false
+            }
+          ]
+        },
+        "PoolRecycled": {
+          "ok": true,
+          "value": []
+        }
+      },
+      "settlement": {
+        "MarketFinalized": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "MarketFinalized",
+              "args": {
+                "marketKey": "15396668514122691505349365745747773275405725027680827421619109494785",
+                "pool": "0x92333a56d2Db34448D9b789382761DCeA9743B63",
+                "nonce": "1",
+                "collateralToken": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+                "netBacking": "0",
+                "voided": true,
+                "payoutNumerators": [
+                  "5000000",
+                  "5000000"
+                ]
+              },
+              "address": "0xbf4a49e0dfd092e5fbe8e5761064c49533e6ed23",
+              "topics": [
+                "0xb1884334e955f8d8727678d4fa52dd9fc7140ff5e4ad38d358453bd400ada178",
+                "0x0000000092333a56d2db34448d9b789382761dcea9743b630000000000000001",
+                "0x00000000000000000000000092333a56d2db34448d9b789382761dcea9743b63"
+              ],
+              "data": "0x000000000000000000000000000000000000000000000000000000000000000100000000000000000000000070a86d8842fb63c4ad2b7cdddf530ebf1bb25d8e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000004c4b4000000000000000000000000000000000000000000000000000000000004c4b40",
+              "blockNumber": "477543859",
+              "transactionHash": "0x800837105eb07d4832719eb04aadc0a9baacb46e529d37954e56adba23aa7084",
+              "transactionIndex": 5,
+              "blockHash": "0xcc4c1030675ac2efba42ed1b163fdf89b8f355fd1a37e20c0f2fda1f8b5342e2",
+              "logIndex": 16,
+              "removed": false
+            }
+          ]
+        },
+        "SettlementFeeCharged": {
+          "ok": true,
+          "value": []
+        },
+        "Redeemed": {
+          "ok": true,
+          "value": []
+        }
+      }
+    }
+  }
+}

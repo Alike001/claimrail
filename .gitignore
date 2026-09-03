@@ -1,0 +1,17 @@
+node_modules/
+.next/
+dist/
+coverage/
+playwright-report/
+test-results/
+.playwright-results/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+
+# Reproducible upstream clones used during protocol research. Their findings and
+# extracted SDK evidence live in context/, docs/, and research/reference-packages/.
+research/reference-repos/

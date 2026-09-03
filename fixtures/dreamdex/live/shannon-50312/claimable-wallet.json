@@ -1,0 +1,920 @@
+{
+  "wallet": "0xe1DA3bdD4189FDEfB2eF8A73bd37A4083F284477",
+  "portfolio": {
+    "ok": true,
+    "value": {
+      "account": "0xe1da3bdd4189fdefb2ef8a73bd37a4083f284477",
+      "positions": [
+        {
+          "outcomeIndex": 1,
+          "tokenId": "2469060918108502993134125640475730425379759372704055618489422232692993",
+          "balance": "2970000000",
+          "market": {
+            "id": "0x0000000000000000000000000000000000000000000000000000000000010269",
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "poolAddress": "0x5b95229d893135d9af01e9b4a126caf861f254d5",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": "448000",
+            "strike": "0",
+            "expiry": "1788271200",
+            "winningOutcome": 1,
+            "voided": false,
+            "quoteDecimals": 6,
+            "intervalSec": "3600",
+            "interval": "1h"
+          }
+        },
+        {
+          "outcomeIndex": 0,
+          "tokenId": "2469060918108502993134125640475730425379759372704055618489422232692992",
+          "balance": "1485000000",
+          "market": {
+            "id": "0x0000000000000000000000000000000000000000000000000000000000010269",
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "poolAddress": "0x5b95229d893135d9af01e9b4a126caf861f254d5",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": "448000",
+            "strike": "0",
+            "expiry": "1788271200",
+            "winningOutcome": 1,
+            "voided": false,
+            "quoteDecimals": 6,
+            "intervalSec": "3600",
+            "interval": "1h"
+          }
+        },
+        {
+          "outcomeIndex": 1,
+          "tokenId": "1759536965449878170875608066465584347052299509667894542540076914589441",
+          "balance": "700000000",
+          "market": {
+            "id": "0x000000000000000000000000000000000000000000000000000000000000f921",
+            "marketAddress": "0xc19b28cf19d43992223fb717d58f3d909810efcc",
+            "poolAddress": "0x4143cd6dcbac98d05a7e0406947d46eb14651ec9",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": "20000",
+            "strike": "0",
+            "expiry": "1788307200",
+            "winningOutcome": 1,
+            "voided": false,
+            "quoteDecimals": 6,
+            "intervalSec": "86400",
+            "interval": "24h"
+          }
+        },
+        {
+          "outcomeIndex": 1,
+          "tokenId": "3905300771051483145725656054605051932579642389016916817312162814909953",
+          "balance": "220000000",
+          "market": {
+            "id": "0x000000000000000000000000000000000000000000000000000000000001015f",
+            "marketAddress": "0xefa3b12584901b9179bead1341b1e663f367bb91",
+            "poolAddress": "0x90db0c4c4a25096103faed8a3c7178c190abae20",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": "942000",
+            "strike": "0",
+            "expiry": "1788262500",
+            "winningOutcome": 0,
+            "voided": false,
+            "quoteDecimals": 6,
+            "intervalSec": "300",
+            "interval": "5m"
+          }
+        },
+        {
+          "outcomeIndex": 1,
+          "tokenId": "2616764084928150979057764049022448626488402208831496109768544608070145",
+          "balance": "220000000",
+          "market": {
+            "id": "0x000000000000000000000000000000000000000000000000000000000001014f",
+            "marketAddress": "0x39bae4c706696dcc1b41ec0d51dcb5c167fe7a70",
+            "poolAddress": "0x610fa91fe8185685fc1e8fa15429747ca189433b",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": "138000",
+            "strike": "0",
+            "expiry": "1788262200",
+            "winningOutcome": 0,
+            "voided": false,
+            "quoteDecimals": 6,
+            "intervalSec": "300",
+            "interval": "5m"
+          }
+        },
+        {
+          "outcomeIndex": 0,
+          "tokenId": "1616505921066909234947634033314385211062152992443827836608737674536960",
+          "balance": "40000000",
+          "market": {
+            "id": "0x000000000000000000000000000000000000000000000000000000000000ee02",
+            "marketAddress": "0x7efc5d27566176f3b40ee48b84e7005d0b4afbbc",
+            "poolAddress": "0x3bf5a4385af0d4dfd2eb38713ae21d9fc82c0542",
+            "asset": "BTC",
+            "question": "BTC closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": "330000",
+            "strike": "0",
+            "expiry": "1788176700",
+            "winningOutcome": 1,
+            "voided": false,
+            "quoteDecimals": 6,
+            "intervalSec": "900",
+            "interval": "15m"
+          }
+        },
+        {
+          "outcomeIndex": 1,
+          "tokenId": "5809768863427066609425990230926707442780912298099864763341853375338241",
+          "balance": "40000000",
+          "market": {
+            "id": "0x000000000000000000000000000000000000000000000000000000000000e5e3",
+            "marketAddress": "0x6266312c7fd24a89b9ec2be114b6d1faabb85411",
+            "poolAddress": "0xd77f0dc7cb7bebcec8b22ad31a58abeeb92b1e09",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": "980000",
+            "strike": "0",
+            "expiry": "1788220800",
+            "winningOutcome": 0,
+            "voided": false,
+            "quoteDecimals": 6,
+            "intervalSec": "86400",
+            "interval": "24h"
+          }
+        },
+        {
+          "outcomeIndex": 0,
+          "tokenId": "1677199863954889063492586717792191698059854782700138812448772055901696",
+          "balance": "20000000",
+          "market": {
+            "id": "0x000000000000000000000000000000000000000000000000000000000000ee13",
+            "marketAddress": "0xc09b79fd5745dbc2738e68c1eefa74142e397dd9",
+            "poolAddress": "0x3e35f705bde5f826083621abe3d37ab8979e52fb",
+            "asset": "ETH",
+            "question": "ETH closes at or above its opening price",
+            "status": "Finalized",
+            "lastPrice": "391000",
+            "strike": "0",
+            "expiry": "1788176400",
+            "winningOutcome": 1,
+            "voided": false,
+            "quoteDecimals": 6,
+            "intervalSec": "300",
+            "interval": "5m"
+          }
+        }
+      ],
+      "openOrders": [],
+      "trades": [
+        {
+          "id": "476955578_89",
+          "fillPrice": "342000",
+          "quantity": "200000000",
+          "timestamp": "1788268609",
+          "txHash": "0x631f69ae07683f2a2e3a0ce12f51fee219de627cc0b6cc73db3a965615c75230",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x06320ecbeada162e0da774eb4e8161cedd90becc",
+          "market": {
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476955578_101",
+          "fillPrice": "342000",
+          "quantity": "155000000",
+          "timestamp": "1788268609",
+          "txHash": "0x631f69ae07683f2a2e3a0ce12f51fee219de627cc0b6cc73db3a965615c75230",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x06320ecbeada162e0da774eb4e8161cedd90becc",
+          "market": {
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476955555_18",
+          "fillPrice": "342000",
+          "quantity": "200000000",
+          "timestamp": "1788268607",
+          "txHash": "0xb2c6e4937fa4d1d273b4d1755bcf6ea0045124d35d467b00294907c90cd8d5f1",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x06320ecbeada162e0da774eb4e8161cedd90becc",
+          "market": {
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476955085_106",
+          "fillPrice": "342000",
+          "quantity": "200000000",
+          "timestamp": "1788268560",
+          "txHash": "0xbfb89db7f66f9b1c814489d2169a1d83c4bd1d9550fafdf481518a967c623bf4",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x06320ecbeada162e0da774eb4e8161cedd90becc",
+          "market": {
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476955076_63",
+          "fillPrice": "342000",
+          "quantity": "330000000",
+          "timestamp": "1788268559",
+          "txHash": "0x268614af72eb462084b5547f73cd6af311b1d4b6d5e2699041e64d65cba55064",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x06320ecbeada162e0da774eb4e8161cedd90becc",
+          "market": {
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476955076_52",
+          "fillPrice": "342000",
+          "quantity": "200000000",
+          "timestamp": "1788268559",
+          "txHash": "0x268614af72eb462084b5547f73cd6af311b1d4b6d5e2699041e64d65cba55064",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x06320ecbeada162e0da774eb4e8161cedd90becc",
+          "market": {
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476955070_133",
+          "fillPrice": "342000",
+          "quantity": "200000000",
+          "timestamp": "1788268558",
+          "txHash": "0x219688d93a652189db51755597a43cba5691d5bc18ecbf537298aa89e8ef892d",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x06320ecbeada162e0da774eb4e8161cedd90becc",
+          "market": {
+            "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476908957_12",
+          "fillPrice": "346000",
+          "quantity": "50000000",
+          "timestamp": "1788263946",
+          "txHash": "0x745ea4ba812fc9760b203b3c71bbe7df80b4da7f298e16f28f0755c250bd19d4",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0xfaf37c534b4911d04d6a212ce20d9ebd959a2772",
+          "market": {
+            "marketAddress": "0xc19b28cf19d43992223fb717d58f3d909810efcc",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476908920_125",
+          "fillPrice": "346000",
+          "quantity": "200000000",
+          "timestamp": "1788263942",
+          "txHash": "0x5f09980138f08ac05e25553f050bfd87da9759cc2065361f1fd7f3c166cf3579",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0xfaf37c534b4911d04d6a212ce20d9ebd959a2772",
+          "market": {
+            "marketAddress": "0xc19b28cf19d43992223fb717d58f3d909810efcc",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476904425_5",
+          "fillPrice": "412000",
+          "quantity": "200000000",
+          "timestamp": "1788263493",
+          "txHash": "0x89ba513e30d8c144a9673f6f91b3b126983d64c1c1649a1b0ff5f2f7cbe3a19f",
+          "asMaker": false,
+          "side": "SELL_YES",
+          "counterparty": "0xfaf37c534b4911d04d6a212ce20d9ebd959a2772",
+          "market": {
+            "marketAddress": "0xc19b28cf19d43992223fb717d58f3d909810efcc",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476904425_9",
+          "fillPrice": "396000",
+          "quantity": "50000000",
+          "timestamp": "1788263493",
+          "txHash": "0x89ba513e30d8c144a9673f6f91b3b126983d64c1c1649a1b0ff5f2f7cbe3a19f",
+          "asMaker": false,
+          "side": "SELL_YES",
+          "counterparty": "0xfaf37c534b4911d04d6a212ce20d9ebd959a2772",
+          "market": {
+            "marketAddress": "0xc19b28cf19d43992223fb717d58f3d909810efcc",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476901234_5",
+          "fillPrice": "377000",
+          "quantity": "200000000",
+          "timestamp": "1788263174",
+          "txHash": "0x8da4cb5a1cb626a9552a2c0e12470fc93a7fc0c11a7c21f6fad1b72a45ff08a7",
+          "asMaker": false,
+          "side": "SELL_YES",
+          "counterparty": "0xfaf37c534b4911d04d6a212ce20d9ebd959a2772",
+          "market": {
+            "marketAddress": "0xc19b28cf19d43992223fb717d58f3d909810efcc",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476893366_9",
+          "fillPrice": "942000",
+          "quantity": "20000000",
+          "timestamp": "1788262387",
+          "txHash": "0xf458a1ff42572ef6b5409a5c373a34d7cc7028b51d7572cec575b317081bba64",
+          "asMaker": false,
+          "side": "SELL_YES",
+          "counterparty": "0xc1c11be24740b0b8a1c7caaafe6d06baa929bcd7",
+          "market": {
+            "marketAddress": "0xefa3b12584901b9179bead1341b1e663f367bb91",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476893366_5",
+          "fillPrice": "951000",
+          "quantity": "200000000",
+          "timestamp": "1788262387",
+          "txHash": "0xf458a1ff42572ef6b5409a5c373a34d7cc7028b51d7572cec575b317081bba64",
+          "asMaker": false,
+          "side": "SELL_YES",
+          "counterparty": "0xc1c11be24740b0b8a1c7caaafe6d06baa929bcd7",
+          "market": {
+            "marketAddress": "0xefa3b12584901b9179bead1341b1e663f367bb91",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476890242_30",
+          "fillPrice": "138000",
+          "quantity": "20000000",
+          "timestamp": "1788262074",
+          "txHash": "0x62ddfbd172916d563dfcf62d7950d159ebcea55c0bbb7ba5bb9b602e7ebe3d00",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x82a4c4da93ba0cc487b221c158e2314a1dfc7537",
+          "market": {
+            "marketAddress": "0x39bae4c706696dcc1b41ec0d51dcb5c167fe7a70",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476890242_18",
+          "fillPrice": "138000",
+          "quantity": "200000000",
+          "timestamp": "1788262074",
+          "txHash": "0x62ddfbd172916d563dfcf62d7950d159ebcea55c0bbb7ba5bb9b602e7ebe3d00",
+          "asMaker": true,
+          "side": "SELL_YES",
+          "counterparty": "0x82a4c4da93ba0cc487b221c158e2314a1dfc7537",
+          "market": {
+            "marketAddress": "0x39bae4c706696dcc1b41ec0d51dcb5c167fe7a70",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476036445_6",
+          "fillPrice": "888000",
+          "quantity": "20000000",
+          "timestamp": "1788176675",
+          "txHash": "0xd9b5e3a85832d01372bd1108a0b4cb82acd2861db0cd22f22a73145418586b23",
+          "asMaker": false,
+          "side": "BUY_NO",
+          "counterparty": "0x52ce940310dcc7495d12ee17d03a9c473385894c",
+          "market": {
+            "marketAddress": "0x6266312c7fd24a89b9ec2be114b6d1faabb85411",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476036118_6",
+          "fillPrice": "879000",
+          "quantity": "20000000",
+          "timestamp": "1788176642",
+          "txHash": "0xcc89ed2f018eda238aac48e87e0f91f5f2c75b500c1818007ea20443521b1f6c",
+          "asMaker": false,
+          "side": "BUY_NO",
+          "counterparty": "0x52ce940310dcc7495d12ee17d03a9c473385894c",
+          "market": {
+            "marketAddress": "0x6266312c7fd24a89b9ec2be114b6d1faabb85411",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476032773_18",
+          "fillPrice": "330000",
+          "quantity": "20000000",
+          "timestamp": "1788176307",
+          "txHash": "0xaf83adfaed9c984a738e958d13ff6de07694b5e400f94fc365e76ab6164a82f7",
+          "asMaker": false,
+          "side": "BUY_YES",
+          "counterparty": "0x51b3558afa2efe76d6b87aa8f8eb451a983bbab7",
+          "market": {
+            "marketAddress": "0x7efc5d27566176f3b40ee48b84e7005d0b4afbbc",
+            "asset": "BTC",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476032516_6",
+          "fillPrice": "391000",
+          "quantity": "20000000",
+          "timestamp": "1788176282",
+          "txHash": "0xbcd9a030f905899dee2877e74f2a2a68012ce57e3efe42761d05788e51eb4cae",
+          "asMaker": false,
+          "side": "BUY_YES",
+          "counterparty": "0xeb6695b5ebeedd1fb1bf8f1536d0eeb934264ec3",
+          "market": {
+            "marketAddress": "0xc09b79fd5745dbc2738e68c1eefa74142e397dd9",
+            "asset": "ETH",
+            "quoteDecimals": 6
+          }
+        },
+        {
+          "id": "476029965_10",
+          "fillPrice": "374000",
+          "quantity": "20000000",
+          "timestamp": "1788176026",
+          "txHash": "0x77c0f2f57884c5dcd33ca1af89df8aa416227d2a3271358f613cedf6d09bad21",
+          "asMaker": false,
+          "side": "BUY_YES",
+          "counterparty": "0x51b3558afa2efe76d6b87aa8f8eb451a983bbab7",
+          "market": {
+            "marketAddress": "0x7efc5d27566176f3b40ee48b84e7005d0b4afbbc",
+            "asset": "BTC",
+            "quoteDecimals": 6
+          }
+        }
+      ],
+      "tradesTruncated": false
+    }
+  },
+  "claimable": {
+    "ok": true,
+    "value": [
+      {
+        "marketId": "0x0000000000000000000000000000000000000000000000000000000000010269",
+        "pool": "0x5b95229d893135d9af01e9b4a126caf861f254d5",
+        "outcomeIdx": 1,
+        "amount": "2970000000",
+        "estPayout": "2970000000",
+        "status": "Finalized"
+      },
+      {
+        "marketId": "0x000000000000000000000000000000000000000000000000000000000000f921",
+        "pool": "0x4143cd6dcbac98d05a7e0406947d46eb14651ec9",
+        "outcomeIdx": 1,
+        "amount": "700000000",
+        "estPayout": "700000000",
+        "status": "Finalized"
+      }
+    ]
+  },
+  "verifiedPositions": [
+    {
+      "indexed": {
+        "outcomeIndex": 1,
+        "tokenId": "2469060918108502993134125640475730425379759372704055618489422232692993",
+        "balance": "2970000000",
+        "market": {
+          "id": "0x0000000000000000000000000000000000000000000000000000000000010269",
+          "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+          "poolAddress": "0x5b95229d893135d9af01e9b4a126caf861f254d5",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": "448000",
+          "strike": "0",
+          "expiry": "1788271200",
+          "winningOutcome": 1,
+          "voided": false,
+          "quoteDecimals": 6,
+          "intervalSec": "3600",
+          "interval": "1h"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xA1B8Fc70BAF6635838619953483C2901c1659829",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "2469060918108502993134125640475730425379759372704055618489422232692992",
+          "noId": "2469060918108502993134125640475730425379759372704055618489422232692993",
+          "pool": "0x5b95229d893135D9aF01E9B4a126CaF861F254D5",
+          "nonce": "41",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 4,
+          "backing": "4455000000",
+          "finalized": true,
+          "expiry": "1788271200",
+          "decimals": 6,
+          "winningOutcome": 1,
+          "isResolved": true,
+          "isVoided": false,
+          "voidPolicy": 0
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "2970000000"
+      }
+    },
+    {
+      "indexed": {
+        "outcomeIndex": 0,
+        "tokenId": "2469060918108502993134125640475730425379759372704055618489422232692992",
+        "balance": "1485000000",
+        "market": {
+          "id": "0x0000000000000000000000000000000000000000000000000000000000010269",
+          "marketAddress": "0xa1b8fc70baf6635838619953483c2901c1659829",
+          "poolAddress": "0x5b95229d893135d9af01e9b4a126caf861f254d5",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": "448000",
+          "strike": "0",
+          "expiry": "1788271200",
+          "winningOutcome": 1,
+          "voided": false,
+          "quoteDecimals": 6,
+          "intervalSec": "3600",
+          "interval": "1h"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xA1B8Fc70BAF6635838619953483C2901c1659829",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "2469060918108502993134125640475730425379759372704055618489422232692992",
+          "noId": "2469060918108502993134125640475730425379759372704055618489422232692993",
+          "pool": "0x5b95229d893135D9aF01E9B4a126CaF861F254D5",
+          "nonce": "41",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 4,
+          "backing": "4455000000",
+          "finalized": true,
+          "expiry": "1788271200",
+          "decimals": 6,
+          "winningOutcome": 1,
+          "isResolved": true,
+          "isVoided": false,
+          "voidPolicy": 0
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "1485000000"
+      }
+    },
+    {
+      "indexed": {
+        "outcomeIndex": 1,
+        "tokenId": "1759536965449878170875608066465584347052299509667894542540076914589441",
+        "balance": "700000000",
+        "market": {
+          "id": "0x000000000000000000000000000000000000000000000000000000000000f921",
+          "marketAddress": "0xc19b28cf19d43992223fb717d58f3d909810efcc",
+          "poolAddress": "0x4143cd6dcbac98d05a7e0406947d46eb14651ec9",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": "20000",
+          "strike": "0",
+          "expiry": "1788307200",
+          "winningOutcome": 1,
+          "voided": false,
+          "quoteDecimals": 6,
+          "intervalSec": "86400",
+          "interval": "24h"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xC19B28cF19D43992223fb717d58f3D909810EFcc",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "1759536965449878170875608066465584347052299509667894542540076914589440",
+          "noId": "1759536965449878170875608066465584347052299509667894542540076914589441",
+          "pool": "0x4143cD6dcBAc98D05a7e0406947d46Eb14651EC9",
+          "nonce": "63",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 4,
+          "backing": "950000000",
+          "finalized": true,
+          "expiry": "1788307200",
+          "decimals": 6,
+          "winningOutcome": 1,
+          "isResolved": true,
+          "isVoided": false,
+          "voidPolicy": 0
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "700000000"
+      }
+    },
+    {
+      "indexed": {
+        "outcomeIndex": 1,
+        "tokenId": "3905300771051483145725656054605051932579642389016916817312162814909953",
+        "balance": "220000000",
+        "market": {
+          "id": "0x000000000000000000000000000000000000000000000000000000000001015f",
+          "marketAddress": "0xefa3b12584901b9179bead1341b1e663f367bb91",
+          "poolAddress": "0x90db0c4c4a25096103faed8a3c7178c190abae20",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": "942000",
+          "strike": "0",
+          "expiry": "1788262500",
+          "winningOutcome": 0,
+          "voided": false,
+          "quoteDecimals": 6,
+          "intervalSec": "300",
+          "interval": "5m"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xEFA3B12584901b9179BeAD1341B1E663f367bb91",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "3905300771051483145725656054605051932579642389016916817312162814909952",
+          "noId": "3905300771051483145725656054605051932579642389016916817312162814909953",
+          "pool": "0x90dB0C4C4A25096103faeD8a3C7178C190abAE20",
+          "nonce": "94",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 4,
+          "backing": "0",
+          "finalized": true,
+          "expiry": "1788262500",
+          "decimals": 6,
+          "winningOutcome": 0,
+          "isResolved": true,
+          "isVoided": false,
+          "voidPolicy": 0
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "220000000"
+      }
+    },
+    {
+      "indexed": {
+        "outcomeIndex": 1,
+        "tokenId": "2616764084928150979057764049022448626488402208831496109768544608070145",
+        "balance": "220000000",
+        "market": {
+          "id": "0x000000000000000000000000000000000000000000000000000000000001014f",
+          "marketAddress": "0x39bae4c706696dcc1b41ec0d51dcb5c167fe7a70",
+          "poolAddress": "0x610fa91fe8185685fc1e8fa15429747ca189433b",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": "138000",
+          "strike": "0",
+          "expiry": "1788262200",
+          "winningOutcome": 0,
+          "voided": false,
+          "quoteDecimals": 6,
+          "intervalSec": "300",
+          "interval": "5m"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0x39BAe4C706696dCC1B41ec0d51dCB5C167Fe7a70",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "2616764084928150979057764049022448626488402208831496109768544608070144",
+          "noId": "2616764084928150979057764049022448626488402208831496109768544608070145",
+          "pool": "0x610FA91fE8185685fc1e8FA15429747ca189433B",
+          "nonce": "42",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 4,
+          "backing": "0",
+          "finalized": true,
+          "expiry": "1788262200",
+          "decimals": 6,
+          "winningOutcome": 0,
+          "isResolved": true,
+          "isVoided": false,
+          "voidPolicy": 0
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "220000000"
+      }
+    },
+    {
+      "indexed": {
+        "outcomeIndex": 0,
+        "tokenId": "1616505921066909234947634033314385211062152992443827836608737674536960",
+        "balance": "40000000",
+        "market": {
+          "id": "0x000000000000000000000000000000000000000000000000000000000000ee02",
+          "marketAddress": "0x7efc5d27566176f3b40ee48b84e7005d0b4afbbc",
+          "poolAddress": "0x3bf5a4385af0d4dfd2eb38713ae21d9fc82c0542",
+          "asset": "BTC",
+          "question": "BTC closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": "330000",
+          "strike": "0",
+          "expiry": "1788176700",
+          "winningOutcome": 1,
+          "voided": false,
+          "quoteDecimals": 6,
+          "intervalSec": "900",
+          "interval": "15m"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0x7eFC5d27566176F3b40eE48b84e7005D0b4afBBc",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "1616505921066909234947634033314385211062152992443827836608737674536960",
+          "noId": "1616505921066909234947634033314385211062152992443827836608737674536961",
+          "pool": "0x3bF5a4385af0d4DFd2eb38713Ae21D9FC82c0542",
+          "nonce": "40",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 4,
+          "backing": "0",
+          "finalized": true,
+          "expiry": "1788176700",
+          "decimals": 6,
+          "winningOutcome": 1,
+          "isResolved": true,
+          "isVoided": false,
+          "voidPolicy": 0
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "40000000"
+      }
+    },
+    {
+      "indexed": {
+        "outcomeIndex": 1,
+        "tokenId": "5809768863427066609425990230926707442780912298099864763341853375338241",
+        "balance": "40000000",
+        "market": {
+          "id": "0x000000000000000000000000000000000000000000000000000000000000e5e3",
+          "marketAddress": "0x6266312c7fd24a89b9ec2be114b6d1faabb85411",
+          "poolAddress": "0xd77f0dc7cb7bebcec8b22ad31a58abeeb92b1e09",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": "980000",
+          "strike": "0",
+          "expiry": "1788220800",
+          "winningOutcome": 0,
+          "voided": false,
+          "quoteDecimals": 6,
+          "intervalSec": "86400",
+          "interval": "24h"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0x6266312C7Fd24A89b9Ec2Be114B6D1FaAbb85411",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "5809768863427066609425990230926707442780912298099864763341853375338240",
+          "noId": "5809768863427066609425990230926707442780912298099864763341853375338241",
+          "pool": "0xd77F0DC7Cb7bEBceC8B22aD31A58AbeEB92b1E09",
+          "nonce": "23",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 4,
+          "backing": "450000000",
+          "finalized": true,
+          "expiry": "1788220800",
+          "decimals": 6,
+          "winningOutcome": 0,
+          "isResolved": true,
+          "isVoided": false,
+          "voidPolicy": 0
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "40000000"
+      }
+    },
+    {
+      "indexed": {
+        "outcomeIndex": 0,
+        "tokenId": "1677199863954889063492586717792191698059854782700138812448772055901696",
+        "balance": "20000000",
+        "market": {
+          "id": "0x000000000000000000000000000000000000000000000000000000000000ee13",
+          "marketAddress": "0xc09b79fd5745dbc2738e68c1eefa74142e397dd9",
+          "poolAddress": "0x3e35f705bde5f826083621abe3d37ab8979e52fb",
+          "asset": "ETH",
+          "question": "ETH closes at or above its opening price",
+          "status": "Finalized",
+          "lastPrice": "391000",
+          "strike": "0",
+          "expiry": "1788176400",
+          "winningOutcome": 1,
+          "voided": false,
+          "quoteDecimals": 6,
+          "intervalSec": "300",
+          "interval": "5m"
+        }
+      },
+      "onchainMarket": {
+        "ok": true,
+        "value": {
+          "marketAddress": "0xC09B79fd5745dbC2738e68C1EEFA74142E397dd9",
+          "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+          "yesId": "1677199863954889063492586717792191698059854782700138812448772055901696",
+          "noId": "1677199863954889063492586717792191698059854782700138812448772055901697",
+          "pool": "0x3e35f705bdE5f826083621ABE3D37AB8979e52FB",
+          "nonce": "38",
+          "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+          "status": 4,
+          "backing": "0",
+          "finalized": true,
+          "expiry": "1788176400",
+          "decimals": 6,
+          "winningOutcome": 1,
+          "isResolved": true,
+          "isVoided": false,
+          "voidPolicy": 0
+        }
+      },
+      "onchainBalance": {
+        "ok": true,
+        "value": "20000000"
+      }
+    }
+  ],
+  "settlementEvents": {
+    "PayoutOwed": {
+      "ok": true,
+      "value": []
+    },
+    "OwedClaimed": {
+      "ok": true,
+      "value": []
+    }
+  },
+  "eventRange": {
+    "fromBlock": "478572756",
+    "toBlock": "478582756",
+    "boundedLookback": "10000"
+  }
+}

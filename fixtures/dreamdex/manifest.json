@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-09-03",
+  "chain": {
+    "name": "Somnia Shannon",
+    "chainId": 50312
+  },
+  "adapter": {
+    "dreamdexSdk": "0.29.0"
+  },
+  "policy": {
+    "classification": "public-live-testnet-evidence",
+    "productionImportAllowed": false,
+    "containsCredentials": false
+  },
+  "fixtures": [
+    {
+      "path": "live/shannon-50312/finalized-market.json",
+      "evidenceType": "live-captured",
+      "runId": "2026-09-03T10-23-22-587Z",
+      "capturedAt": "2026-09-03T10:23:22.587Z",
+      "headBlock": "478579104",
+      "source": "probes/event-contracts/evidence/runs/2026-09-03T10-23-22-587Z/selected-markets.json",
+      "sha256": "7ba785a54f955aea8bb18d46b77cdc43fe63a96161eda61af2c8c6d316817ed6",
+      "proves": ["resolution", "finalization", "indexer-lag", "deployed-payout-vector-event"]
+    },
+    {
+      "path": "live/shannon-50312/redemption-receipts.json",
+      "evidenceType": "live-captured",
+      "runId": "2026-09-03T10-24-32-078Z",
+      "capturedAt": "2026-09-03T10:24:32.078Z",
+      "headBlock": "478579801",
+      "source": "probes/event-contracts/evidence/runs/2026-09-03T10-24-32-078Z/selected-markets.json",
+      "sha256": "b541696b620384b104bd2a34947af951dc3a0a05ea8e886ddcf698ecf5e71d10",
+      "proves": ["paying-redemption", "zero-payout-redemption", "remaining-backing"]
+    },
+    {
+      "path": "live/shannon-50312/claimable-wallet.json",
+      "evidenceType": "live-captured",
+      "runId": "2026-09-03T10-29-15-580Z",
+      "capturedAt": "2026-09-03T10:29:15.580Z",
+      "headBlock": "478582638",
+      "source": "probes/event-contracts/evidence/runs/2026-09-03T10-29-15-580Z/wallet.json",
+      "sha256": "5a6c19965ab28aa344d9275079ba94d44223aeba020bcbe573fbf52e1bc622d0",
+      "proves": ["public-wallet-monitoring", "two-winning-claimables", "balance-reconciliation"]
+    },
+    {
+      "path": "live/shannon-50312/void-market.json",
+      "evidenceType": "live-captured",
+      "runId": "2026-09-03T10-33-02-055Z",
+      "capturedAt": "2026-09-03T10:33:02.055Z",
+      "headBlock": "478584899",
+      "source": "probes/event-contracts/evidence/runs/2026-09-03T10-33-02-055Z/selected-markets.json",
+      "sha256": "668e20aac256d7f7e81664597fb23af06670cd2a5d58c72a122de4b0b8a9c656",
+      "proves": ["voided-terminal-state", "uniform-payout-vector", "oracle-void-reason"]
+    },
+    {
+      "path": "live/shannon-50312/void-wallet.json",
+      "evidenceType": "live-captured",
+      "runId": "2026-09-03T10-34-44-587Z",
+      "capturedAt": "2026-09-03T10:34:44.587Z",
+      "headBlock": "478585940",
+      "source": "probes/event-contracts/evidence/runs/2026-09-03T10-34-44-587Z/wallet.json",
+      "sha256": "ada0fe2fcc8b693d507763537e634f62f7663842d90cb67a651dad6644894b27",
+      "proves": ["two-sided-void-refund", "half-payout-calculation"]
+    },
+    {
+      "path": "live/shannon-50312/redemption-simulations.json",
+      "evidenceType": "live-captured-readonly-simulation",
+      "runId": "2026-09-03T10-55-46-125Z",
+      "capturedAt": "2026-09-03T10:55:46.125Z",
+      "headBlock": "478598553",
+      "source": "probes/event-contracts/evidence/simulations/2026-09-03T10-55-46-125Z/redemption-simulations.json",
+      "sha256": "4f3f93c0d673074e71cf5caa564fe41e4963e5ba2a9a3dd9bc42743b384a8f2b",
+      "proves": [
+        "batch-atomicity",
+        "duplicate-cumulative-balance",
+        "approval",
+        "relay-negative-paths"
+      ]
+    },
+    {
+      "path": "live/shannon-50312/paginated-wallet.json",
+      "evidenceType": "live-captured-indexer-query",
+      "runId": "2026-09-03T11-01-20-846Z",
+      "capturedAt": "2026-09-03T11:01:20.846Z",
+      "headBlock": null,
+      "headBlockNote": "The read-only indexer pagination probe did not record an RPC head block.",
+      "source": "probes/event-contracts/evidence/pagination/2026-09-03T11-01-20-846Z/outcome-balances.json",
+      "sha256": "db6f05d7a2127eeca44b652a895c643e3f384afc7358670b63e3be6a38ea385d",
+      "proves": ["1044-unique-positive-balances", "eleven-pages", "sdk-200-position-cap"]
+    }
+  ]
+}

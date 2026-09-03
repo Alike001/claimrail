@@ -1,0 +1,710 @@
+{
+  "0x0000000000000000000000000000000000000000000000000000000000012224": {
+    "indexed": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000012224",
+      "poolAddress": "0x3432a120f36f8c6016643968edaddccc2cd9493d",
+      "lastPrice": null,
+      "lastTradeAt": null,
+      "cumulativeBaseVolume": "0",
+      "cumulativeQuoteVolume": "0",
+      "tradeCount": "0",
+      "baseDecimals": 6,
+      "quoteDecimals": 6,
+      "createdAtTimestamp": "1788430980",
+      "createdAtBlock": "478578871",
+      "marketType": "BINARY",
+      "marketId": "0x0000000000000000000000000000000000000000000000000000000000012224",
+      "marketAddress": "0x3daf9c8df3d3ccc74d2819d45256a70bfbba58a7",
+      "yesTokenId": "1407249125783781602554579515939305537541529031358556533477432436465664",
+      "noTokenId": "1407249125783781602554579515939305537541529031358556533477432436465665",
+      "collateral": "0x70a86d8842fb63c4ad2b7cdddf530ebf1bb25d8e",
+      "asset": "ETH",
+      "question": "Pricefeed test: will ETH/USDC's price be at or above 2397.84 at unix time 1788431040?",
+      "status": "Trading",
+      "oracleQuestion": null,
+      "oracleQuestionId": "93407594575359662244984141923615737099446080530834816465021171700791281723885",
+      "strike": "239784",
+      "tradingStart": "1788430980",
+      "expiry": "1788431040",
+      "winningOutcome": null,
+      "payoutNumerators": null,
+      "payoutDenominator": null,
+      "resolvedAtBlock": null,
+      "resolvedAtTimestamp": null,
+      "createdByTx": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+      "creator": "0xee3aff92812a2cb7bf801b500687bc97b55cab34",
+      "voided": false,
+      "backing": "1500000000",
+      "nonce": "32",
+      "finalized": false,
+      "netBacking": null,
+      "context": "0x",
+      "intervalSec": "60",
+      "interval": "1m",
+      "mode": "fixed",
+      "operatorId": 4,
+      "venueId": "0x1a1e6821cde7d0159c0d293177871e09677b4e42307c7db3ba94f8648a5a050f",
+      "voidPolicy": 0
+    },
+    "onchain": {
+      "marketAddress": "0x3DAf9c8dF3D3CCc74d2819d45256A70BfBBA58A7",
+      "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+      "yesId": "1407249125783781602554579515939305537541529031358556533477432436465664",
+      "noId": "1407249125783781602554579515939305537541529031358556533477432436465665",
+      "pool": "0x3432A120f36F8c6016643968eDADDccC2CD9493D",
+      "nonce": "32",
+      "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+      "status": 1,
+      "backing": "1500000000",
+      "finalized": false,
+      "expiry": "1788431040",
+      "decimals": 6,
+      "winningOutcome": 0,
+      "isResolved": false,
+      "isVoided": false,
+      "voidPolicy": 0,
+      "statusName": "Trading"
+    },
+    "rawMarket": {
+      "ok": true,
+      "value": {
+        "status": 1,
+        "statusName": "Trading",
+        "payoutNumerators": [],
+        "isResolved": false,
+        "isVoided": false,
+        "voidPolicy": 0
+      }
+    },
+    "settlementRecord": {
+      "ok": true,
+      "value": {
+        "collateralToken": "0x0000000000000000000000000000000000000000",
+        "backing": "0",
+        "finalized": false,
+        "voided": false,
+        "settlementFeeBpsTimes1k": "0",
+        "feeRecipient": "0x0000000000000000000000000000000000000000",
+        "pool": "0x0000000000000000000000000000000000000000",
+        "nonce": "0",
+        "payoutNumerators": []
+      }
+    },
+    "resolution": {
+      "ok": true,
+      "value": {
+        "events": [],
+        "reference": null,
+        "closingAnswer": null,
+        "openingAnswer": null,
+        "oracleAnswer": null
+      }
+    },
+    "onchainResolutionPrice": {
+      "ok": true,
+      "value": null
+    },
+    "statusHistory": {
+      "ok": true,
+      "value": []
+    },
+    "eventRange": {
+      "fromBlock": "478578871",
+      "toBlock": "478579244"
+    },
+    "events": {
+      "market": {
+        "StatusChanged": {
+          "ok": true,
+          "value": []
+        },
+        "Resolved": {
+          "ok": true,
+          "value": []
+        },
+        "Voided": {
+          "ok": true,
+          "value": []
+        }
+      },
+      "module": {
+        "MarketFinalized": {
+          "ok": true,
+          "value": []
+        },
+        "PoolReleased": {
+          "ok": true,
+          "value": []
+        }
+      },
+      "pool": {
+        "PoolFinalized": {
+          "ok": true,
+          "value": []
+        },
+        "PoolRecycled": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "PoolRecycled",
+              "args": {
+                "marketNonce": "32",
+                "market": "0x3DAf9c8dF3D3CCc74d2819d45256A70BfBBA58A7"
+              },
+              "address": "0x3432a120f36f8c6016643968edaddccc2cd9493d",
+              "topics": [
+                "0xa3d129e6bdb33dcc6c5fa1ac04fc9f3b99262b8f735b96b14a8e65f4c307bb21",
+                "0x0000000000000000000000000000000000000000000000000000000000000020",
+                "0x0000000000000000000000003daf9c8df3d3ccc74d2819d45256a70bfbba58a7"
+              ],
+              "data": "0x",
+              "blockNumber": "478578871",
+              "transactionHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+              "transactionIndex": 4,
+              "blockHash": "0xcabf0286d81d188689d357ae0c1a29066250ca5a16aa2428140cc5086fc26a87",
+              "logIndex": 67,
+              "removed": false
+            }
+          ]
+        }
+      },
+      "settlement": {
+        "MarketFinalized": {
+          "ok": true,
+          "value": []
+        },
+        "SettlementFeeCharged": {
+          "ok": true,
+          "value": []
+        },
+        "Redeemed": {
+          "ok": true,
+          "value": []
+        }
+      }
+    }
+  },
+  "0x0000000000000000000000000000000000000000000000000000000000012222": {
+    "indexed": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000012222",
+      "poolAddress": "0x383c5fc76e6b022fe28fabb3c95d186ad9b19ec5",
+      "lastPrice": null,
+      "lastTradeAt": null,
+      "cumulativeBaseVolume": "0",
+      "cumulativeQuoteVolume": "0",
+      "tradeCount": "0",
+      "baseDecimals": 6,
+      "quoteDecimals": 6,
+      "createdAtTimestamp": "1788430920",
+      "createdAtBlock": "478578271",
+      "marketType": "BINARY",
+      "marketId": "0x0000000000000000000000000000000000000000000000000000000000012222",
+      "marketAddress": "0x1e66d219ed22cc650e513f47111e0848cb497714",
+      "yesTokenId": "1516115152067561478622141119057699689736767568736174833901203125037568",
+      "noTokenId": "1516115152067561478622141119057699689736767568736174833901203125037569",
+      "collateral": "0x70a86d8842fb63c4ad2b7cdddf530ebf1bb25d8e",
+      "asset": "ETH",
+      "question": "Pricefeed test: will ETH/USDC's price be at or above 2397.15 at unix time 1788430980?",
+      "status": "Finalized",
+      "oracleQuestion": null,
+      "oracleQuestionId": "81613333868464832682381190056434362571505699928156526545585638323265499630651",
+      "strike": "239715",
+      "tradingStart": "1788430920",
+      "expiry": "1788430980",
+      "winningOutcome": 0,
+      "payoutNumerators": [
+        "10000000",
+        "0"
+      ],
+      "payoutDenominator": "10000000",
+      "resolvedAtBlock": "478578871",
+      "resolvedAtTimestamp": "1788430980",
+      "createdByTx": "0x8d01319489031a954575785a80b996cfaec2025cf2206c28918b29a1a0f0a3c8",
+      "creator": "0xee3aff92812a2cb7bf801b500687bc97b55cab34",
+      "voided": false,
+      "backing": "1500000000",
+      "nonce": "490",
+      "finalized": true,
+      "netBacking": "1500000000",
+      "context": "0x",
+      "intervalSec": "60",
+      "interval": "1m",
+      "mode": "fixed",
+      "operatorId": 4,
+      "venueId": "0x1a1e6821cde7d0159c0d293177871e09677b4e42307c7db3ba94f8648a5a050f",
+      "voidPolicy": 0
+    },
+    "onchain": {
+      "marketAddress": "0x1e66D219Ed22CC650e513f47111E0848CB497714",
+      "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+      "yesId": "1516115152067561478622141119057699689736767568736174833901203125037568",
+      "noId": "1516115152067561478622141119057699689736767568736174833901203125037569",
+      "pool": "0x383C5fc76e6b022fe28Fabb3C95d186aD9b19EC5",
+      "nonce": "490",
+      "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+      "status": 4,
+      "backing": "1500000000",
+      "finalized": true,
+      "expiry": "1788430980",
+      "decimals": 6,
+      "winningOutcome": 0,
+      "isResolved": true,
+      "isVoided": false,
+      "voidPolicy": 0,
+      "statusName": "Resolved"
+    },
+    "rawMarket": {
+      "ok": true,
+      "value": {
+        "status": 4,
+        "statusName": "Resolved",
+        "payoutNumerators": [
+          "10000000",
+          "0"
+        ],
+        "isResolved": true,
+        "isVoided": false,
+        "voidPolicy": 0
+      }
+    },
+    "settlementRecord": {
+      "ok": true,
+      "value": {
+        "collateralToken": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+        "backing": "1500000000",
+        "finalized": true,
+        "voided": false,
+        "settlementFeeBpsTimes1k": "0",
+        "feeRecipient": "0xE7eB5D2b5b188777df902e89c54570E7Ef4F59CE",
+        "pool": "0x383C5fc76e6b022fe28Fabb3C95d186aD9b19EC5",
+        "nonce": "490",
+        "payoutNumerators": [
+          "10000000",
+          "0"
+        ]
+      }
+    },
+    "resolution": {
+      "ok": true,
+      "value": {
+        "events": [
+          {
+            "id": "478578871_58",
+            "market": "0x0000000000000000000000000000000000000000000000000000000000012222",
+            "kind": "Resolved",
+            "winningOutcome": 0,
+            "payoutNumerators": [
+              "10000000",
+              "0"
+            ],
+            "payoutDenominator": "10000000",
+            "voided": false,
+            "blockNumber": "478578871",
+            "timestamp": "1788430980",
+            "txHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04"
+          }
+        ],
+        "reference": null,
+        "closingAnswer": null,
+        "openingAnswer": null,
+        "oracleAnswer": null
+      }
+    },
+    "onchainResolutionPrice": {
+      "ok": true,
+      "value": {
+        "numericValue": "2397845000000000000000",
+        "decimals": 18,
+        "voided": false,
+        "adapter": "0x78bc8E82afBe80D1a348A8b81949ea5C4E54cb0E",
+        "oracleQuestionId": "81613333868464832682381190056434362571505699928156526545585638323265499630651"
+      }
+    },
+    "statusHistory": {
+      "ok": true,
+      "value": [
+        {
+          "oldStatus": "Locked",
+          "newStatus": "Resolved",
+          "blockNumber": "478578871",
+          "timestamp": "1788430980",
+          "txHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04"
+        }
+      ]
+    },
+    "eventRange": {
+      "fromBlock": "478578271",
+      "toBlock": "478579334"
+    },
+    "events": {
+      "market": {
+        "StatusChanged": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "StatusChanged",
+              "args": {
+                "oldStatus": 2,
+                "newStatus": 4
+              },
+              "address": "0x1e66d219ed22cc650e513f47111e0848cb497714",
+              "topics": [
+                "0xe1377aa21d49fa10bb9ece6a0cd4f75597a90a80c3750f7f7674967f49ab9a62",
+                "0x0000000000000000000000000000000000000000000000000000000000000002",
+                "0x0000000000000000000000000000000000000000000000000000000000000004"
+              ],
+              "data": "0x",
+              "blockNumber": "478578871",
+              "transactionHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+              "transactionIndex": 4,
+              "blockHash": "0xcabf0286d81d188689d357ae0c1a29066250ca5a16aa2428140cc5086fc26a87",
+              "logIndex": 57,
+              "removed": false
+            }
+          ]
+        },
+        "Resolved": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "Resolved",
+              "args": {
+                "payoutDenominator": 10000000,
+                "payoutNumerators": [
+                  "10000000",
+                  "0"
+                ]
+              },
+              "address": "0x1e66d219ed22cc650e513f47111e0848cb497714",
+              "topics": [
+                "0x54f8b431494130aaf7827023337336e584c3e73cd8f785a438f09feb95ff7578"
+              ],
+              "data": "0x00000000000000000000000000000000000000000000000000000000009896800000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000009896800000000000000000000000000000000000000000000000000000000000000000",
+              "blockNumber": "478578871",
+              "transactionHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+              "transactionIndex": 4,
+              "blockHash": "0xcabf0286d81d188689d357ae0c1a29066250ca5a16aa2428140cc5086fc26a87",
+              "logIndex": 56,
+              "removed": false
+            }
+          ]
+        },
+        "Voided": {
+          "ok": true,
+          "value": []
+        }
+      },
+      "module": {
+        "MarketFinalized": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "MarketFinalized",
+              "args": {
+                "marketId": "0x0000000000000000000000000000000000000000000000000000000000012222",
+                "pool": "0x383C5fc76e6b022fe28Fabb3C95d186aD9b19EC5",
+                "marketKey": "5922324812763912025867738746319139413034248315375682944926574707178"
+              },
+              "address": "0x3ecc694cef705358864a646142ac17a90e29e388",
+              "topics": [
+                "0x8f396ac6cf2e01887362e2b39d8e56860042c604e5b1b481c87e6d9f90006e08",
+                "0x0000000000000000000000000000000000000000000000000000000000012222",
+                "0x000000000000000000000000383c5fc76e6b022fe28fabb3c95d186ad9b19ec5"
+              ],
+              "data": "0x00000000383c5fc76e6b022fe28fabb3c95d186ad9b19ec500000000000001ea",
+              "blockNumber": "478578871",
+              "transactionHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+              "transactionIndex": 4,
+              "blockHash": "0xcabf0286d81d188689d357ae0c1a29066250ca5a16aa2428140cc5086fc26a87",
+              "logIndex": 62,
+              "removed": false
+            }
+          ]
+        },
+        "PoolReleased": {
+          "ok": true,
+          "value": []
+        }
+      },
+      "pool": {
+        "PoolFinalized": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "PoolFinalized",
+              "args": {
+                "marketNonce": "490",
+                "backing": "1500000000"
+              },
+              "address": "0x383c5fc76e6b022fe28fabb3c95d186ad9b19ec5",
+              "topics": [
+                "0x9f15802f3d01a772129264277df8d4179b39f69e1604da331602636c0985d45f",
+                "0x00000000000000000000000000000000000000000000000000000000000001ea"
+              ],
+              "data": "0x0000000000000000000000000000000000000000000000000000000059682f00",
+              "blockNumber": "478578871",
+              "transactionHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+              "transactionIndex": 4,
+              "blockHash": "0xcabf0286d81d188689d357ae0c1a29066250ca5a16aa2428140cc5086fc26a87",
+              "logIndex": 60,
+              "removed": false
+            }
+          ]
+        },
+        "PoolRecycled": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "PoolRecycled",
+              "args": {
+                "marketNonce": "490",
+                "market": "0x1e66D219Ed22CC650e513f47111E0848CB497714"
+              },
+              "address": "0x383c5fc76e6b022fe28fabb3c95d186ad9b19ec5",
+              "topics": [
+                "0xa3d129e6bdb33dcc6c5fa1ac04fc9f3b99262b8f735b96b14a8e65f4c307bb21",
+                "0x00000000000000000000000000000000000000000000000000000000000001ea",
+                "0x0000000000000000000000001e66d219ed22cc650e513f47111e0848cb497714"
+              ],
+              "data": "0x",
+              "blockNumber": "478578271",
+              "transactionHash": "0x8d01319489031a954575785a80b996cfaec2025cf2206c28918b29a1a0f0a3c8",
+              "transactionIndex": 5,
+              "blockHash": "0x87a95658ba13d3e90d4ad47468d0a16802a7dfec3879f3e21e269df856369a67",
+              "logIndex": 86,
+              "removed": false
+            }
+          ]
+        }
+      },
+      "settlement": {
+        "MarketFinalized": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "MarketFinalized",
+              "args": {
+                "marketKey": "5922324812763912025867738746319139413034248315375682944926574707178",
+                "pool": "0x383C5fc76e6b022fe28Fabb3C95d186aD9b19EC5",
+                "nonce": "490",
+                "collateralToken": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+                "netBacking": "1500000000",
+                "voided": false,
+                "payoutNumerators": [
+                  "10000000",
+                  "0"
+                ]
+              },
+              "address": "0xbf4a49e0dfd092e5fbe8e5761064c49533e6ed23",
+              "topics": [
+                "0xb1884334e955f8d8727678d4fa52dd9fc7140ff5e4ad38d358453bd400ada178",
+                "0x00000000383c5fc76e6b022fe28fabb3c95d186ad9b19ec500000000000001ea",
+                "0x000000000000000000000000383c5fc76e6b022fe28fabb3c95d186ad9b19ec5"
+              ],
+              "data": "0x00000000000000000000000000000000000000000000000000000000000001ea00000000000000000000000070a86d8842fb63c4ad2b7cdddf530ebf1bb25d8e0000000000000000000000000000000000000000000000000000000059682f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000009896800000000000000000000000000000000000000000000000000000000000000000",
+              "blockNumber": "478578871",
+              "transactionHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+              "transactionIndex": 4,
+              "blockHash": "0xcabf0286d81d188689d357ae0c1a29066250ca5a16aa2428140cc5086fc26a87",
+              "logIndex": 61,
+              "removed": false
+            }
+          ]
+        },
+        "SettlementFeeCharged": {
+          "ok": true,
+          "value": []
+        },
+        "Redeemed": {
+          "ok": true,
+          "value": []
+        }
+      }
+    }
+  },
+  "0x0000000000000000000000000000000000000000000000000000000000012223": {
+    "indexed": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000012223",
+      "poolAddress": "0xb4cea3f5cb827716c843c4b7db1b5a9abd8209d8",
+      "lastPrice": null,
+      "lastTradeAt": null,
+      "cumulativeBaseVolume": "0",
+      "cumulativeQuoteVolume": "0",
+      "tradeCount": "0",
+      "baseDecimals": 6,
+      "quoteDecimals": 6,
+      "createdAtTimestamp": "1788430980",
+      "createdAtBlock": "478578871",
+      "marketType": "BINARY",
+      "marketId": "0x0000000000000000000000000000000000000000000000000000000000012223",
+      "marketAddress": "0x5a8f6fa1b6c11d5a7225e568a77ca71a83344da3",
+      "yesTokenId": "4874552181458820275566616024331342572547006279496190115371908761520640",
+      "noTokenId": "4874552181458820275566616024331342572547006279496190115371908761520641",
+      "collateral": "0x70a86d8842fb63c4ad2b7cdddf530ebf1bb25d8e",
+      "asset": "BTC",
+      "question": "Pricefeed test: will BTC/USDC's price be at or above 77677.91 at unix time 1788431040?",
+      "status": "Trading",
+      "oracleQuestion": null,
+      "oracleQuestionId": "69698763254572829169236591076732275300057555208198065741207610251515859199880",
+      "strike": "7767791",
+      "tradingStart": "1788430980",
+      "expiry": "1788431040",
+      "winningOutcome": null,
+      "payoutNumerators": null,
+      "payoutDenominator": null,
+      "resolvedAtBlock": null,
+      "resolvedAtTimestamp": null,
+      "createdByTx": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+      "creator": "0xee3aff92812a2cb7bf801b500687bc97b55cab34",
+      "voided": false,
+      "backing": "1500000000",
+      "nonce": "522",
+      "finalized": false,
+      "netBacking": null,
+      "context": "0x",
+      "intervalSec": "60",
+      "interval": "1m",
+      "mode": "fixed",
+      "operatorId": 4,
+      "venueId": "0x1a1e6821cde7d0159c0d293177871e09677b4e42307c7db3ba94f8648a5a050f",
+      "voidPolicy": 0
+    },
+    "onchain": {
+      "marketAddress": "0x5A8F6FA1B6c11d5a7225e568a77Ca71a83344da3",
+      "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+      "yesId": "4874552181458820275566616024331342572547006279496190115371908761520640",
+      "noId": "4874552181458820275566616024331342572547006279496190115371908761520641",
+      "pool": "0xB4CeA3F5cB827716C843C4B7Db1b5A9Abd8209D8",
+      "nonce": "522",
+      "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+      "status": 1,
+      "backing": "1500000000",
+      "finalized": false,
+      "expiry": "1788431040",
+      "decimals": 6,
+      "winningOutcome": 0,
+      "isResolved": false,
+      "isVoided": false,
+      "voidPolicy": 0,
+      "statusName": "Trading"
+    },
+    "rawMarket": {
+      "ok": true,
+      "value": {
+        "status": 1,
+        "statusName": "Trading",
+        "payoutNumerators": [],
+        "isResolved": false,
+        "isVoided": false,
+        "voidPolicy": 0
+      }
+    },
+    "settlementRecord": {
+      "ok": true,
+      "value": {
+        "collateralToken": "0x0000000000000000000000000000000000000000",
+        "backing": "0",
+        "finalized": false,
+        "voided": false,
+        "settlementFeeBpsTimes1k": "0",
+        "feeRecipient": "0x0000000000000000000000000000000000000000",
+        "pool": "0x0000000000000000000000000000000000000000",
+        "nonce": "0",
+        "payoutNumerators": []
+      }
+    },
+    "resolution": {
+      "ok": true,
+      "value": {
+        "events": [],
+        "reference": null,
+        "closingAnswer": null,
+        "openingAnswer": null,
+        "oracleAnswer": null
+      }
+    },
+    "onchainResolutionPrice": {
+      "ok": true,
+      "value": null
+    },
+    "statusHistory": {
+      "ok": true,
+      "value": []
+    },
+    "eventRange": {
+      "fromBlock": "478578871",
+      "toBlock": "478579391"
+    },
+    "events": {
+      "market": {
+        "StatusChanged": {
+          "ok": true,
+          "value": []
+        },
+        "Resolved": {
+          "ok": true,
+          "value": []
+        },
+        "Voided": {
+          "ok": true,
+          "value": []
+        }
+      },
+      "module": {
+        "MarketFinalized": {
+          "ok": true,
+          "value": []
+        },
+        "PoolReleased": {
+          "ok": true,
+          "value": []
+        }
+      },
+      "pool": {
+        "PoolFinalized": {
+          "ok": true,
+          "value": []
+        },
+        "PoolRecycled": {
+          "ok": true,
+          "value": [
+            {
+              "eventName": "PoolRecycled",
+              "args": {
+                "marketNonce": "522",
+                "market": "0x5A8F6FA1B6c11d5a7225e568a77Ca71a83344da3"
+              },
+              "address": "0xb4cea3f5cb827716c843c4b7db1b5a9abd8209d8",
+              "topics": [
+                "0xa3d129e6bdb33dcc6c5fa1ac04fc9f3b99262b8f735b96b14a8e65f4c307bb21",
+                "0x000000000000000000000000000000000000000000000000000000000000020a",
+                "0x0000000000000000000000005a8f6fa1b6c11d5a7225e568a77ca71a83344da3"
+              ],
+              "data": "0x",
+              "blockNumber": "478578871",
+              "transactionHash": "0x70b3ae3ca63478ee5e7064e16992fda677a2d69136bb85dc34ce1aa1d35aea04",
+              "transactionIndex": 4,
+              "blockHash": "0xcabf0286d81d188689d357ae0c1a29066250ca5a16aa2428140cc5086fc26a87",
+              "logIndex": 47,
+              "removed": false
+            }
+          ]
+        }
+      },
+      "settlement": {
+        "MarketFinalized": {
+          "ok": true,
+          "value": []
+        },
+        "SettlementFeeCharged": {
+          "ok": true,
+          "value": []
+        },
+        "Redeemed": {
+          "ok": true,
+          "value": []
+        }
+      }
+    }
+  }
+}
