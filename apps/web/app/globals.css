@@ -7,6 +7,7 @@
 @import "../src/styles/notifications.css";
 @import "../src/styles/deliveries.css";
 @import "../src/styles/events.css";
+@import "../src/styles/test-position.css";
 @import "../src/styles/responsive.css";
 
 :root {

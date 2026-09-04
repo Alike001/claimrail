@@ -70,6 +70,9 @@ importers:
       "@claimrail/ui":
         specifier: workspace:*
         version: link:../../packages/ui
+      "@somnia-chain/markets-sdk":
+        specifier: 0.29.0
+        version: 0.29.0(graphql@17.0.2)(react@19.2.8)(viem@2.56.3(typescript@5.9.3)(zod@4.5.4))
       "@tanstack/react-query":
         specifier: 5.102.8
         version: 5.102.8(react@19.2.8)

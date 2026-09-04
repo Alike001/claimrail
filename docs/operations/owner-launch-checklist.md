@@ -45,8 +45,10 @@ URL, VAPID public key, or Telegram bot username.
       Somnia developer-community route to request STT.
 - [ ] Check the public address in the Shannon explorer. The STT balance must be non-zero before a
       claim transaction can be tested.
-- [ ] Using DreamDEX's official testnet interface, create only a **small** Event Contract position.
-      Do not use real funds and do not claim it yet.
+- [ ] Create only a **small** Event Contract position on Shannon. The production DreamDEX app signs
+      into chain `5031` and cannot see Shannon tUSDC. In local development, open
+      `/tools/shannon-position`, connect the dedicated MetaMask wallet, preview a live market, and
+      approve the capped 1 tUSDC transaction. Do not use real funds and do not claim it yet.
 - [ ] Record the public wallet address and market ID in a private project note. These two values are
       safe to share for debugging.
 
@@ -97,16 +99,16 @@ Git or chat.
 
 Use this exact environment split:
 
-| Variable                            |   Web    | Worker |
-| ----------------------------------- | :------: | :----: |
-| `DATABASE_URL`                      |   yes    |  yes   |
-| `CLAIMRAIL_SECRET_ENCRYPTION_KEY`   |   yes    |  yes   |
-| `CLAIMRAIL_VAPID_SUBJECT`           |    no    |  yes   |
-| `CLAIMRAIL_VAPID_PUBLIC_KEY`        |   yes    |  yes   |
-| `CLAIMRAIL_VAPID_PRIVATE_KEY`       |    no    |  yes   |
-| `CLAIMRAIL_TELEGRAM_BOT_USERNAME`   |   yes    |   no   |
-| `CLAIMRAIL_TELEGRAM_BOT_TOKEN`      |   yes    |  yes   |
-| `CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET` |   yes    |   no   |
+| Variable                            | Web | Worker |
+| ----------------------------------- | :-: | :----: |
+| `DATABASE_URL`                      | yes |  yes   |
+| `CLAIMRAIL_SECRET_ENCRYPTION_KEY`   | yes |  yes   |
+| `CLAIMRAIL_VAPID_SUBJECT`           | no  |  yes   |
+| `CLAIMRAIL_VAPID_PUBLIC_KEY`        | yes |  yes   |
+| `CLAIMRAIL_VAPID_PRIVATE_KEY`       | no  |  yes   |
+| `CLAIMRAIL_TELEGRAM_BOT_USERNAME`   | yes |   no   |
+| `CLAIMRAIL_TELEGRAM_BOT_TOKEN`      | yes |  yes   |
+| `CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET` | yes |   no   |
 
 The encryption key must be identical on web and worker. The VAPID key pair must stay unchanged after
 users subscribe; rotating it invalidates existing browser routes.
