@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@claimrail/client": "workspace:*",
     "@claimrail/contracts": "workspace:*",
     "@claimrail/core": "workspace:*",
     "@claimrail/db": "workspace:*",

@@ -52,6 +52,9 @@ importers:
 
   apps/web:
     dependencies:
+      "@claimrail/client":
+        specifier: workspace:*
+        version: link:../../packages/client
       "@claimrail/contracts":
         specifier: workspace:*
         version: link:../../packages/contracts

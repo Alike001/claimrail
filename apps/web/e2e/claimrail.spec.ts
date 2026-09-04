@@ -207,3 +207,18 @@ test("inspects and filters the developer delivery ledger", async ({ page }) => {
     "attempt 5",
   );
 });
+
+test("inspects and verifies canonical event bytes", async ({ page }) => {
+  await page.goto("/developers/events");
+  await expect(page.getByRole("heading", { name: "Canonical Event Playground" })).toBeVisible();
+  await expect(page.getByText("not a live ClaimRail delivery", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: /wallet\.claimable/ }).click();
+  await expect(page.getByRole("heading", { name: "wallet.claimable" })).toBeVisible();
+  await expect(page.getByLabel("Raw webhook body")).toContainText("2970000000");
+
+  await page.getByRole("button", { name: "verify exact body" }).click();
+  await expect(page.getByRole("status")).toContainText("Signature valid");
+  await page.getByRole("button", { name: "alter one byte" }).click();
+  await page.getByRole("button", { name: "verify exact body" }).click();
+  await expect(page.getByRole("status")).toContainText("signature mismatch");
+});

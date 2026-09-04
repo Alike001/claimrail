@@ -376,6 +376,40 @@ Verified:
 
 Remaining Phase 9 stop condition:
 
-- Build the canonical-event playground and demonstrate an actual signed HTTP delivery from a
-  running ClaimRail worker to the independent receiver. Deterministic transport tests do not count
-  as that live proof.
+- Demonstrate an actual signed HTTP delivery from a running ClaimRail worker to the independent
+  receiver. Deterministic transport and browser tests do not count as that live proof.
+
+## 2026-09-04 — Phase 9 canonical event playground complete
+
+Delivered:
+
+- Added `/developers/events`, an interactive event workbench with three normalized examples derived
+  from immutable Shannon captures: `market.finalized`, `wallet.claimable`, and `claim.confirmed`.
+  Each sample states what happened, what a consumer should do, its exact evidence file, block, and
+  source transaction when present.
+- Wrapped each example in a freshly timestamped, versioned webhook envelope with a visibly
+  demo-only secret. Developers can edit the exact raw body, timestamp, signature, or secret and run
+  the public `verifyClaimRailWebhook` boundary locally.
+- Added one-byte tampering and signed-sample restore controls. Verification distinguishes valid
+  envelopes from signature mismatch without making a network request or exposing a production
+  secret.
+- Linked the event workbench from developer delivery operations and documentation, and added the
+  public client as an explicit web-app dependency.
+- Extended the approved delivery-console visual system instead of introducing a generic API-tool
+  design. The detailed comparison is recorded in `design/event-playground-fidelity.md`.
+
+Verified during implementation:
+
+- Lint and workspace typechecking pass.
+- 159 unit tests pass across 29 files, including deterministic sample signing and invalid-index
+  refusal.
+- The exact-body verification interaction passes in desktop and mobile Chromium: an intact sample
+  is accepted and a one-byte whitespace change is rejected.
+- Playwright screenshots at `1536×1024` and `390×844` were directly compared with the accepted
+  delivery-console concept using `view_image`. No fixable visual mismatch remains.
+
+Remaining Phase 9 stop condition:
+
+- Send one actual signed HTTP delivery from a configured worker to the independent example
+  receiver and preserve the non-sensitive delivery evidence. The playground is honest about using
+  normalized verified captures rather than claiming that proof.

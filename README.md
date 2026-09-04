@@ -4,7 +4,7 @@ ClaimRail is a neutral settlement and notification layer for DreamDEX Event Cont
 
 ## Current status
 
-Phases 1–5 and 8 are complete. The Phase 6 manual-claim path and Phase 7 receipt/history path are implementation-complete; their shared final live proof—a controlled owner-signed Shannon claim moving through durable reconciliation—remains pending. Phase 9 now includes generated OpenAPI/JSON Schema, a runtime-validated TypeScript client, a framework-neutral signed-webhook receiver, and a DreamDEX Bot Kit settlement adapter. Its remaining live proof is an actual external HTTP delivery plus the event playground. The live approval gate and exact `redeemMany` simulation have already passed without a signer on the server.
+Phases 1–5 and 8 are complete. The Phase 6 manual-claim path and Phase 7 receipt/history path are implementation-complete; their shared final live proof—a controlled owner-signed Shannon claim moving through durable reconciliation—remains pending. Phase 9 now includes generated OpenAPI/JSON Schema, a runtime-validated TypeScript client, a framework-neutral signed-webhook receiver, a DreamDEX Bot Kit settlement adapter, and an interactive canonical-event playground. Its remaining live proof is an actual external HTTP delivery. The live approval gate and exact `redeemMany` simulation have already passed without a signer on the server.
 
 Any public address can be exhaustively scanned, verified against Somnia and `BinarySettlement`, and converted into normalized positions and safe claim assessments. The responsive inbox, settlement evidence, manual claim planner, claim receipt, honest history, REST API, delivery console, browser/Telegram notifications, and developer documentation expose that state to people and software.
 

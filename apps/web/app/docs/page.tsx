@@ -164,6 +164,11 @@ await consume(envelope.event);`}</code>
               See <code>examples/bot-kit-adapter</code> for the complete event state machine and its
               duplicate-delivery tests.
             </p>
+            <p>
+              The <Link href="/developers/events">canonical event playground</Link> lets you inspect
+              normalized Shannon examples, alter the exact raw body, and watch signature
+              verification accept or reject it locally.
+            </p>
           </div>
         </section>
 

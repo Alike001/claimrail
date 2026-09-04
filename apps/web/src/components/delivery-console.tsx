@@ -360,7 +360,7 @@ export function DeliveryConsole({
             <p className="eyebrow">developer operations</p>
             <h1>Developer Delivery Console</h1>
             <p>Inspect signed webhook delivery and replay dead letters.</p>
-            <Link href="/notifications">← notification routes</Link>
+            <Link href="/developers/events">event playground →</Link>
           </div>
           {consoleList ? (
             <dl className="console-summary">
