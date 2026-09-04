@@ -833,6 +833,74 @@ describePostgres("PostgreSQL persistence", () => {
     ).toBeNull();
   });
 
+  it("queues a clearly labelled route test once per cooldown without pretending it is financial", async () => {
+    const subscriptionsRepository = new SubscriptionRepository(context.db);
+    const createdAt = new Date("2026-09-03T12:00:00.000Z");
+    expect(
+      await new DeliveryRepository(context.db).enqueueTestNotification({
+        ownerAddress: WALLET,
+        now: createdAt,
+      }),
+    ).toBeNull();
+    const challengeId = "d742d9c7-b1af-4e14-b90f-bf58355318ad";
+    await subscriptionsRepository.createWebhookChallenge({
+      id: challengeId,
+      ownerAddress: WALLET,
+      destination: "https://agent.example.test/test-route",
+      eventTypes: ["wallet.claimable"],
+      challengeHash: "f1".repeat(32),
+      expiresAt: new Date(createdAt.getTime() + 60_000),
+      createdAt,
+    });
+    await subscriptionsRepository.activateWebhook({
+      challengeId,
+      expectedChallengeHash: "f1".repeat(32),
+      secretHash: "f2".repeat(32),
+      secretCiphertext: "v1.iv.tag.ciphertext",
+      verifiedAt: createdAt,
+    });
+    const repository = new DeliveryRepository(context.db);
+    const first = await repository.enqueueTestNotification({
+      ownerAddress: WALLET,
+      now: createdAt,
+    });
+    expect(first).toMatchObject({ status: "queued", routeCount: 1, deliveryCount: 1 });
+    const cooldown = await repository.enqueueTestNotification({
+      ownerAddress: WALLET,
+      now: new Date(createdAt.getTime() + 30_000),
+    });
+    expect(cooldown).toMatchObject({
+      eventId: first?.eventId,
+      status: "cooldown",
+      routeCount: 1,
+      deliveryCount: 0,
+      nextAllowedAt: new Date(createdAt.getTime() + 60_000),
+    });
+    const stored = await context.pool.query<{
+      type: string;
+      payload: Record<string, unknown>;
+      delivery_count: string;
+      audit_count: string;
+    }>(
+      `select event.type, event.payload,
+        (select count(*) from deliveries where event_id = event.id) as delivery_count,
+        (select count(*) from audit_records where subject_id = event.id) as audit_count
+       from canonical_events as event where event.id = $1`,
+      [first?.eventId],
+    );
+    expect(stored.rows[0]).toMatchObject({
+      type: "notification.test",
+      payload: {
+        owner: WALLET,
+        testOnly: true,
+        notice:
+          "This is a ClaimRail test notification. It is not a market settlement or claimable payout.",
+      },
+      delivery_count: "1",
+      audit_count: "1",
+    });
+  });
+
   it("requeues only an owner's dead webhook delivery and records the audit", async () => {
     const subscriptionsRepository = new SubscriptionRepository(context.db);
     const createdAt = new Date("2026-09-03T12:20:00.000Z");

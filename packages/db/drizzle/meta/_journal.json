@@ -64,6 +64,13 @@
       "when": 1788469709731,
       "tag": "0008_curved_spirit",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1788507949891,
+      "tag": "0009_clear_obadiah_stane",
+      "breakpoints": true
     }
   ]
 }

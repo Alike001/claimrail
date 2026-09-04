@@ -1,5 +1,5 @@
 import { randomBytes, randomUUID } from "node:crypto";
-import type { BrowserPushSubscription } from "@claimrail/contracts";
+import type { BrowserPushSubscription, CanonicalDeliveryEvent } from "@claimrail/contracts";
 import { encryptSecret, type LeasedWebhookDelivery } from "@claimrail/db";
 import { describe, expect, it, vi } from "vitest";
 import { createBrowserPushTransport } from "./browser-push-transport.js";
@@ -10,7 +10,10 @@ const subscription: BrowserPushSubscription = {
   keys: { p256dh: "a".repeat(65), auth: "b".repeat(22) },
 };
 
-function delivery(encryptionKey: string): LeasedWebhookDelivery {
+function delivery(
+  encryptionKey: string,
+  eventType: CanonicalDeliveryEvent["type"] = "wallet.claimable",
+): LeasedWebhookDelivery {
   return {
     id: randomUUID(),
     subscriptionId: randomUUID(),
@@ -23,7 +26,7 @@ function delivery(encryptionKey: string): LeasedWebhookDelivery {
     event: {
       id: "event-wallet-claimable",
       schemaVersion: "1",
-      type: "wallet.claimable",
+      type: eventType,
       aggregateType: "wallet",
       aggregateId: "0xe1da3bdd4189fdefb2ef8a73bd37a4083f284477",
       occurredAt: "2026-09-03T12:00:00.000Z",
@@ -81,5 +84,28 @@ describe("browser push transport", () => {
       httpStatus: 410,
       signatureVersion: "vapid",
     });
+  });
+
+  it("labels a route test without implying a settlement or payout", async () => {
+    const encryptionKey = randomBytes(32).toString("base64");
+    const sendNotification = vi.fn(async (_subscription, payload) => {
+      expect(JSON.parse(String(payload))).toMatchObject({
+        title: "ClaimRail test notification",
+        body: expect.stringContaining("not a market settlement or claimable payout"),
+        eventType: "notification.test",
+      });
+      return { statusCode: 201, body: "", headers: {} };
+    });
+    const dispatch = createBrowserPushTransport({
+      encryptionKey,
+      vapid: {
+        subject: "mailto:ops@example.test",
+        publicKey: "public-key",
+        privateKey: "private-key",
+      },
+      sendNotification,
+    });
+    await dispatch(delivery(encryptionKey, "notification.test"));
+    expect(sendNotification).toHaveBeenCalledOnce();
   });
 });

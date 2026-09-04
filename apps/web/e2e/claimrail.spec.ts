@@ -115,6 +115,9 @@ test("serves discovery and validated API errors", async ({ request }) => {
   const unauthorizedDeliveries = await request.get("/api/v1/deliveries");
   expect(unauthorizedDeliveries.status()).toBe(401);
 
+  const unauthorizedTest = await request.post("/api/v1/notifications/test");
+  expect(unauthorizedTest.status()).toBe(401);
+
   const invalidDelivery = await request.get("/api/v1/deliveries/not-a-uuid", {
     headers: { authorization: `Bearer ${"a".repeat(43)}` },
   });
@@ -129,6 +132,7 @@ test("documents the settlement and signing boundary", async ({ page }) => {
   await expect(page.getByText("Approval is broad. Redemption is exact.")).toBeVisible();
   await expect(page.getByText("/api/v1/claims/prepare", { exact: true })).toBeVisible();
   await expect(page.getByText("/api/v1/deliveries", { exact: true })).toBeVisible();
+  await expect(page.getByText("/api/v1/notifications/test", { exact: true })).toBeVisible();
   await expect(page.getByText("listClaimables", { exact: false })).toBeVisible();
   await expect(page.getByText("AUTO_CLAIM=false", { exact: true })).toBeVisible();
   await expect(page.getByText("ClaimRail stores no wallet private key")).toBeVisible();
@@ -185,6 +189,7 @@ test("inspects and filters the developer delivery ledger", async ({ page }) => {
   );
   await expect(page.getByText("attempt 5")).toBeVisible();
   await expect(page.getByRole("button", { name: "▷ replay dead letter" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "send test notification →" })).toBeDisabled();
 
   await page
     .locator(".delivery-table tbody tr")

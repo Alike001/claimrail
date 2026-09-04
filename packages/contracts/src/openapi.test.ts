@@ -23,5 +23,6 @@ describe("generated public API contracts", () => {
     expect(paths).toHaveProperty("/api/v1/claims/prepare.post");
     expect(paths).toHaveProperty("/api/v1/subscriptions/challenges.post");
     expect(paths).toHaveProperty("/api/v1/deliveries/{deliveryId}/replay.post");
+    expect(paths).toHaveProperty("/api/v1/notifications/test.post");
   });
 });

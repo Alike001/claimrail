@@ -1,5 +1,28 @@
 # ClaimRail build notes
 
+## 2026-09-04 — Safe live-delivery proof prepared
+
+Delivered:
+
+- Owner-authenticated `POST /api/v1/notifications/test` using the same short-lived delivery-console
+  access boundary as private delivery inspection.
+- A fixed `notification.test` event that explicitly denies settlement or payout meaning, routes to
+  every active verified Browser, Telegram, and webhook destination, and cannot be selected by a
+  financial state transition.
+- A PostgreSQL advisory lock, 60-second owner cooldown, direct durable delivery fan-out, and audit
+  record for each test request.
+- Browser and Telegram test-specific copy plus a delivery-console control that is disabled in
+  fixture mode.
+- Updated public schemas, OpenAPI discovery, and an owner launch checklist separating wallet,
+  credential, deployment, notification, and controlled-claim responsibilities.
+
+Still requires the owner:
+
+- External database/web/worker accounts and secret configuration.
+- A real Browser, Telegram, or public webhook destination.
+- A dedicated Shannon wallet with STT and a small DreamDEX test position.
+- The final owner-signed manual claim and device/external-HTTP proof.
+
 ## 2026-09-03 — Phase 1 complete
 
 Delivered:

@@ -9,6 +9,7 @@ import {
   deliveryDetailResponseSchema,
   deliveryListResponseSchema,
   deliveryReplayResponseSchema,
+  notificationTestResponseSchema,
 } from "./deliveries.js";
 import { canonicalDeliveryEventSchema, webhookEnvelopeSchema } from "./events/webhook.js";
 import {
@@ -74,6 +75,7 @@ export const claimRailPublicSchemas = {
   DeliveryListResponse: deliveryListResponseSchema,
   DeliveryDetailResponse: deliveryDetailResponseSchema,
   DeliveryReplayResponse: deliveryReplayResponseSchema,
+  NotificationTestResponse: notificationTestResponseSchema,
   CanonicalDeliveryEvent: canonicalDeliveryEventSchema,
   WebhookEnvelope: webhookEnvelopeSchema,
 } satisfies Record<string, ZodType>;
@@ -122,7 +124,7 @@ export function createClaimRailOpenApiDocument() {
     openapi: "3.1.0",
     info: {
       title: "ClaimRail API",
-      version: "0.5.0",
+      version: "0.6.0",
       description:
         "Evidence-aware DreamDEX wallet, settlement, owner-signed claim planning, and canonical event delivery.",
     },
@@ -349,6 +351,18 @@ export function createClaimRailOpenApiDocument() {
           responses: {
             "202": response("Delivery requeued", "DeliveryReplayResponse"),
             "404": response("Delivery absent, active, or not owned", "ApiError"),
+          },
+        },
+      },
+      "/api/v1/notifications/test": {
+        post: {
+          operationId: "sendTestNotification",
+          summary: "Queue one clearly labelled non-financial test event for every active route",
+          security: [{ DeliveryConsoleBearer: [] }],
+          responses: {
+            "202": response("Test event queued or within its cooldown", "NotificationTestResponse"),
+            "401": response("Access rejected", "ApiError"),
+            "409": response("No verified notification route exists", "ApiError"),
           },
         },
       },

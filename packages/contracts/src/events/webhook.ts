@@ -13,6 +13,7 @@ export const canonicalEventTypeSchema = z.enum([
   "claim.confirmed",
   "claim.failed",
   "claim.superseded",
+  "notification.test",
 ]);
 
 export const canonicalDeliveryEventSchema = z.object({

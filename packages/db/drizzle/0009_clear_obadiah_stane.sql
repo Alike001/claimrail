@@ -1,0 +1,1 @@
+ALTER TYPE "public"."canonical_event_type" ADD VALUE 'notification.test';

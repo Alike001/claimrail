@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "ClaimRail API",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "Evidence-aware DreamDEX wallet, settlement, owner-signed claim planning, and canonical event delivery."
   },
   "servers": [
@@ -762,6 +762,49 @@
           },
           "404": {
             "description": "Delivery absent, active, or not owned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notifications/test": {
+      "post": {
+        "operationId": "sendTestNotification",
+        "summary": "Queue one clearly labelled non-financial test event for every active route",
+        "security": [
+          {
+            "DeliveryConsoleBearer": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Test event queued or within its cooldown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationTestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access rejected",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "No verified notification route exists",
             "content": {
               "application/json": {
                 "schema": {
@@ -2392,7 +2435,8 @@
               "claim.submitted",
               "claim.confirmed",
               "claim.failed",
-              "claim.superseded"
+              "claim.superseded",
+              "notification.test"
             ]
           }
         }
@@ -2543,7 +2587,8 @@
               "claim.submitted",
               "claim.confirmed",
               "claim.failed",
-              "claim.superseded"
+              "claim.superseded",
+              "notification.test"
             ]
           }
         }
@@ -2680,7 +2725,8 @@
               "claim.submitted",
               "claim.confirmed",
               "claim.failed",
-              "claim.superseded"
+              "claim.superseded",
+              "notification.test"
             ]
           }
         }
@@ -2826,7 +2872,8 @@
               "claim.submitted",
               "claim.confirmed",
               "claim.failed",
-              "claim.superseded"
+              "claim.superseded",
+              "notification.test"
             ]
           }
         }
@@ -2880,7 +2927,8 @@
               "claim.submitted",
               "claim.confirmed",
               "claim.failed",
-              "claim.superseded"
+              "claim.superseded",
+              "notification.test"
             ]
           }
         }
@@ -3092,15 +3140,11 @@
         "additionalProperties": false,
         "$defs": {
           "__schema0": {
-            "anyOf": [
-              {
-                "type": "string",
-                "const": "deliveries:read"
-              },
-              {
-                "type": "string",
-                "const": "deliveries:replay"
-              }
+            "type": "string",
+            "enum": [
+              "deliveries:read",
+              "deliveries:replay",
+              "notifications:test"
             ]
           }
         }
@@ -3186,7 +3230,8 @@
                     "claim.submitted",
                     "claim.confirmed",
                     "claim.failed",
-                    "claim.superseded"
+                    "claim.superseded",
+                    "notification.test"
                   ]
                 },
                 "owner": {
@@ -3620,7 +3665,8 @@
               "claim.submitted",
               "claim.confirmed",
               "claim.failed",
-              "claim.superseded"
+              "claim.superseded",
+              "notification.test"
             ]
           }
         }
@@ -3661,6 +3707,70 @@
         ],
         "additionalProperties": false
       },
+      "NotificationTestResponse": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "1"
+          },
+          "eventId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "const": "notification.test"
+          },
+          "owner": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{40}$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "cooldown"
+            ]
+          },
+          "routeCount": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "deliveryCount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "nextAllowedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "testOnly": {
+            "type": "boolean",
+            "const": true
+          },
+          "notice": {
+            "type": "string",
+            "const": "This is a ClaimRail test notification. It is not a market settlement or claimable payout."
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "eventId",
+          "type",
+          "owner",
+          "status",
+          "routeCount",
+          "deliveryCount",
+          "nextAllowedAt",
+          "testOnly",
+          "notice"
+        ],
+        "additionalProperties": false
+      },
       "CanonicalDeliveryEvent": {
         "type": "object",
         "properties": {
@@ -3685,7 +3795,8 @@
               "claim.submitted",
               "claim.confirmed",
               "claim.failed",
-              "claim.superseded"
+              "claim.superseded",
+              "notification.test"
             ]
           },
           "aggregateType": {
@@ -3803,7 +3914,8 @@
                   "claim.submitted",
                   "claim.confirmed",
                   "claim.failed",
-                  "claim.superseded"
+                  "claim.superseded",
+                  "notification.test"
                 ]
               },
               "aggregateType": {

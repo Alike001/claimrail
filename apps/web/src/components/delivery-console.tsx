@@ -7,6 +7,7 @@ import type {
   DeliveryListItem,
   DeliveryListResponse,
   DeliveryReplayResponse,
+  NotificationTestResponse,
 } from "@claimrail/contracts";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -226,9 +227,9 @@ export function DeliveryConsole({
   const [list, setList] = useState<DeliveryListResponse | undefined>(fixtureList);
   const [detail, setDetail] = useState<DeliveryDetailResponse | undefined>(fixtureDetail);
   const [filter, setFilter] = useState<Filter>("all");
-  const [busy, setBusy] = useState<"idle" | "connecting" | "authorizing" | "loading" | "replaying">(
-    "idle",
-  );
+  const [busy, setBusy] = useState<
+    "idle" | "connecting" | "authorizing" | "loading" | "replaying" | "testing"
+  >("idle");
   const [message, setMessage] = useState<string>();
 
   const sessionMismatch =
@@ -350,6 +351,30 @@ export function DeliveryConsole({
     }
   }
 
+  async function sendTestNotification() {
+    if (fixture || accessToken === undefined) return;
+    setBusy("testing");
+    setMessage(undefined);
+    try {
+      const result = await parseResponse<NotificationTestResponse>(
+        await fetch("/api/v1/notifications/test", {
+          method: "POST",
+          headers: { authorization: `Bearer ${accessToken}` },
+        }),
+      );
+      setMessage(
+        result.status === "queued"
+          ? `Non-financial test queued for ${result.deliveryCount} active route${result.deliveryCount === 1 ? "" : "s"}.`
+          : `Test already sent recently. Try again after ${formatTime(result.nextAllowedAt)} UTC.`,
+      );
+      await loadDeliveries(accessToken);
+    } catch (error) {
+      setMessage(errorMessage(error));
+    } finally {
+      setBusy("idle");
+    }
+  }
+
   const unlocked = fixture || consoleList !== undefined;
   return (
     <div className="delivery-console-shell">
@@ -359,7 +384,7 @@ export function DeliveryConsole({
           <div>
             <p className="eyebrow">developer operations</p>
             <h1>Developer Delivery Console</h1>
-            <p>Inspect signed webhook delivery and replay dead letters.</p>
+            <p>Inspect notification delivery, test routes, and replay dead letters.</p>
             <Link href="/developers/events">event playground →</Link>
           </div>
           {consoleList ? (
@@ -415,6 +440,22 @@ export function DeliveryConsole({
         ) : null}
         {unlocked && consoleList ? (
           <>
+            <section className="test-delivery-strip" aria-label="Notification route test">
+              <div>
+                <span>safe route check</span>
+                <strong>Send one test through every active route.</strong>
+                <small>
+                  Clearly labelled as a test · no market state · no claim · 60-second cooldown
+                </small>
+              </div>
+              <button
+                type="button"
+                disabled={fixture || busy !== "idle" || consoleList.summary.activeRoutes === 0}
+                onClick={sendTestNotification}
+              >
+                {busy === "testing" ? "queueing test…" : "send test notification"} →
+              </button>
+            </section>
             <section className="delivery-ledger">
               <div className="delivery-tabs" aria-label="Filter deliveries">
                 {(["all", "pending", "retrying", "dead", "delivered"] as const).map((value) => (

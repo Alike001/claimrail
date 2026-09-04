@@ -20,7 +20,8 @@ export type CanonicalEventType =
   | "claim.submitted"
   | "claim.confirmed"
   | "claim.failed"
-  | "claim.superseded";
+  | "claim.superseded"
+  | "notification.test";
 
 export interface CanonicalAmount {
   readonly raw: BaseUnit;

@@ -6,11 +6,13 @@ import {
   deliveryDetailResponseSchema,
   deliveryListResponseSchema,
   deliveryReplayResponseSchema,
+  notificationTestResponseSchema,
   type AccessVerificationResponse,
   type DeliveryConsoleChallengeResponse,
   type DeliveryDetailResponse,
   type DeliveryListResponse,
   type DeliveryReplayResponse,
+  type NotificationTestResponse,
 } from "@claimrail/contracts";
 import {
   AccessRepository,
@@ -24,7 +26,9 @@ import { createPublicClient, getAddress, http, type Hex } from "viem";
 
 const CHALLENGE_TTL_MS = 10 * 60 * 1_000;
 const ACCESS_TTL_MS = 15 * 60 * 1_000;
-const ACCESS_SCOPES = ["deliveries:read", "deliveries:replay"] as const;
+const ACCESS_SCOPES = ["deliveries:read", "deliveries:replay", "notifications:test"] as const;
+const TEST_NOTIFICATION_NOTICE =
+  "This is a ClaimRail test notification. It is not a market settlement or claimable payout.";
 
 function databaseUrl(): string {
   const value = process.env.DATABASE_URL;
@@ -241,6 +245,32 @@ export async function replayAuthorizedDelivery(
       status: "failed",
       nextAttemptAt: replay.nextAttemptAt.toISOString(),
       attemptsRemaining: replay.attemptsRemaining,
+    });
+  } finally {
+    await database.close();
+  }
+}
+
+export async function enqueueAuthorizedTestNotification(
+  request: Request,
+): Promise<NotificationTestResponse | null> {
+  const { database, ownerAddress } = await authorizedDatabase(request, "notifications:test");
+  try {
+    const queued = await new DeliveryRepository(database.db).enqueueTestNotification({
+      ownerAddress,
+    });
+    if (queued === null) return null;
+    return notificationTestResponseSchema.parse({
+      schemaVersion: "1",
+      type: "notification.test",
+      owner: getAddress(ownerAddress),
+      eventId: queued.eventId,
+      status: queued.status,
+      routeCount: queued.routeCount,
+      deliveryCount: queued.deliveryCount,
+      nextAllowedAt: queued.nextAllowedAt.toISOString(),
+      testOnly: true,
+      notice: TEST_NOTIFICATION_NOTICE,
     });
   } finally {
     await database.close();

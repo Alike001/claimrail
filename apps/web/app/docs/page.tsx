@@ -23,6 +23,7 @@ const endpoints = [
   ["POST", "/api/v1/access/verify", "Receive 15-minute owner-scoped access"],
   ["GET", "/api/v1/deliveries", "List the owner's delivery ledger"],
   ["GET", "/api/v1/deliveries/:deliveryId", "Inspect attempts and canonical payload"],
+  ["POST", "/api/v1/notifications/test", "Prove every active route with a non-financial test"],
   ["POST", "/api/v1/deliveries/:deliveryId/replay", "Requeue an owned dead letter"],
 ] as const;
 
@@ -32,7 +33,7 @@ export default function DocumentationPage() {
       <Header active="docs" />
       <main className="docs-main">
         <header className="docs-intro">
-          <p className="eyebrow">claimrail / documentation / v0.5</p>
+          <p className="eyebrow">claimrail / documentation / v0.6</p>
           <h1>the missing settlement delivery layer.</h1>
           <p>
             DreamDEX creates and settles Event Contracts. ClaimRail watches what each wallet owns,
@@ -194,6 +195,12 @@ await consume(envelope.event);`}</code>
               non-financial wallet proof. It exchanges that proof for a 15-minute in-memory token,
               reveals only the owner&apos;s routes, and permits replay only after a delivery reaches
               the dead-letter state.
+            </p>
+            <p>
+              The same console can send one rate-limited <code>notification.test</code> through
+              every active route. Its fixed copy explicitly says it is not a market settlement or
+              claimable payout, while still exercising the real queue, encryption, transport, and
+              attempt ledger.
             </p>
             <p>
               Browser alerts use the standards-based Push API and a service worker. Permission is

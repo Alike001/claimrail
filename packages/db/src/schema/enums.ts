@@ -68,6 +68,7 @@ export const canonicalEventTypeEnum = pgEnum("canonical_event_type", [
   "claim.confirmed",
   "claim.failed",
   "claim.superseded",
+  "notification.test",
 ]);
 
 export const jobStatusEnum = pgEnum("job_status", ["pending", "leased", "completed", "dead"]);

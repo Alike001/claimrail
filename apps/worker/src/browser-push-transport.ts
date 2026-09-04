@@ -69,6 +69,10 @@ function notificationCopy(event: CanonicalDeliveryEvent) {
       title: "Claim transaction replaced",
       body: "The original claim transaction was superseded.",
     },
+    "notification.test": {
+      title: "ClaimRail test notification",
+      body: "Route check only — this is not a market settlement or claimable payout.",
+    },
   };
   return copy[event.type];
 }
@@ -107,7 +111,7 @@ export function createBrowserPushTransport(input: {
           title: copy.title,
           body: copy.body,
           tag: delivery.event.id.slice(0, 32),
-          url: "/",
+          url: delivery.event.type === "notification.test" ? "/developers/deliveries" : "/",
           eventType: delivery.event.type,
         }),
         {

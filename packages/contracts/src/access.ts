@@ -27,7 +27,7 @@ export const accessVerificationResponseSchema = z.object({
   schemaVersion: z.literal("1"),
   owner: evmAddressSchema,
   accessToken: z.string().regex(/^[A-Za-z0-9_-]{43}$/),
-  scopes: z.array(z.literal("deliveries:read").or(z.literal("deliveries:replay"))).min(1),
+  scopes: z.array(z.enum(["deliveries:read", "deliveries:replay", "notifications:test"])).min(1),
   expiresAt: z.iso.datetime(),
 });
 
@@ -41,7 +41,7 @@ export function buildDeliveryConsoleChallengeMessage(input: {
   return [
     "ClaimRail developer console",
     "",
-    "Prove that you control this wallet to inspect and replay its webhook deliveries.",
+    "Prove that you control this wallet to inspect, test, and replay its notification deliveries.",
     "This signature does not authorize trades, claims, token approvals, or gas spending.",
     "",
     `Wallet: ${input.owner}`,

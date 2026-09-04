@@ -13,21 +13,21 @@ describe("developer console access contracts", () => {
       nonce: "nonce_abc",
       expiresAt: new Date("2026-09-03T18:00:00.000Z"),
     });
-    expect(message).toContain("inspect and replay its webhook deliveries");
+    expect(message).toContain("inspect, test, and replay its notification deliveries");
     expect(message).toContain(
       "does not authorize trades, claims, token approvals, or gas spending",
     );
   });
 
-  it("accepts only the two narrow delivery scopes", () => {
+  it("accepts only the three narrow delivery scopes", () => {
     expect(
       accessVerificationResponseSchema.parse({
         schemaVersion: "1",
         owner: "0xe1da3bdd4189fdefb2ef8a73bd37a4083f284477",
         accessToken: "a".repeat(43),
-        scopes: ["deliveries:read", "deliveries:replay"],
+        scopes: ["deliveries:read", "deliveries:replay", "notifications:test"],
         expiresAt: "2026-09-03T18:00:00.000Z",
       }).scopes,
-    ).toHaveLength(2);
+    ).toHaveLength(3);
   });
 });

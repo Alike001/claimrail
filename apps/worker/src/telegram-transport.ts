@@ -25,6 +25,8 @@ function eventCopy(event: CanonicalDeliveryEvent): string {
     "claim.confirmed": "Claim confirmed. Receipt and post-state evidence agree.",
     "claim.failed": "Claim needs attention. It did not reach verified confirmation.",
     "claim.superseded": "Claim transaction replaced. Open ClaimRail for the current receipt.",
+    "notification.test":
+      "Test notification received. Route check only — this is not a market settlement or claimable payout.",
   };
   return copy[event.type];
 }

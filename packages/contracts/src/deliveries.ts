@@ -70,7 +70,23 @@ export const deliveryReplayResponseSchema = z.object({
   attemptsRemaining: z.number().int().positive(),
 });
 
+export const notificationTestResponseSchema = z.object({
+  schemaVersion: z.literal("1"),
+  eventId: z.string().min(1),
+  type: z.literal("notification.test"),
+  owner: evmAddressSchema,
+  status: z.enum(["queued", "cooldown"]),
+  routeCount: z.number().int().positive(),
+  deliveryCount: z.number().int().nonnegative(),
+  nextAllowedAt: z.iso.datetime(),
+  testOnly: z.literal(true),
+  notice: z.literal(
+    "This is a ClaimRail test notification. It is not a market settlement or claimable payout.",
+  ),
+});
+
 export type DeliveryListItem = z.infer<typeof deliveryListItemSchema>;
 export type DeliveryListResponse = z.infer<typeof deliveryListResponseSchema>;
 export type DeliveryDetailResponse = z.infer<typeof deliveryDetailResponseSchema>;
 export type DeliveryReplayResponse = z.infer<typeof deliveryReplayResponseSchema>;
+export type NotificationTestResponse = z.infer<typeof notificationTestResponseSchema>;

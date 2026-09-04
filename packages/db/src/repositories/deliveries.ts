@@ -1,4 +1,5 @@
-import { and, asc, desc, eq, inArray, isNotNull, sql } from "drizzle-orm";
+import { createHash } from "node:crypto";
+import { and, asc, desc, eq, gt, inArray, isNotNull, sql } from "drizzle-orm";
 import { canonicalDeliveryEventSchema, type CanonicalDeliveryEvent } from "@claimrail/contracts";
 import type { ClaimRailDatabase } from "../client.js";
 import {
@@ -58,6 +59,14 @@ export interface StoredDeliveryDetail extends StoredDeliveryListItem {
   readonly attempts: readonly StoredDeliveryAttempt[];
 }
 
+export interface EnqueuedTestNotification {
+  readonly eventId: string;
+  readonly status: "queued" | "cooldown";
+  readonly routeCount: number;
+  readonly deliveryCount: number;
+  readonly nextAllowedAt: Date;
+}
+
 interface DeliveryLeaseRow extends Record<string, unknown> {
   readonly id: string;
   readonly subscriptionId: string;
@@ -89,6 +98,104 @@ function payloadOwner(payload: Record<string, unknown>): string | null {
 
 export class DeliveryRepository {
   constructor(private readonly db: ClaimRailDatabase) {}
+
+  async enqueueTestNotification(input: {
+    readonly ownerAddress: string;
+    readonly now?: Date;
+    readonly cooldownMs?: number;
+  }): Promise<EnqueuedTestNotification | null> {
+    const owner = input.ownerAddress.toLowerCase();
+    if (!/^0x[0-9a-f]{40}$/.test(owner)) throw new Error("valid owner address is required");
+    const now = input.now ?? new Date();
+    const cooldownMs = positiveMilliseconds(input.cooldownMs ?? 60_000, "cooldownMs");
+    const earliestAllowed = new Date(now.getTime() - cooldownMs);
+    return this.db.transaction(async (tx) => {
+      await tx.execute(
+        sql`select pg_advisory_xact_lock(hashtextextended(${`claimrail:test:${owner}`}, 0))`,
+      );
+      const routes = await tx
+        .select({ id: subscriptions.id })
+        .from(subscriptions)
+        .where(
+          and(
+            eq(subscriptions.ownerAddress, owner),
+            eq(subscriptions.active, true),
+            isNotNull(subscriptions.verifiedAt),
+            isNotNull(subscriptions.secretCiphertext),
+          ),
+        );
+      if (routes.length === 0) return null;
+      const recent = await tx
+        .select({ id: canonicalEvents.id, occurredAt: canonicalEvents.occurredAt })
+        .from(canonicalEvents)
+        .where(
+          and(
+            eq(canonicalEvents.type, "notification.test"),
+            eq(canonicalEvents.aggregateType, "wallet"),
+            eq(canonicalEvents.aggregateId, owner),
+            gt(canonicalEvents.occurredAt, earliestAllowed),
+          ),
+        )
+        .orderBy(desc(canonicalEvents.occurredAt))
+        .limit(1);
+      const previous = recent[0];
+      if (previous !== undefined) {
+        return {
+          eventId: previous.id,
+          status: "cooldown" as const,
+          routeCount: routes.length,
+          deliveryCount: 0,
+          nextAllowedAt: new Date(previous.occurredAt.getTime() + cooldownMs),
+        };
+      }
+      const eventId = `0x${createHash("sha256")
+        .update(`notification.test:${owner}:${now.toISOString()}`)
+        .digest("hex")}`;
+      const notice =
+        "This is a ClaimRail test notification. It is not a market settlement or claimable payout.";
+      await tx.insert(canonicalEvents).values({
+        id: eventId,
+        type: "notification.test",
+        aggregateType: "wallet",
+        aggregateId: owner,
+        schemaVersion: "1",
+        payload: { owner, testOnly: true, notice },
+        occurredAt: now,
+        createdAt: now,
+      });
+      const inserted = await tx
+        .insert(deliveries)
+        .values(
+          routes.map(({ id }) => ({
+            subscriptionId: id,
+            eventId,
+            status: "pending" as const,
+            nextAttemptAt: now,
+            createdAt: now,
+            updatedAt: now,
+          })),
+        )
+        .onConflictDoNothing({ target: [deliveries.subscriptionId, deliveries.eventId] })
+        .returning({ id: deliveries.id });
+      await tx.insert(auditRecords).values({
+        idempotencyKey: `notification-test:${eventId}`,
+        action: "notification.test_queued",
+        actorType: "wallet",
+        actorId: owner,
+        subjectType: "canonical_event",
+        subjectId: eventId,
+        details: { routeCount: routes.length, testOnly: true },
+        occurredAt: now,
+      });
+      return {
+        eventId,
+        status: "queued" as const,
+        routeCount: routes.length,
+        deliveryCount: inserted.length,
+        nextAllowedAt: new Date(now.getTime() + cooldownMs),
+      };
+    });
+  }
 
   async materializeEvent(eventId: string, now = new Date()): Promise<number> {
     return this.db.transaction(async (tx) => {
