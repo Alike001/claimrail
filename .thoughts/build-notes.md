@@ -1,5 +1,28 @@
 # ClaimRail build notes
 
+## 2026-09-04 — First owner-created Shannon position and duplicate-submit guard
+
+Observed:
+
+- The owner created one live DreamDEX Event Contract UP position on Shannon through the local
+  capped-position tool. The confirmed order spent `0.999703` tUSDC and minted `1.517000` outcome
+  contracts; the wallet retains `4.000297` tUSDC.
+- A delayed MetaMask popup allowed repeated clicks before React rendered its busy state. Two exact
+  approvals and four order transactions were signed; one order succeeded and three reverted with
+  `ERC20InsufficientAllowance`. The reverted orders created no additional positions.
+
+Remediated:
+
+- Added a synchronous submission lock before the first asynchronous read, retained permanently
+  after success, and released only after failure. Repeated clicks can no longer queue overlapping
+  approvals or orders even before React rerenders.
+- Added an immediate preparing state and visible instruction to click once and allow up to 30
+  seconds for MetaMask to appear.
+
+The controlled position remains unredeemed for ClaimRail settlement and manual-claim proof. Public
+wallet, market, and transaction identifiers remain in the private owner evidence record until the
+final sanitized proof fixture is captured.
+
 ## 2026-09-04 — Safe live-delivery proof prepared
 
 Delivered:

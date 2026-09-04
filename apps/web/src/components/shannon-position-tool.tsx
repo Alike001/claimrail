@@ -9,7 +9,7 @@ import {
   type UnifiedMarket,
 } from "@somnia-chain/markets-sdk";
 import { somniaShannon } from "@somnia-chain/markets-sdk/chains";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { formatUnits, type Address, type Hash, type WalletClient } from "viem";
 import {
   useConnect,
@@ -66,7 +66,8 @@ const erc20Abi = [
 ] as const;
 
 type Direction = "up" | "down";
-type ToolStage = "idle" | "finding" | "ready" | "approving" | "trading" | "complete" | "error";
+type ToolStage =
+  "idle" | "finding" | "ready" | "preparing" | "approving" | "trading" | "complete" | "error";
 
 interface PositionPlan {
   readonly marketId: `0x${string}`;
@@ -214,6 +215,7 @@ export function ShannonPositionTool() {
   const [plan, setPlan] = useState<PositionPlan>();
   const [completed, setCompleted] = useState<CompletedPosition>();
   const [message, setMessage] = useState<string>();
+  const submissionLock = useRef(false);
 
   const correctChain = connection.chainId === SOMNIA_SHANNON_CHAIN_ID;
 
@@ -255,13 +257,18 @@ export function ShannonPositionTool() {
       publicClient === undefined ||
       walletClient.data === undefined ||
       connection.address === undefined ||
-      !correctChain
+      !correctChain ||
+      submissionLock.current
     ) {
       return;
     }
 
-    setMessage(undefined);
+    submissionLock.current = true;
+    setCompleted(undefined);
+    setStage("preparing");
+    setMessage("Preparing exactly one order. Click nothing else while MetaMask opens.");
     const exchange = createExchange(walletClient.data as WalletClient);
+    let completedSuccessfully = false;
     try {
       if ((await publicClient.getChainId()) !== SOMNIA_SHANNON_CHAIN_ID) {
         throw new Error("RPC safety check failed: the selected client is not Shannon chain 50312.");
@@ -344,6 +351,7 @@ export function ShannonPositionTool() {
         filled,
         expectedTokenId,
       });
+      completedSuccessfully = true;
       setPlan(fresh);
       setMessage("Position confirmed on Shannon. Leave it open and do not redeem it yet.");
       setStage("complete");
@@ -351,6 +359,7 @@ export function ShannonPositionTool() {
       setMessage(errorMessage(error));
       setStage("error");
     } finally {
+      if (!completedSuccessfully) submissionLock.current = false;
       await exchange.close();
     }
   }
@@ -394,14 +403,16 @@ export function ShannonPositionTool() {
       <button
         className="primary-action"
         type="button"
-        disabled={stage === "approving" || stage === "trading"}
+        disabled={stage === "preparing" || stage === "approving" || stage === "trading"}
         onClick={openPosition}
       >
-        {stage === "approving"
-          ? "confirm exact approval…"
-          : stage === "trading"
-            ? "confirm position…"
-            : `open ${direction} position`}{" "}
+        {stage === "preparing"
+          ? "preparing one order…"
+          : stage === "approving"
+            ? "confirm exact approval…"
+            : stage === "trading"
+              ? "confirm position…"
+              : `open ${direction} position`}{" "}
         <span>→</span>
       </button>
     );
@@ -418,7 +429,12 @@ export function ShannonPositionTool() {
                 key={choice}
                 type="button"
                 className={direction === choice ? "selected" : undefined}
-                disabled={stage === "approving" || stage === "trading" || stage === "complete"}
+                disabled={
+                  stage === "preparing" ||
+                  stage === "approving" ||
+                  stage === "trading" ||
+                  stage === "complete"
+                }
                 onClick={() => {
                   setDirection(choice);
                   setPlan(undefined);
@@ -494,6 +510,9 @@ export function ShannonPositionTool() {
             </span>
           </div>
         ) : null}
+        <p className="single-submit-warning">
+          Click the action once, then wait. MetaMask can take up to 30 seconds to appear.
+        </p>
         {primaryAction}
         <small className="phase-note">
           local development only · Shannon chain 50312 · exact allowance · no private key input

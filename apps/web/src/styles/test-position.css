@@ -125,7 +125,14 @@
 
 .test-position-plan .primary-action {
   width: 100%;
-  margin-top: 32px;
+  margin-top: 12px;
+}
+
+.single-submit-warning {
+  margin: 28px 0 0;
+  color: #ffd875;
+  font-size: 13px;
+  text-align: center;
 }
 
 .test-position-plan .phase-note {
