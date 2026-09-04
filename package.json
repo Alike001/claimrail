@@ -11,9 +11,9 @@
     "build": "pnpm -r --if-present build",
     "dev": "pnpm --filter @claimrail/web dev",
     "dev:worker": "pnpm --filter @claimrail/worker dev",
-    "format": "prettier --write \"apps/**/*.{ts,tsx,js,mjs,json,css,md}\" \"packages/**/*.{ts,tsx,js,mjs,json,css,md}\" \"scripts/**/*.{js,mjs}\" \"docs/**/*.md\" \"design/**/*.md\" \"fixtures/dreamdex/README.md\" \"fixtures/dreamdex/manifest.json\" \".thoughts/build-notes.md\" \"*.{json,yaml,mjs,md}\"",
-    "format:check": "prettier --check \"apps/**/*.{ts,tsx,js,mjs,json,css,md}\" \"packages/**/*.{ts,tsx,js,mjs,json,css,md}\" \"scripts/**/*.{js,mjs}\" \"docs/**/*.md\" \"design/**/*.md\" \"fixtures/dreamdex/README.md\" \"fixtures/dreamdex/manifest.json\" \".thoughts/build-notes.md\" \"*.{json,yaml,mjs,md}\"",
-    "lint": "eslint apps packages scripts --max-warnings=0",
+    "format": "prettier --write \"apps/**/*.{ts,tsx,js,mjs,json,css,md}\" \"packages/**/*.{ts,tsx,js,mjs,json,css,md}\" \"examples/**/*.{ts,tsx,js,mjs,json,css,md}\" \"scripts/**/*.{ts,js,mjs}\" \"docs/**/*.md\" \"design/**/*.md\" \"fixtures/dreamdex/README.md\" \"fixtures/dreamdex/manifest.json\" \".thoughts/build-notes.md\" \"*.{json,yaml,mjs,md}\"",
+    "format:check": "prettier --check \"apps/**/*.{ts,tsx,js,mjs,json,css,md}\" \"packages/**/*.{ts,tsx,js,mjs,json,css,md}\" \"examples/**/*.{ts,tsx,js,mjs,json,css,md}\" \"scripts/**/*.{ts,js,mjs}\" \"docs/**/*.md\" \"design/**/*.md\" \"fixtures/dreamdex/README.md\" \"fixtures/dreamdex/manifest.json\" \".thoughts/build-notes.md\" \"*.{json,yaml,mjs,md}\"",
+    "lint": "eslint apps packages examples scripts --max-warnings=0",
     "typecheck": "pnpm -r --if-present typecheck && node scripts/check-boundaries.mjs",
     "test": "node scripts/verify-fixtures.mjs && vitest run --passWithNoTests",
     "test:core:coverage": "pnpm --filter @claimrail/core test:coverage",
@@ -21,7 +21,9 @@
     "test:integration": "vitest run --config vitest.integration.config.ts --passWithNoTests",
     "test:postgres": "node scripts/test-postgres.mjs",
     "test:e2e": "playwright test",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:core:coverage && pnpm test:dreamdex:coverage && pnpm test:integration && pnpm test:postgres && pnpm build",
+    "api:generate": "tsx scripts/api-artifacts.ts",
+    "api:check": "tsx scripts/api-artifacts.ts --check",
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm api:check && pnpm test && pnpm test:core:coverage && pnpm test:dreamdex:coverage && pnpm test:integration && pnpm test:postgres && pnpm build",
     "probe:typecheck": "npm --prefix probes/event-contracts run typecheck"
   },
   "devDependencies": {

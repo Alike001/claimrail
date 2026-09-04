@@ -38,7 +38,13 @@ test("shows settlement evidence and copies proof values", async ({ page }) => {
 test("serves discovery and validated API errors", async ({ request }) => {
   const discovery = await request.get("/api/v1/openapi.json");
   await expect(discovery).toBeOK();
-  expect((await discovery.json()).openapi).toBe("3.1.0");
+  const openapi = await discovery.json();
+  expect(openapi.openapi).toBe("3.1.0");
+  expect(openapi.paths).toHaveProperty("/api/v1/wallets/{address}/history");
+
+  const schemas = await request.get("/api/v1/schemas.json");
+  await expect(schemas).toBeOK();
+  expect(await schemas.json()).toHaveProperty("schemas.WalletClaimablesResponse");
 
   const invalid = await request.get("/api/v1/wallets/not-an-address/positions");
   expect(invalid.status()).toBe(400);
@@ -123,6 +129,8 @@ test("documents the settlement and signing boundary", async ({ page }) => {
   await expect(page.getByText("Approval is broad. Redemption is exact.")).toBeVisible();
   await expect(page.getByText("/api/v1/claims/prepare", { exact: true })).toBeVisible();
   await expect(page.getByText("/api/v1/deliveries", { exact: true })).toBeVisible();
+  await expect(page.getByText("listClaimables", { exact: false })).toBeVisible();
+  await expect(page.getByText("AUTO_CLAIM=false", { exact: true })).toBeVisible();
   await expect(page.getByText("ClaimRail stores no wallet private key")).toBeVisible();
 });
 

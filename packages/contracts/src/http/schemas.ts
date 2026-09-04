@@ -20,6 +20,7 @@ export const marketIdSchema = z
   .string()
   .regex(/^0x[0-9a-fA-F]{64}$/, "Expected a 32-byte market ID");
 export const decimalIntegerSchema = z.string().regex(/^(0|[1-9][0-9]*)$/);
+export const signedDecimalIntegerSchema = z.string().regex(/^-?(0|[1-9][0-9]*)$/);
 export const transactionHashSchema = z
   .string()
   .regex(/^0x[0-9a-fA-F]{64}$/, "Expected a 32-byte transaction hash");
@@ -50,6 +51,21 @@ export const walletPositionsResponseSchema = z.object({
   rowCount: z.number().int().nonnegative(),
   positions: z.array(z.record(z.string(), z.unknown())),
   failures: z.array(z.record(z.string(), z.unknown())),
+});
+
+export const walletClaimablesResponseSchema = z.object({
+  schemaVersion: z.literal("1"),
+  address: evmAddressSchema,
+  completeness: completenessSchema,
+  observedAt: z.iso.datetime(),
+  verifiedBlock: decimalIntegerSchema.nullable(),
+  total: z.object({
+    raw: decimalIntegerSchema,
+    decimals: z.number().int().nonnegative(),
+    symbol: z.string().min(1),
+    display: z.string().min(1),
+  }),
+  positions: z.array(z.record(z.string(), z.unknown())),
 });
 
 export const marketSettlementResponseSchema = z.object({
@@ -224,6 +240,41 @@ export const claimReceiptResponseSchema = z.object({
   ),
 });
 
+export const walletHistoryResponseSchema = z.object({
+  schemaVersion: z.literal("1"),
+  address: evmAddressSchema,
+  completeness: completenessSchema,
+  observedAt: z.iso.datetime(),
+  verifiedBlock: decimalIntegerSchema.nullable(),
+  entries: z.array(
+    z.object({
+      positionIdentity: z.string().min(1),
+      marketId: marketIdSchema,
+      market: z.string().min(1),
+      side: z.enum(["up", "down"]),
+      state: z.enum([
+        "open",
+        "locked",
+        "winning_unfinalized",
+        "claimable",
+        "losing",
+        "void_refundable",
+        "claim_submitted",
+        "redeemed",
+        "payout_owed",
+      ]),
+      verifiedBalance: decimalIntegerSchema,
+      expectedPayout: decimalIntegerSchema,
+      rawCost: decimalIntegerSchema.nullable(),
+      realizedDelta: signedDecimalIntegerSchema.nullable(),
+      pnlCompleteness: completenessSchema,
+      evidence: z.record(z.string(), z.unknown()),
+    }),
+  ),
+  claims: z.array(claimReceiptResponseSchema),
+  claimHistoryCompleteness: z.enum(["complete", "unavailable"]),
+});
+
 function decodeClaimEntry(entry: z.infer<typeof claimEntrySchema>): ClaimEntry {
   return {
     ...entry,
@@ -289,7 +340,9 @@ export function decodeClaimPlan(value: unknown): ClaimPlan {
 }
 
 export type WalletPositionsResponse = z.infer<typeof walletPositionsResponseSchema>;
+export type WalletClaimablesResponse = z.infer<typeof walletClaimablesResponseSchema>;
 export type MarketSettlementResponse = z.infer<typeof marketSettlementResponseSchema>;
 export type ClaimPrepareResponse = z.infer<typeof claimPrepareResponseSchema>;
 export type ClaimSubmissionResponse = z.infer<typeof claimSubmissionResponseSchema>;
 export type ClaimReceiptResponse = z.infer<typeof claimReceiptResponseSchema>;
+export type WalletHistoryResponse = z.infer<typeof walletHistoryResponseSchema>;

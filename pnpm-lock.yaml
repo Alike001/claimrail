@@ -118,6 +118,27 @@ importers:
         specifier: 3.6.4
         version: 3.6.4
 
+  examples/bot-kit-adapter:
+    dependencies:
+      "@claimrail/client":
+        specifier: workspace:*
+        version: link:../../packages/client
+      "@claimrail/contracts":
+        specifier: workspace:*
+        version: link:../../packages/contracts
+
+  examples/webhook-consumer:
+    dependencies:
+      "@claimrail/client":
+        specifier: workspace:*
+        version: link:../../packages/client
+
+  packages/client:
+    dependencies:
+      "@claimrail/contracts":
+        specifier: workspace:*
+        version: link:../contracts
+
   packages/contracts:
     dependencies:
       "@claimrail/core":

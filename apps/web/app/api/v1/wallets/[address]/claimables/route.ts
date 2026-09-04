@@ -1,4 +1,4 @@
-import { evmAddressSchema } from "@claimrail/contracts";
+import { evmAddressSchema, walletClaimablesResponseSchema } from "@claimrail/contracts";
 import { jsonSafe, readWalletInbox } from "@/src/server/claimrail";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +14,7 @@ export async function GET(
     );
   try {
     const { result, view } = await readWalletInbox(parsed.data);
-    return Response.json(
+    const body = walletClaimablesResponseSchema.parse(
       jsonSafe({
         schemaVersion: "1",
         address: result.address,
@@ -31,8 +31,8 @@ export async function GET(
           ({ state }) => state === "claimable" || state === "void_refundable",
         ),
       }),
-      { headers: { "cache-control": "no-store" } },
     );
+    return Response.json(body, { headers: { "cache-control": "no-store" } });
   } catch {
     return Response.json(
       {

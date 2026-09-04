@@ -328,3 +328,54 @@ Still requires external credentials/live proof:
   channel. No live delivery is claimed from deterministic transport tests alone.
 - A controlled live ClaimRail claim and evidence-backed receipt remains the Phase 6/7 live stop
   condition.
+
+## 2026-09-04 — Phase 9 developer integration foundation complete
+
+Delivered:
+
+- Replaced the hand-maintained OpenAPI route with one OpenAPI 3.1 document generated from the same
+  registered Zod schemas used at runtime. Added a Draft 2020-12 JSON Schema bundle, checked-in
+  artifacts, public discovery routes, and an `api:check` verification gate that fails on drift.
+- Added an explicit wallet-claimables response contract and closed the prior wallet-history
+  discovery gap by validating its runtime response and publishing it in OpenAPI/JSON Schema.
+- Added `@claimrail/client`, a platform-fetch/Web-Crypto TypeScript client with
+  `listClaimables`, `explainSettlement`, `buildRedemptionPlan`, `subscribeToWallet`, typed API
+  failures, and exact-raw-body webhook verification. The subscription helper delegates only the
+  readable ownership message to the caller's signer and never accepts a private key.
+- Added a framework-neutral Node webhook consumer with a one-megabyte body limit, HMAC verification
+  before JSON parsing, and deliberately minimal non-sensitive logging.
+- Added a DreamDEX Bot Kit adapter that pauses strategy activity at market lock/claimability,
+  requests an owner-approved ClaimRail claim, deduplicates canonical events, and resumes only after
+  the matching independently verified `claim.confirmed`. Failed or superseded claims stay paused.
+- Expanded `/docs` with copyable client and receiver examples, generated-schema discovery, and the
+  Bot Kit settlement handoff. Updated the repository/API guides to match the implemented delivery
+  and custody boundaries.
+
+Implementation evidence:
+
+- Current DreamDEX Bot Kit documentation and source were rechecked before designing the adapter.
+  Its settlement strategy lists finalized binary markets and claims inside the main loop because
+  trade and claim writes share a key/nonce boundary. The example therefore uses
+  `AUTO_CLAIM=false` and public ClaimRail events instead of importing private Bot Kit modules.
+- The JSON Schema generator follows Zod 4's `z.toJSONSchema` Draft 2020-12 output and reusable-ref
+  option. Generated files are reproducible from `scripts/api-artifacts.ts`.
+
+Verified:
+
+- Workspace typechecking passes for the client and both examples.
+- Generated OpenAPI and JSON Schema artifacts match runtime contracts.
+- 157 unit tests pass across 28 files, including the Bot Kit state machine, two-step subscription
+  helper, malformed signed payload refusal, schema registry completeness, and discovery paths.
+- Core coverage remains 100% statements/lines; 23 DreamDEX coverage tests, six signer-free
+  integration tests, and 13 ephemeral PostgreSQL integration tests pass.
+- The production build exposes the generated OpenAPI/JSON Schema routes, and the independent Event
+  Contract probe typechecks.
+- Nineteen Playwright checks pass across desktop and mobile Chromium with one intentional desktop
+  skip. The expanded documentation page was visually inspected at `1536×1024` and `390×844`; its
+  new client and Bot Kit sections retain the approved black/lime, monospaced rail direction.
+
+Remaining Phase 9 stop condition:
+
+- Build the canonical-event playground and demonstrate an actual signed HTTP delivery from a
+  running ClaimRail worker to the independent receiver. Deterministic transport tests do not count
+  as that live proof.

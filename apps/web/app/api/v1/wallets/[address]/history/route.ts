@@ -1,4 +1,4 @@
-import { evmAddressSchema } from "@claimrail/contracts";
+import { evmAddressSchema, walletHistoryResponseSchema } from "@claimrail/contracts";
 import { jsonSafe, readWalletClaimReceipts, readWalletInbox } from "@/src/server/claimrail";
 
 export const dynamic = "force-dynamic";
@@ -53,16 +53,18 @@ export async function GET(
         };
       });
     return Response.json(
-      jsonSafe({
-        schemaVersion: "1",
-        address: result.address,
-        completeness: result.positions.completeness,
-        observedAt: new Date(result.positions.completedAt).toISOString(),
-        verifiedBlock: result.positions.evidence.verifiedBlock?.toString() ?? null,
-        entries,
-        claims: claimHistory.receipts,
-        claimHistoryCompleteness: claimHistory.available ? "complete" : "unavailable",
-      }),
+      walletHistoryResponseSchema.parse(
+        jsonSafe({
+          schemaVersion: "1",
+          address: result.address,
+          completeness: result.positions.completeness,
+          observedAt: new Date(result.positions.completedAt).toISOString(),
+          verifiedBlock: result.positions.evidence.verifiedBlock?.toString() ?? null,
+          entries,
+          claims: claimHistory.receipts,
+          claimHistoryCompleteness: claimHistory.available ? "complete" : "unavailable",
+        }),
+      ),
       { headers: { "cache-control": "no-store" } },
     );
   } catch {

@@ -1,10 +1,12 @@
 # ClaimRail
 
-ClaimRail is planned as a neutral settlement and notification layer for DreamDEX Event Contracts. It will reconcile indexed data with canonical Somnia contract state, explain market outcomes, identify claimable payouts, prepare safe user-signed redemptions, and publish the same lifecycle information to people, APIs, bots, games, and agents.
+ClaimRail is a neutral settlement and notification layer for DreamDEX Event Contracts. It reconciles indexed data with canonical Somnia contract state, explains market outcomes, identifies claimable payouts, prepares safe user-signed redemptions, and publishes the same lifecycle information to people, APIs, bots, games, and agents.
 
 ## Current status
 
-Phases 1–5 are complete. The Phase 6 manual-claim path and Phase 7 receipt/history path are implementation-complete; their shared final live proof—a controlled owner-signed Shannon claim moving through durable reconciliation—remains pending. The live approval gate and exact `redeemMany` simulation have already passed without a signer on the server. The workspace now supports a dependency-free canonical domain model, lifecycle reconciliation, integer-only payout calculation, a live DreamDEX adapter, durable PostgreSQL persistence, and the approved V3 settlement interface. Any public address can be exhaustively scanned, verified against Somnia and `BinarySettlement`, and converted into normalized positions and safe claim assessments. The responsive inbox, settlement evidence, manual claim planner, claim receipt, honest history, REST API, OpenAPI discovery, and documentation page expose that state to people and software.
+Phases 1–5 and 8 are complete. The Phase 6 manual-claim path and Phase 7 receipt/history path are implementation-complete; their shared final live proof—a controlled owner-signed Shannon claim moving through durable reconciliation—remains pending. Phase 9 now includes generated OpenAPI/JSON Schema, a runtime-validated TypeScript client, a framework-neutral signed-webhook receiver, and a DreamDEX Bot Kit settlement adapter. Its remaining live proof is an actual external HTTP delivery plus the event playground. The live approval gate and exact `redeemMany` simulation have already passed without a signer on the server.
+
+Any public address can be exhaustively scanned, verified against Somnia and `BinarySettlement`, and converted into normalized positions and safe claim assessments. The responsive inbox, settlement evidence, manual claim planner, claim receipt, honest history, REST API, delivery console, browser/Telegram notifications, and developer documentation expose that state to people and software.
 
 The implementation sequence lives in [the implementation plan](.thoughts/plans/2026-09-03-claimrail-implementation.md). The product contract lives in [the specification](.thoughts/specs/2026-09-03-claimrail.md).
 
@@ -16,7 +18,10 @@ The implementation sequence lives in [the implementation plan](.thoughts/plans/2
 - `packages/dreamdex`: versioned DreamDEX SDK and on-chain adapter.
 - `packages/db`: PostgreSQL and Drizzle persistence.
 - `packages/contracts`: validated public API and event schemas.
+- `packages/client`: runtime-validated, fetch-based public TypeScript client and webhook verifier.
 - `packages/ui`: shared accessible interface components.
+- `examples/webhook-consumer`: framework-neutral signed webhook receiver.
+- `examples/bot-kit-adapter`: DreamDEX strategy pause/claim/confirm handoff.
 - `fixtures/dreamdex`: immutable, checksummed Shannon testnet evidence for tests only.
 - `probes/event-contracts`: independent read-only reverse-engineering tools and evidence.
 
@@ -25,6 +30,7 @@ The implementation sequence lives in [the implementation plan](.thoughts/plans/2
 ```bash
 pnpm install --frozen-lockfile
 pnpm verify
+pnpm api:check
 pnpm probe:typecheck
 pnpm --filter @claimrail/dreamdex smoke:shannon
 pnpm test:postgres
@@ -35,4 +41,4 @@ pnpm test:e2e
 
 ## Safety boundary
 
-Fixture data is visibly labelled, disabled in production, and never presented as live funds. The browser can now request owner-signed DreamDEX approval and exact `redeemMany` transactions, but neither frontend nor backend accepts or stores a private key. Server-side preparation has no signer, requires a complete fresh scan, persists every ready plan, and refuses to finalize without passing batch simulations. Submitted hashes remain pending until the worker verifies their transaction envelope, canonical receipt, deployed `Redeemed` logs, post-burn balances, and settlement backing. Reverts fail; absent hashes become superseded only when the owner's mined nonce proves replacement. Owed fallback balances create a separate `wallet.payout_owed` event. Webhook delivery and automated claiming do not exist yet; gas-sponsored claiming remains a later, explicit opt-in mode.
+Fixture data is visibly labelled, disabled in production, and never presented as live funds. The browser can request owner-signed DreamDEX approval and exact `redeemMany` transactions, but neither frontend nor backend accepts or stores a private key. Server-side preparation has no signer, requires a complete fresh scan, persists every ready plan, and refuses to finalize without passing batch simulations. Submitted hashes remain pending until the worker verifies their transaction envelope, canonical receipt, deployed `Redeemed` logs, post-burn balances, and settlement backing. Reverts fail; absent hashes become superseded only when the owner's mined nonce proves replacement. Owed fallback balances create a separate `wallet.payout_owed` event. Signed webhook, browser-push, and Telegram delivery exist; live external credentials are still required for end-to-end deployment proof. Gas-sponsored claiming remains a later, explicit opt-in mode.

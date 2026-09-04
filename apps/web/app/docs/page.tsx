@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Header } from "@/src/components/header";
 
 const endpoints = [
+  ["GET", "/api/v1/openapi.json", "OpenAPI 3.1 discovery generated from runtime schemas"],
+  ["GET", "/api/v1/schemas.json", "Draft 2020-12 public JSON Schema bundle"],
   ["GET", "/api/v1/wallets/:address/positions", "Complete normalized position scan"],
   ["GET", "/api/v1/wallets/:address/claimables", "Verified funds that can return now"],
   ["GET", "/api/v1/markets/:marketId/settlement", "Rule, oracle result, and chain proof"],
@@ -30,7 +32,7 @@ export default function DocumentationPage() {
       <Header active="docs" />
       <main className="docs-main">
         <header className="docs-intro">
-          <p className="eyebrow">claimrail / documentation / v0.2</p>
+          <p className="eyebrow">claimrail / documentation / v0.5</p>
           <h1>the missing settlement delivery layer.</h1>
           <p>
             DreamDEX creates and settles Event Contracts. ClaimRail watches what each wallet owns,
@@ -97,6 +99,72 @@ export default function DocumentationPage() {
             observation time, and verified block. Writes are never reported as confirmed until
             receipt and post-state reconciliation agree.
           </p>
+        </section>
+
+        <section className="docs-section" id="client">
+          <p className="eyebrow">typed client / validated at runtime</p>
+          <h2>Four useful operations, without handing over a key.</h2>
+          <div className="docs-code-grid">
+            <div className="docs-code-card">
+              <span>human, dashboard, or agent</span>
+              <pre>
+                <code>{`const rail = new ClaimRailClient({ baseUrl });
+
+await rail.listClaimables(address);
+await rail.explainSettlement(marketId);
+await rail.buildRedemptionPlan(address);
+await rail.subscribeToWallet({
+  owner: address,
+  destination,
+  eventTypes,
+  signMessage,
+});`}</code>
+              </pre>
+            </div>
+            <div className="docs-code-card">
+              <span>receiver boundary</span>
+              <pre>
+                <code>{`const envelope = await verifyClaimRailWebhook({
+  secret,
+  headers,
+  rawBody,
+});
+
+// Signature verified before JSON is trusted.
+await consume(envelope.event);`}</code>
+              </pre>
+            </div>
+          </div>
+          <p className="docs-footnote">
+            The workspace package is <code>@claimrail/client</code>. The generated OpenAPI and JSON
+            Schema files are checked in CI against the same Zod contracts used by the live routes.
+            Start with the framework-neutral webhook consumer in{" "}
+            <code>examples/webhook-consumer</code>.
+          </p>
+        </section>
+
+        <section className="docs-section two-column" id="bot-kit">
+          <div>
+            <p className="eyebrow">DreamDEX Bot Kit handoff</p>
+            <h2>Let the strategy trade. Let ClaimRail watch settlement.</h2>
+          </div>
+          <div className="prose">
+            <p>
+              The Bot Kit can already find finalized markets and claim with its trading key.
+              ClaimRail adds a neutral pause-and-resume rail: pause a market when it locks, request
+              an owner-approved claim when funds become claimable, and resume only after an
+              independently reconciled <code>claim.confirmed</code> event.
+            </p>
+            <p>
+              The example adapter starts with <code>AUTO_CLAIM=false</code>. It never imports a Bot
+              Kit private module or receives the trading key, and failed or superseded claims stay
+              paused for operator attention.
+            </p>
+            <p>
+              See <code>examples/bot-kit-adapter</code> for the complete event state machine and its
+              duplicate-delivery tests.
+            </p>
+          </div>
         </section>
 
         <section className="docs-section two-column" id="webhooks">

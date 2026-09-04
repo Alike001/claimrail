@@ -14,6 +14,8 @@ from a partial or failed scan.
 - `GET /api/v1/markets/:marketId/settlement` — the reconciled market record and plain settlement
   explanation.
 - `GET /api/v1/openapi.json` — the OpenAPI 3.1 discovery document.
+- `GET /api/v1/schemas.json` — the Draft 2020-12 JSON Schema bundle generated from the same runtime
+  contracts.
 - `POST /api/v1/claims/prepare` — refreshes the complete wallet scan and returns either the exact
   module-wide approval requirement or a short-lived, simulated, integrity-hashed `redeemMany` plan.
 - `POST /api/v1/claims/submissions` — records a wallet-broadcast batch hash immediately as
@@ -80,3 +82,37 @@ spending. A successful proof yields a 15-minute token with `deliveries:read` and
 Replay is deliberately narrow: the delivery must belong to the authenticated owner and already be
 in the terminal `dead` state. The original delivery and canonical event identities stay unchanged;
 the worker receives eight additional bounded attempts and writes an immutable replay audit record.
+
+## Generated contracts and TypeScript client
+
+The checked-in [OpenAPI document](openapi.generated.json) and
+[JSON Schema bundle](json-schemas.generated.json) are generated from `packages/contracts`. The root
+verification command runs `pnpm api:check`, so a runtime-schema change fails until both artifacts are
+regenerated with `pnpm api:generate`.
+
+`@claimrail/client` validates both inputs and responses at runtime and exposes the focused settlement
+operations:
+
+```ts
+const rail = new ClaimRailClient({ baseUrl: "https://claimrail.example" });
+
+const claimables = await rail.listClaimables(owner);
+const settlement = await rail.explainSettlement(marketId);
+const plan = await rail.buildRedemptionPlan(owner);
+const route = await rail.subscribeToWallet({ owner, destination, eventTypes, signMessage });
+```
+
+The signer callback receives only ClaimRail's readable, non-financial subscription challenge. The
+client never accepts a private key. Save the returned webhook secret once; ClaimRail does not expose
+it again.
+
+## Receiving events and handing off to DreamDEX Bot Kit
+
+`examples/webhook-consumer` reads the exact raw request bytes, verifies the timestamped HMAC, then
+parses the versioned envelope. A receiver must not parse and reserialize JSON before verification.
+
+`examples/bot-kit-adapter` demonstrates the strategy handoff. Configure the Bot Kit with
+`AUTO_CLAIM=false`, pause a market after `market.locked` or `wallet.claimable`, request an
+owner-approved ClaimRail plan, and resume only after the matching `claim.confirmed`. Duplicate
+events are ignored; failed and superseded claims stay paused for operator review. This keeps the Bot
+Kit trading key outside ClaimRail and avoids coupling a strategy's trade nonce flow to settlement.

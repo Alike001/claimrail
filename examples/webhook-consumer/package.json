@@ -1,0 +1,14 @@
+{
+  "name": "@claimrail/example-webhook-consumer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "@claimrail/client": "workspace:*"
+  }
+}

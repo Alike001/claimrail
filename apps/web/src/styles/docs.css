@@ -139,6 +139,32 @@
   max-width: 900px;
   margin: 28px 0 0;
 }
+.docs-code-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.docs-code-card {
+  min-width: 0;
+  padding: 24px;
+  background: var(--surface);
+}
+.docs-code-card > span {
+  display: block;
+  margin-bottom: 22px;
+  color: var(--signal);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.docs-code-card pre {
+  margin: 0;
+  overflow-x: auto;
+  color: #d8dbd3;
+  font: 14px/1.75 var(--mono);
+}
 .permission-section ol {
   margin: 0;
   padding: 0;
@@ -226,7 +252,8 @@
     display: none;
   }
   .docs-section.two-column,
-  .permission-section {
+  .permission-section,
+  .docs-code-grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }

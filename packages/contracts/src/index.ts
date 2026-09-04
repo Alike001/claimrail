@@ -5,3 +5,4 @@ export * from "./subscriptions/browser.js";
 export * from "./subscriptions/telegram.js";
 export * from "./access.js";
 export * from "./deliveries.js";
+export * from "./openapi.js";
