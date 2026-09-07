@@ -1,5 +1,19 @@
 # ClaimRail build notes
 
+## 2026-09-04 — Explicit-only wallet prompt boundary
+
+Delivered:
+
+- Disabled Wagmi connector reconnection on mount. A full page load may perform public/silent chain
+  reads, but ClaimRail does not request accounts, switch networks, sign messages, approve tokens, or
+  submit transactions until the user presses the corresponding control.
+- Extended the synchronous wallet-action lock to the production manual-claim flow: connection,
+  network switching, module approval, and redemption cannot overlap before React rerenders.
+- Once any redemption hash exists, the claim control remains locked during durable reconciliation;
+  a later batch or HTTP failure cannot invite the owner to resubmit an already-broadcast batch.
+- Added a browser regression with an instrumented injected provider proving page load does not call
+  any wallet-prompting RPC method.
+
 ## 2026-09-04 — First owner-created Shannon position and duplicate-submit guard
 
 Observed:

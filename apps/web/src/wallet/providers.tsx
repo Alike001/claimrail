@@ -15,7 +15,7 @@ export function Providers({
   const [config] = useState(getWagmiConfig);
   const [queryClient] = useState(() => new QueryClient());
   return (
-    <WagmiProvider config={config} initialState={initialState} reconnectOnMount>
+    <WagmiProvider config={config} initialState={initialState} reconnectOnMount={false}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   );

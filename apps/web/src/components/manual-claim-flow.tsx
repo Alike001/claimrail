@@ -6,7 +6,7 @@ import {
   claimRailBinaryModuleWriteAbi,
   claimRailErc6909WriteAbi,
 } from "@claimrail/dreamdex/write-abi";
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import type { Address, Hex } from "viem";
 import {
   useConnect,
@@ -80,6 +80,7 @@ export function ManualClaimFlow({
   const [transactionHashes, setTransactionHashes] = useState<readonly string[]>([]);
   const [claimIds, setClaimIds] = useState<readonly string[]>([]);
   const [showCalldata, setShowCalldata] = useState(false);
+  const walletActionLock = useRef(false);
 
   const connectedOwner = connection.address?.toLowerCase() === owner.toLowerCase();
   const correctChain = connection.chainId === SOMNIA_SHANNON_CHAIN_ID;
@@ -89,12 +90,14 @@ export function ManualClaimFlow({
     : expectedDisplay;
 
   async function connectWallet() {
+    if (walletActionLock.current) return;
     const connector = connectors[0];
     if (connector === undefined) {
       setMessage("No injected browser wallet was found.");
       setStage("error");
       return;
     }
+    walletActionLock.current = true;
     setMessage(undefined);
     setStage("connecting");
     try {
@@ -103,6 +106,21 @@ export function ManualClaimFlow({
     } catch (error) {
       setMessage(errorMessage(error));
       setStage("error");
+    } finally {
+      walletActionLock.current = false;
+    }
+  }
+
+  async function switchToShannon() {
+    if (walletActionLock.current) return;
+    walletActionLock.current = true;
+    try {
+      await switchChain.mutateAsync({ chainId: SOMNIA_SHANNON_CHAIN_ID });
+    } catch (error) {
+      setMessage(errorMessage(error));
+      setStage("error");
+    } finally {
+      walletActionLock.current = false;
     }
   }
 
@@ -135,9 +153,11 @@ export function ManualClaimFlow({
       publicClient === undefined ||
       !connection.isConnected ||
       !connectedOwner ||
-      !correctChain
+      !correctChain ||
+      walletActionLock.current
     )
       return;
+    walletActionLock.current = true;
     setMessage(undefined);
     setStage("approving");
     try {
@@ -155,12 +175,22 @@ export function ManualClaimFlow({
     } catch (error) {
       setMessage(errorMessage(error));
       setStage("error");
+    } finally {
+      walletActionLock.current = false;
     }
   }
 
   async function submitClaim() {
-    if (publicClient === undefined || !connection.isConnected || !connectedOwner || !correctChain)
+    if (
+      publicClient === undefined ||
+      !connection.isConnected ||
+      !connectedOwner ||
+      !correctChain ||
+      walletActionLock.current
+    )
       return;
+    walletActionLock.current = true;
+    let transactionSubmitted = false;
     setMessage(undefined);
     setStage("preparing");
     try {
@@ -184,6 +214,7 @@ export function ManualClaimFlow({
             batch.entries.map(({ amount }) => BigInt(amount)),
           ],
         });
+        transactionSubmitted = true;
         hashes.push(hash);
         setTransactionHashes([...hashes]);
         const submission = await parseResponse<ClaimSubmissionResponse>(
@@ -209,8 +240,17 @@ export function ManualClaimFlow({
         "Wallet receipt mined. ClaimRail is keeping the claim pending until receipt and post-balance reconciliation complete.",
       );
     } catch (error) {
-      setMessage(errorMessage(error));
-      setStage("error");
+      if (transactionSubmitted) {
+        setMessage(
+          "At least one redemption transaction was submitted. Do not retry while ClaimRail reconciles its receipt and post-state.",
+        );
+        setStage("pending_reconciliation");
+      } else {
+        setMessage(errorMessage(error));
+        setStage("error");
+      }
+    } finally {
+      if (!transactionSubmitted) walletActionLock.current = false;
     }
   }
 
@@ -229,12 +269,14 @@ export function ManualClaimFlow({
     );
   } else if (!correctChain) {
     action = (
-      <button
-        className="primary-action"
-        type="button"
-        onClick={() => switchChain.mutate({ chainId: SOMNIA_SHANNON_CHAIN_ID })}
-      >
+      <button className="primary-action" type="button" onClick={switchToShannon}>
         switch to Somnia Shannon <span>→</span>
+      </button>
+    );
+  } else if (stage === "pending_reconciliation") {
+    action = (
+      <button className="primary-action" type="button" disabled>
+        reconciliation pending
       </button>
     );
   } else if (prepared?.status === "approval_required") {

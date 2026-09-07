@@ -3,6 +3,46 @@ import { expect, test } from "@playwright/test";
 const address = "0x71f4a8b62d77c91402ce1a10bc65c9dff17892ac";
 const fixtureInbox = `/wallet/${address}?fixture=1`;
 
+test("never requests wallet authority on page load", async ({ page }) => {
+  await page.addInitScript(() => {
+    const calls: string[] = [];
+    Object.defineProperty(window, "__claimrailWalletCalls", { value: calls });
+    Object.defineProperty(window, "ethereum", {
+      configurable: true,
+      value: {
+        isMetaMask: true,
+        on() {},
+        removeListener() {},
+        request: async ({ method }: { method: string }) => {
+          calls.push(method);
+          if (method === "eth_accounts") return [];
+          if (method === "eth_chainId") return "0xc488";
+          return null;
+        },
+      },
+    });
+  });
+
+  await page.goto("/tools/shannon-position");
+  await expect(page.getByRole("button", { name: "connect MetaMask →" })).toBeVisible();
+  await page.waitForTimeout(750);
+  const promptingMethods = await page.evaluate(() => {
+    const calls = (window as unknown as Window & { __claimrailWalletCalls: string[] })
+      .__claimrailWalletCalls;
+    return calls.filter((method) =>
+      [
+        "eth_requestAccounts",
+        "wallet_switchEthereumChain",
+        "wallet_addEthereumChain",
+        "eth_sendTransaction",
+        "personal_sign",
+        "eth_signTypedData_v4",
+      ].includes(method),
+    );
+  });
+  expect(promptingMethods).toEqual([]);
+});
+
 test("renders and filters the settlement inbox", async ({ page }) => {
   await page.goto(fixtureInbox);
   await expect(page.getByRole("heading", { name: "settlement inbox" })).toBeVisible();
