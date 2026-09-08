@@ -2,6 +2,14 @@
 
 # 2026-09-08 — No-card judging deployment path
 
+- Added the owner wallet `0xdE67A35B322e5A31e8215B5245CA4e48d7977F71` to GitHub's encrypted
+  worker configuration and completed the first production run successfully:
+  `https://github.com/Alike001/claimrail/actions/runs/34251482576`.
+- The production worker reported database and schema readiness, verified two real DreamDEX
+  positions, and completed the market, wallet, receipt, and delivery lanes without errors. Neither
+  position was currently claimable, so the cycle correctly created no claim or delivery jobs.
+- Enabled `CLAIMRAIL_WORKER_ENABLED=true`; GitHub Actions now reconciles every 15 minutes, with the
+  manual trigger retained for the demo. The public wallet route and `/api/health` both return `200`.
 - Provisioned the isolated `claimrail` Vercel project and `claimrail-db` Neon Free resource, linked
   the GitHub repository, applied all Drizzle migrations, and configured shared secrets without
   printing or committing their values.
