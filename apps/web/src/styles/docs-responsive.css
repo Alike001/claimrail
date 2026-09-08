@@ -1,0 +1,109 @@
+@media (max-width: 1180px) {
+  .docs-layout {
+    grid-template-columns: 220px minmax(0, 820px);
+    justify-content: center;
+  }
+  .docs-on-page {
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
+  .docs-layout {
+    padding: 22px 22px 90px;
+    display: block;
+  }
+  .docs-sidebar {
+    display: none;
+  }
+  .docs-mobile-nav {
+    margin-bottom: 24px;
+    display: block;
+    border-block: 1px solid var(--border);
+  }
+  .docs-mobile-nav summary {
+    padding: 16px 0;
+    color: var(--signal);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .docs-mobile-nav nav {
+    padding-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 28px;
+  }
+  .docs-intro {
+    padding-top: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .docs-layout {
+    padding-inline: 16px;
+  }
+  .docs-mobile-nav nav {
+    grid-template-columns: 1fr;
+  }
+  .docs-intro h1 {
+    font-size: 40px;
+  }
+  .docs-lead {
+    font-size: 15px;
+  }
+  .docs-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .docs-entry-paths {
+    margin-top: 42px;
+  }
+  .docs-entry-paths a {
+    grid-template-columns: 1fr auto;
+    gap: 7px 14px;
+  }
+  .docs-entry-paths span {
+    grid-column: 1 / -1;
+  }
+  .docs-entry-paths i {
+    text-align: right;
+  }
+  .docs-chapter {
+    padding: 54px 0 60px;
+  }
+  .docs-chapter h2 {
+    font-size: 32px;
+  }
+  .docs-definition-list > div,
+  .docs-boundary-table > div {
+    padding: 16px 0;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .docs-status-list > div {
+    padding: 15px 0;
+    grid-template-columns: 18px 1fr;
+  }
+  .docs-status-list span {
+    grid-column: 2;
+  }
+  .docs-developer-chapter {
+    padding-inline: 18px;
+  }
+  .endpoint-list > div {
+    padding: 15px 0;
+    grid-template-columns: 54px 1fr;
+  }
+  .endpoint-list span {
+    grid-column: 2;
+  }
+  .docs-pager {
+    grid-template-columns: 1fr;
+  }
+  .docs-pager a + a {
+    align-items: flex-start;
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+}

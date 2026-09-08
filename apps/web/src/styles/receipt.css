@@ -27,7 +27,7 @@
 .receipt-hero h1 {
   max-width: 900px;
   margin: 0;
-  font-size: clamp(54px, 7vw, 108px);
+  font-size: clamp(46px, 5.8vw, 84px);
   font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.07em;
@@ -51,7 +51,7 @@
   color: var(--loss);
 }
 .receipt-stamp span {
-  font-size: 64px;
+  font-size: 52px;
   line-height: 1;
 }
 .receipt-stamp b {

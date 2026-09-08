@@ -19,9 +19,21 @@
 
 ### Current repository state
 
-- pnpm application workspace, not a root Git repository.
-- Phases 1–3 complete: fixture foundation, canonical Core, and live read-only DreamDEX adapter.
-- Approved V3 high-fidelity frontend direction; the application UI remains a shell until Phase 5.
+- pnpm application workspace with a GitHub remote at `Alike001/claimrail`.
+- Phases 1–5 and 8 are complete: foundation, canonical Core, live read adapter, durable PostgreSQL
+  workers, human product surfaces, and notification infrastructure.
+- Phases 6–7 are implementation-complete. Their shared stop condition still requires one
+  owner-signed paying or void-refund claim to pass live receipt and post-state reconciliation.
+- Phase 9 is implementation-complete for schemas, client, examples, docs, delivery console, and
+  event tester. Its external HTTP/device delivery proof remains open.
+- Phase 10 gas-sponsored `redeemFor` remains deliberately deferred as optional scope.
+- Phase 11 is active. Local verification, the frontend redesign, and the audience-first Learn
+  documentation are complete. The deployment manifest, README, SDK feedback, demo script, and local
+  presentation assets are also complete; public provisioning, real delivery, real successful claim
+  evidence, portal-specific submission copy, and the recorded demo remain.
+- The active frontend direction combines a plain-language public landing/app with a secondary,
+  clearly navigated developer workspace. Learn now provides separate “Use ClaimRail” and “Build
+  with ClaimRail” reading paths without duplicating product truth.
 - One preserved npm TypeScript probe project plus the production adapter, both pinned to SDK `0.29.0`.
 - Node 24, pnpm 10, Git, and Docker are available locally.
 
@@ -632,6 +644,11 @@ No judged auto-claim claim until valid relay and replay behavior is proven live.
 A funded Shannon owner opts in, a separate relayer pays gas, the owner receives the verified payout, and replay cannot produce a second financial action.
 
 ## Phase 11: Deployment, Verification Audit, And Demo Hardening
+
+**Status (September 8):** deployment manifest, database-aware health endpoint, simplified README,
+SDK/documentation feedback draft, timed demo script, and September 11 readiness board are complete.
+Provisioning, one real external delivery, one owner-signed successful claim with verified receipt,
+the final recording, and the submission portal draft remain.
 
 ### Goal
 

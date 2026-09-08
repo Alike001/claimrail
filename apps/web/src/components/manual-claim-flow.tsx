@@ -287,7 +287,7 @@ export function ManualClaimFlow({
         disabled={stage === "approving"}
         onClick={approveModule}
       >
-        {stage === "approving" ? "confirming approval…" : "approve module"} <span>→</span>
+        {stage === "approving" ? "confirming permission…" : "allow DreamDEX"} <span>→</span>
       </button>
     );
   } else if (prepared?.status === "ready") {
@@ -300,7 +300,7 @@ export function ManualClaimFlow({
       >
         {stage === "submitting" || stage === "preparing"
           ? "verifying fresh plan…"
-          : "redeem safely"}{" "}
+          : "claim with my wallet"}{" "}
         <span>→</span>
       </button>
     );
@@ -312,111 +312,118 @@ export function ManualClaimFlow({
         disabled={stage === "preparing"}
         onClick={safelyPrepare}
       >
-        {stage === "preparing" ? "checking on-chain state…" : "prepare claim"} <span>→</span>
+        {stage === "preparing" ? "checking on-chain state…" : "check what I can claim"}{" "}
+        <span>→</span>
       </button>
     );
   }
 
   return (
     <section className="transaction-plan" aria-label="Manual claim transaction plan">
-      <h3>transaction plan</h3>
+      <h3>wallet steps</h3>
+      <p className="plan-intro">
+        ClaimRail checks the latest chain state before your wallet is asked to approve anything.
+      </p>
       <div className="steps">
         <span className={prepared?.status === "approval_required" ? "active" : undefined}>
           <i>1</i>
-          approve if needed
+          allow DreamDEX
         </span>
         <span className={prepared?.status === "ready" ? "active" : undefined}>
           <i>2</i>
-          redeemMany
+          claim funds
         </span>
       </div>
-      <dl>
-        <dt>owner</dt>
-        <dd>{short(owner)}</dd>
-        <dt>network</dt>
-        <dd>Somnia Shannon · 50312</dd>
-        <dt>module</dt>
-        <dd>{plan ? short(plan.binaryModule) : "verified during preparation"}</dd>
-        <dt>scope</dt>
-        <dd>{plan?.approval.scope ?? "module-wide if approval is needed"}</dd>
-        <dt>simulation</dt>
-        <dd className={prepared?.status === "ready" ? "success-text" : undefined}>
-          {prepared?.status === "ready" ? "passed for every batch" : "runs after approval"}
-        </dd>
-        <dt>expected payout</dt>
-        <dd className="success-text">{preparedDisplay}</dd>
-        <dt>verified block</dt>
-        <dd>{plan?.verifiedBlock ?? "pending"}</dd>
-        <dt>expires</dt>
-        <dd>
-          {plan ? new Date(plan.expiresAt).toLocaleTimeString() : "90 seconds after creation"}
-        </dd>
-        <dt>plan hash</dt>
-        <dd>
-          {prepared?.status === "ready" ? short(prepared.plan.integrityHash) : "after simulation"}
-        </dd>
-      </dl>
-      {plan ? (
-        <button
-          className="text-link"
-          type="button"
-          onClick={() => setShowCalldata((show) => !show)}
-        >
-          {showCalldata ? "hide" : "inspect"} exact calldata
-        </button>
-      ) : null}
-      {plan ? (
-        <div className="prepared-summary">
-          <h4>
-            exact plan · {plan.entries.length} included · {plan.exclusions.length} excluded
-          </h4>
-          {plan.entries.map((entry) => (
-            <div key={entry.positionIdentity}>
-              <span>
-                {short(entry.marketId)} · {entry.outcomeIndex === 0 ? "UP" : "DOWN"}
-              </span>
-              <strong>
-                burn {entry.amount} →{" "}
-                {formatAmount(entry.expectedPayout, collateralDecimals, collateralSymbol)}
-              </strong>
-            </div>
-          ))}
-          {plan.exclusions.map((excluded) => (
-            <div className="excluded-entry" key={`${excluded.marketId}:${excluded.outcomeIndex}`}>
-              <span>
-                {short(excluded.marketId)} · {excluded.outcomeIndex === 0 ? "UP" : "DOWN"}
-              </span>
-              <strong>
-                excluded · {excluded.reason} · {excluded.detail}
-              </strong>
-            </div>
-          ))}
-        </div>
-      ) : null}
-      {showCalldata && plan ? (
-        <pre className="calldata-preview">
-          {JSON.stringify(
-            plan.batches.map((batch) => ({
-              contract: plan.binaryModule,
-              function: "redeemMany",
-              args: {
-                operatorId: plan.operatorId,
-                venueId: plan.venueId,
-                marketIds: batch.entries.map(({ marketId }) => marketId),
-                outcomeIndexes: batch.entries.map(({ outcomeIndex }) => outcomeIndex),
-                amounts: batch.entries.map(({ amount }) => amount),
-              },
-            })),
-            null,
-            2,
-          )}
-        </pre>
-      ) : null}
+      <details className="technical-details">
+        <summary>See technical transaction details</summary>
+        <dl>
+          <dt>owner</dt>
+          <dd>{short(owner)}</dd>
+          <dt>network</dt>
+          <dd>Somnia Shannon · 50312</dd>
+          <dt>DreamDEX module</dt>
+          <dd>{plan ? short(plan.binaryModule) : "verified during preparation"}</dd>
+          <dt>permission scope</dt>
+          <dd>{plan?.approval.scope ?? "module-wide if permission is needed"}</dd>
+          <dt>safety simulation</dt>
+          <dd className={prepared?.status === "ready" ? "success-text" : undefined}>
+            {prepared?.status === "ready" ? "passed for every batch" : "runs after permission"}
+          </dd>
+          <dt>expected payout</dt>
+          <dd className="success-text">{preparedDisplay}</dd>
+          <dt>verified block</dt>
+          <dd>{plan?.verifiedBlock ?? "pending"}</dd>
+          <dt>expires</dt>
+          <dd>
+            {plan ? new Date(plan.expiresAt).toLocaleTimeString() : "90 seconds after creation"}
+          </dd>
+          <dt>plan hash</dt>
+          <dd>
+            {prepared?.status === "ready" ? short(prepared.plan.integrityHash) : "after simulation"}
+          </dd>
+        </dl>
+        {plan ? (
+          <button
+            className="text-link"
+            type="button"
+            onClick={() => setShowCalldata((show) => !show)}
+          >
+            {showCalldata ? "hide" : "inspect"} exact calldata
+          </button>
+        ) : null}
+        {plan ? (
+          <div className="prepared-summary">
+            <h4>
+              exact plan · {plan.entries.length} included · {plan.exclusions.length} excluded
+            </h4>
+            {plan.entries.map((entry) => (
+              <div key={entry.positionIdentity}>
+                <span>
+                  {short(entry.marketId)} · {entry.outcomeIndex === 0 ? "UP" : "DOWN"}
+                </span>
+                <strong>
+                  burn {entry.amount} →{" "}
+                  {formatAmount(entry.expectedPayout, collateralDecimals, collateralSymbol)}
+                </strong>
+              </div>
+            ))}
+            {plan.exclusions.map((excluded) => (
+              <div className="excluded-entry" key={`${excluded.marketId}:${excluded.outcomeIndex}`}>
+                <span>
+                  {short(excluded.marketId)} · {excluded.outcomeIndex === 0 ? "UP" : "DOWN"}
+                </span>
+                <strong>
+                  excluded · {excluded.reason} · {excluded.detail}
+                </strong>
+              </div>
+            ))}
+          </div>
+        ) : null}
+        {showCalldata && plan ? (
+          <pre className="calldata-preview">
+            {JSON.stringify(
+              plan.batches.map((batch) => ({
+                contract: plan.binaryModule,
+                function: "redeemMany",
+                args: {
+                  operatorId: plan.operatorId,
+                  venueId: plan.venueId,
+                  marketIds: batch.entries.map(({ marketId }) => marketId),
+                  outcomeIndexes: batch.entries.map(({ outcomeIndex }) => outcomeIndex),
+                  amounts: batch.entries.map(({ amount }) => amount),
+                },
+              })),
+              null,
+              2,
+            )}
+          </pre>
+        ) : null}
+      </details>
       {prepared?.status === "approval_required" ? (
         <p className="approval-warning">
           <span className="status-square warning" />
-          This grants the DreamDEX binary module access to every outcome-token ID held by this
-          wallet on {short(prepared.plan.outcomeToken)}. It remains active until the owner revokes
+          This lets the DreamDEX module use every outcome-token ID held by this wallet on{" "}
+          {short(prepared.plan.outcomeToken)}. The permission stays active until the owner revokes
           it.
         </p>
       ) : null}

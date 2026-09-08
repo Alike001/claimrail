@@ -3,6 +3,27 @@ import { expect, test } from "@playwright/test";
 const address = "0x71f4a8b62d77c91402ce1a10bc65c9dff17892ac";
 const fixtureInbox = `/wallet/${address}?fixture=1`;
 
+test("explains ClaimRail in plain language before asking for wallet access", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(
+    page.getByRole("heading", { name: "Know what settled. Claim what’s yours." }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("No sign-up. Looking up a wallet is public and read-only."),
+  ).toBeVisible();
+  await expect(page.getByText("We never ask for your private key")).toBeVisible();
+  await expect(page.getByText("Funds go straight to your wallet")).toBeVisible();
+  await expect(page.getByText("sample data", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "See a complete example →" })).toHaveAttribute(
+    "href",
+    fixtureInbox,
+  );
+
+  await page.getByRole("button", { name: "Check my positions" }).click();
+  await expect(page.getByText("That address looks incomplete.", { exact: false })).toBeVisible();
+});
+
 test("never requests wallet authority on page load", async ({ page }) => {
   await page.addInitScript(() => {
     const calls: string[] = [];
@@ -43,32 +64,35 @@ test("never requests wallet authority on page load", async ({ page }) => {
   expect(promptingMethods).toEqual([]);
 });
 
-test("renders and filters the settlement inbox", async ({ page }) => {
+test("renders and filters the position inbox", async ({ page }) => {
   await page.goto(fixtureInbox);
-  await expect(page.getByRole("heading", { name: "settlement inbox" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "See what finished and what you can claim." }),
+  ).toBeVisible();
   await expect(page.getByRole("region", { name: "Position lifecycle" })).toContainText("ready 2");
   await expect(page.locator(".ledger-row")).toHaveCount(5);
 
-  await page.getByRole("tab", { name: "claimable 2" }).click();
+  await page.getByRole("tab", { name: "ready to claim 2" }).click();
   await expect(page.locator(".ledger-row")).toHaveCount(2);
   await expect(page.getByText("SOMI/USDso")).toBeHidden();
 
-  await page.getByRole("tab", { name: "all 5" }).click();
+  await page.getByRole("tab", { name: "all positions 5" }).click();
   await expect(page.getByText("SOMI/USDso")).toBeVisible();
 });
 
 test("opens a safe, non-signing claim preview", async ({ page }) => {
   await page.goto(fixtureInbox);
-  await page.getByRole("button", { name: "review claim →" }).click();
-  await expect(page.getByText("transaction plan")).toBeVisible();
+  await page.getByRole("button", { name: "review funds →" }).click();
+  await expect(page.getByText("wallet steps")).toBeVisible();
+  await page.getByText("See technical transaction details").click();
   await expect(page.getByText("module-wide")).toBeVisible();
-  await expect(page.getByRole("button", { name: "approve module →" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "allow DreamDEX →" })).toBeDisabled();
   await expect(page.getByText("no transaction will be sent")).toBeVisible();
 });
 
 test("shows settlement evidence and copies proof values", async ({ page }) => {
   await page.goto(`/markets/0x${"12".repeat(32)}?fixture=1`);
-  await expect(page.getByRole("heading", { name: "verifiable evidence ladder" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Why this result is trustworthy" })).toBeVisible();
   await expect(page.getByText("2,411.80", { exact: true })).toBeVisible();
   await expect(page.getByText("2,406.12", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "copy" }).first().click();
@@ -76,6 +100,7 @@ test("shows settlement evidence and copies proof values", async ({ page }) => {
 });
 
 test("serves discovery and validated API errors", async ({ request }) => {
+  test.slow();
   const discovery = await request.get("/api/v1/openapi.json");
   await expect(discovery).toBeOK();
   const openapi = await discovery.json();
@@ -167,7 +192,9 @@ test("serves discovery and validated API errors", async ({ request }) => {
 test("documents the settlement and signing boundary", async ({ page }) => {
   await page.goto("/docs");
   await expect(
-    page.getByRole("heading", { name: "the missing settlement delivery layer." }),
+    page.getByRole("heading", {
+      name: "Understand ClaimRail without learning the plumbing.",
+    }),
   ).toBeVisible();
   await expect(page.getByText("Approval is broad. Redemption is exact.")).toBeVisible();
   await expect(page.getByText("/api/v1/claims/prepare", { exact: true })).toBeVisible();
@@ -219,9 +246,28 @@ test("presents notification delivery without overstating unfinished adapters", a
   await expect(page.getByRole("button", { name: "connect owner wallet →" })).toBeVisible();
 });
 
+test("gives developers one clear entry point", async ({ page }) => {
+  await page.goto("/developers");
+  await expect(
+    page.getByRole("heading", { name: "One reliable settlement feed, ready for your product." }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Browse the API →" })).toHaveAttribute(
+    "href",
+    "/docs#api",
+  );
+  await expect(page.getByRole("link", { name: "Test an event →" })).toHaveAttribute(
+    "href",
+    "/developers/events",
+  );
+  await expect(page.getByRole("link", { name: "Open deliveries →" })).toHaveAttribute(
+    "href",
+    "/developers/deliveries",
+  );
+});
+
 test("inspects and filters the developer delivery ledger", async ({ page }) => {
   await page.goto("/developers/deliveries?fixture=1");
-  await expect(page.getByRole("heading", { name: "Developer Delivery Console" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Delivery operations" })).toBeVisible();
   await expect(page.getByText("verified UI fixture · no live delivery data")).toBeVisible();
   await expect(page.locator(".delivery-table tbody tr")).toHaveCount(5);
   await expect(page.getByRole("region", { name: "Selected delivery inspector" })).toContainText(
@@ -255,7 +301,7 @@ test("inspects and filters the developer delivery ledger", async ({ page }) => {
 
 test("inspects and verifies canonical event bytes", async ({ page }) => {
   await page.goto("/developers/events");
-  await expect(page.getByRole("heading", { name: "Canonical Event Playground" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Webhook event tester" })).toBeVisible();
   await expect(page.getByText("not a live ClaimRail delivery", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: /wallet\.claimable/ }).click();
   await expect(page.getByRole("heading", { name: "wallet.claimable" })).toBeVisible();

@@ -56,30 +56,30 @@ function station(
 ): Pick<InboxRowViewModel, "station" | "stationTone" | "filter"> {
   switch (position.state) {
     case "open":
-      return { station: "open", stationTone: "signal", filter: ["all"] };
+      return { station: "live", stationTone: "signal", filter: ["all"] };
     case "locked":
     case "winning_unfinalized":
       return {
-        station: position.state === "locked" ? "locked" : "won · waiting",
+        station: position.state === "locked" ? "waiting" : "won · payout pending",
         stationTone: "warning",
         filter: ["all", "attention"],
       };
     case "claimable":
     case "void_refundable":
       return {
-        station: position.state === "claimable" ? "ready" : "void · refundable",
+        station: position.state === "claimable" ? "ready" : "refund ready",
         stationTone: "success",
         filter: ["all", "attention", "claimable"],
       };
     case "losing":
-      return { station: "resolved", stationTone: "loss", filter: ["all"] };
+      return { station: "finished", stationTone: "loss", filter: ["all"] };
     case "claim_submitted":
-      return { station: "claim submitted", stationTone: "warning", filter: ["all", "attention"] };
+      return { station: "claim sent", stationTone: "warning", filter: ["all", "attention"] };
     case "redeemed":
       return { station: "redeemed", stationTone: "neutral", filter: ["all"] };
     case "payout_owed":
       return {
-        station: "payout owed",
+        station: "payment pending",
         stationTone: "warning",
         filter: ["all", "attention", "claimable"],
       };
@@ -87,24 +87,22 @@ function station(
 }
 
 function reason(market: MarketRecord, position: WalletPosition): string {
-  if (position.state === "locked") return "awaiting oracle";
+  if (position.state === "locked") return "Waiting for the final result";
   if (position.state === "void_refundable")
     return market.settlement.oracle.status === "verified"
-      ? (market.settlement.oracle.value.voidReason ?? "market voided · refund")
-      : "market voided · refund";
+      ? (market.settlement.oracle.value.voidReason ?? "Market cancelled · refund available")
+      : "Market cancelled · refund available";
   const oracle = market.settlement.oracle;
   if (
     oracle.status === "verified" &&
     oracle.value.openingValue !== undefined &&
     oracle.value.closingValue !== undefined
   ) {
-    const operator = oracle.value.closingValue >= oracle.value.openingValue ? ">=" : "<";
     const decimals = oracle.value.valueDecimals ?? 0;
-    return `${formatOracleValue(oracle.value.closingValue, decimals)} ${operator} open ${formatOracleValue(oracle.value.openingValue, decimals)}`;
+    const direction = oracle.value.closingValue >= oracle.value.openingValue ? "above" : "below";
+    return `Closed ${direction} the opening price · ${formatOracleValue(oracle.value.closingValue, decimals)} vs ${formatOracleValue(oracle.value.openingValue, decimals)}`;
   }
-  return market.settlementFinalized
-    ? `oracle result · ${position.side.toUpperCase()}`
-    : "result not finalized";
+  return market.settlementFinalized ? "Result recorded on Somnia" : "Result is not final yet";
 }
 
 export function buildInboxViewModel(input: {

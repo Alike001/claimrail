@@ -107,7 +107,7 @@ describe("settlement inbox view model", () => {
       markets: [market],
     });
     expect(view.claimable).toBe("2,970.00 USDso");
-    expect(view.rows[0]?.reason).toBe("2,406.12 < open 2,411.80");
+    expect(view.rows[0]?.reason).toBe("Closed below the opening price · 2,406.12 vs 2,411.80");
     expect(view.rows[0]?.position).toBe("DOWN · 2,970.00");
   });
 

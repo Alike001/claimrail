@@ -57,7 +57,9 @@ DreamDEX test position.
 
 ## Stage 2 — Choose the three deployment resources
 
-Create or choose:
+The checked-in [Render deployment guide](./render-deployment.md) and root `render.yaml` provide the
+recommended one-provider route. At the current listed price it uses a $7/month web service, a
+$7/month always-on worker, and a free 30-day PostgreSQL database. Create or choose:
 
 - [ ] A managed PostgreSQL database with TLS and a connection string.
 - [ ] A Node.js web host that can run the Next.js application on Node 24.
@@ -122,6 +124,7 @@ users subscribe; rotating it invalidates existing browser routes.
       `pnpm --filter @claimrail/web start`.
 - [ ] Start the worker with `pnpm dev:worker`.
 - [ ] Open `/api/v1/openapi.json`; it must return an OpenAPI document.
+- [ ] Open `/api/health`; it must return `status: "ready"`, database `reachable`, and schema `ready`.
 - [ ] Open `/api/v1/subscriptions/browser/config`; it must say `available: true`.
 - [ ] Open `/`; the live site must not show a fixture banner.
 

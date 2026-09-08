@@ -3,32 +3,48 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
-export function WalletSearch({ initialAddress = "" }: { readonly initialAddress?: string }) {
+export function WalletSearch({
+  initialAddress = "",
+  variant = "product",
+}: {
+  readonly initialAddress?: string;
+  readonly variant?: "product" | "landing";
+}) {
   const [address, setAddress] = useState(initialAddress);
   const [error, setError] = useState("");
   const router = useRouter();
   function inspect(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!/^0x[0-9a-fA-F]{40}$/.test(address.trim())) {
-      setError("Enter a valid 0x wallet address.");
+      setError(
+        variant === "landing"
+          ? "That address looks incomplete. Paste the full address beginning with 0x."
+          : "Enter a valid 0x wallet address.",
+      );
       return;
     }
     setError("");
     router.push(`/wallet/${address.trim()}`);
   }
   return (
-    <form className="wallet-form" onSubmit={inspect} noValidate>
-      <label htmlFor="wallet-address">wallet monitor</label>
+    <form
+      className={`wallet-form ${variant === "landing" ? "landing-wallet-form" : ""}`}
+      onSubmit={inspect}
+      noValidate
+    >
+      <label htmlFor="wallet-address">
+        {variant === "landing" ? "Paste a public wallet address" : "wallet monitor"}
+      </label>
       <div className="wallet-control">
         <input
           id="wallet-address"
           value={address}
           onChange={(event) => setAddress(event.target.value)}
-          placeholder="0x… public address"
+          placeholder={variant === "landing" ? "0x1234…" : "0x… public address"}
           autoComplete="off"
           spellCheck={false}
         />
-        <button type="submit">inspect</button>
+        <button type="submit">{variant === "landing" ? "Check my positions" : "inspect"}</button>
       </div>
       <p className="field-error" aria-live="polite">
         {error}

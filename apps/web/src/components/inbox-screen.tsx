@@ -9,17 +9,17 @@ import { RailMark } from "./rail-mark";
 import { WalletSearch } from "./wallet-search";
 
 const filters: readonly { readonly id: InboxFilter; readonly label: string }[] = [
-  { id: "all", label: "all" },
+  { id: "all", label: "all positions" },
   { id: "attention", label: "needs attention" },
-  { id: "claimable", label: "claimable" },
+  { id: "claimable", label: "ready to claim" },
 ];
 
 function LifecycleRail({ counts }: { readonly counts: InboxViewModel["counts"] }) {
   const stations = [
-    ["open", counts.open, "trading", "signal"],
-    ["locked", counts.locked, "waiting for oracle", "warning"],
-    ["resolved", counts.resolved, "result recorded", "neutral"],
-    ["ready", counts.ready, "funds can be claimed", "signal"],
+    ["live", counts.open, "trading now", "signal"],
+    ["waiting", counts.locked, "result pending", "warning"],
+    ["settled", counts.resolved, "result recorded", "neutral"],
+    ["ready", counts.ready, "funds available", "signal"],
   ] as const;
   return (
     <section className="lifecycle" aria-label="Position lifecycle">
@@ -56,7 +56,7 @@ function ClaimTray({
       {open ? (
         <div className="tray-expanded">
           <div className="tray-title">
-            <span>claim plan</span>
+            <span>claim review</span>
             <span>{view.counts.ready} positions</span>
             <strong>{view.claimable}</strong>
             <button type="button" onClick={onToggle}>
@@ -64,7 +64,7 @@ function ClaimTray({
             </button>
           </div>
           <section>
-            <h3>{view.fixture ? "included positions" : "claimable candidates"}</h3>
+            <h3>{view.fixture ? "ready to claim" : "verified positions"}</h3>
             {view.rows
               .filter((row) => row.filter.includes("claimable"))
               .map((row) => (
@@ -74,12 +74,12 @@ function ClaimTray({
                     <strong>
                       {row.market} · {row.position.split(" · ")[0]}
                     </strong>
-                    <small>finalized · winner · verified</small>
+                    <small>result confirmed · amount checked</small>
                   </div>
                   <b>{row.returnValue}</b>
                 </div>
               ))}
-            <h3>not included</h3>
+            <h3>not ready yet</h3>
             <ul className="excluded">
               {view.rows
                 .filter((row) => !row.filter.includes("claimable"))
@@ -93,43 +93,45 @@ function ClaimTray({
           </section>
           {view.fixture ? (
             <section className="transaction-plan">
-              <h3>transaction plan</h3>
+              <h3>wallet steps</h3>
+              <p className="plan-intro">
+                You will review each step in your wallet. Funds return directly to the position
+                owner.
+              </p>
               <div className="steps">
                 <span className="active">
                   <i>1</i>
-                  approve module
+                  allow DreamDEX
                 </span>
                 <span>
                   <i>2</i>
-                  redeemMany
+                  claim funds
                 </span>
               </div>
-              <dl>
-                <dt>module</dt>
-                <dd>0x3ecC…e388</dd>
-                <dt>scope</dt>
-                <dd>module-wide</dd>
-                <dt>simulation</dt>
-                <dd className="success-text">passed</dd>
-                <dt>expected payout</dt>
-                <dd className="success-text">{view.claimable}</dd>
-                <dt>plan hash</dt>
-                <dd>0xb72a…41e9</dd>
-              </dl>
-              <button className="text-link" type="button" disabled>
-                inspect calldata
-              </button>
+              <details className="technical-details">
+                <summary>See technical transaction details</summary>
+                <dl>
+                  <dt>DreamDEX module</dt>
+                  <dd>0x3ecC…e388</dd>
+                  <dt>permission scope</dt>
+                  <dd>module-wide</dd>
+                  <dt>safety simulation</dt>
+                  <dd className="success-text">passed</dd>
+                  <dt>expected payout</dt>
+                  <dd className="success-text">{view.claimable}</dd>
+                  <dt>plan hash</dt>
+                  <dd>0xb72a…41e9</dd>
+                </dl>
+              </details>
               <p className="approval-warning">
                 <span className="status-square warning" />
-                This grants the DreamDEX binary module access to every outcome-token ID held by this
-                wallet. Approval remains active until revoked.
+                The first step lets DreamDEX use this wallet&apos;s outcome tokens. This permission
+                stays active until the owner revokes it.
               </p>
               <button className="primary-action" type="button" disabled>
-                approve module <span>→</span>
+                allow DreamDEX <span>→</span>
               </button>
-              <small className="phase-note">
-                manual claiming arrives in Phase 6 · no transaction will be sent
-              </small>
+              <small className="phase-note">example only · no transaction will be sent</small>
             </section>
           ) : (
             <ManualClaimFlow
@@ -148,16 +150,14 @@ function ClaimTray({
       ) : (
         <div className="tray-collapsed">
           <div className="ready-count">
-            <RailMark compact /> <strong>{view.counts.ready} ready</strong>
+            <RailMark compact /> <strong>{view.counts.ready} ready to claim</strong>
           </div>
           <div className="tray-total">
             <strong>{view.claimable}</strong>
-            <small>
-              verified at block {view.verifiedBlock} · {view.counts.ready} entries
-            </small>
+            <small>checked on Somnia at block {view.verifiedBlock}</small>
           </div>
           <button className="primary-action" type="button" onClick={onToggle}>
-            review claim <span>→</span>
+            review funds <span>→</span>
           </button>
           <small>wallet signature required · no keys stored</small>
         </div>
@@ -179,16 +179,16 @@ export function InboxScreen({ view }: { readonly view: InboxViewModel }) {
       <section className="wallet-band">
         <WalletSearch initialAddress={view.address} />
         <div className="metric">
-          <small>claimable</small>
+          <small>ready to claim</small>
           <strong>{view.claimable}</strong>
         </div>
         <div className="metric">
-          <small>verified block</small>
+          <small>last checked</small>
           <strong>{view.verifiedBlock}</strong>
         </div>
         <div className="metric provenance">
           <small>
-            settlement source
+            powered by
             {view.fixture ? <em>fixture · no live funds</em> : null}
           </small>
           <strong>
@@ -196,75 +196,108 @@ export function InboxScreen({ view }: { readonly view: InboxViewModel }) {
           </strong>
         </div>
       </section>
-      <LifecycleRail counts={view.counts} />
-      <main className="inbox">
-        <h1>settlement inbox</h1>
-        <div className="tabs" role="tablist" aria-label="Inbox filter">
-          {filters.map(({ id, label }) => {
-            const count =
-              id === "all"
-                ? view.rows.length
-                : view.rows.filter((row) => row.filter.includes(id)).length;
-            return (
-              <button
-                role="tab"
-                aria-selected={filter === id}
-                key={id}
-                onClick={() => setFilter(id)}
-              >
-                {label} {count}
-              </button>
-            );
-          })}
-        </div>
-        {view.completeness !== "complete" ? (
-          <p className="scan-warning" role="status">
-            {view.completeness} scan · totals may be incomplete
-          </p>
-        ) : null}
-        <div className="ledger" role="table" aria-label="Settlement positions">
-          <div className="ledger-head" role="row">
-            <span>market</span>
-            <span>position</span>
-            <span>window</span>
-            <span>station</span>
-            <span>oracle / reason</span>
-            <span>return</span>
-            <span>evidence</span>
-          </div>
-          {visibleRows.map((row) => (
-            <div className="ledger-row" role="row" key={row.identity}>
-              <span className="market-cell">
-                <i className={`rail-signal ${row.stationTone}`} />
-                {row.market}
-              </span>
-              <span data-label="position">{row.position}</span>
-              <span data-label="window">{row.window}</span>
-              <span data-label="station">
-                <i className={`status-square ${row.stationTone}`} />
-                {row.station}
-              </span>
-              <span data-label="oracle / reason">{row.reason}</span>
-              <span className={`${row.returnTone}-text`} data-label="return">
-                {row.returnValue}
-              </span>
-              <span data-label="evidence">
-                <Link href={`/markets/${row.marketId}${view.fixture ? "?fixture=1" : ""}`}>
-                  {row.action}
-                </Link>
-              </span>
+      <main className="position-main" id="main-content">
+        <section className="position-overview">
+          <div className="inbox-heading">
+            <div>
+              <p className="eyebrow">Your DreamDEX positions</p>
+              <h1>See what finished and what you can claim.</h1>
             </div>
-          ))}
+            <p>
+              ClaimRail checks each position against Somnia, then shows the result and your next
+              action in plain language.
+            </p>
+          </div>
+          <LifecycleRail counts={view.counts} />
+        </section>
+        <div className="position-workspace">
+          <section className="inbox" aria-labelledby="position-list-title">
+            <div className="position-list-heading">
+              <div>
+                <p className="eyebrow">Position list</p>
+                <h2 id="position-list-title">What your wallet holds</h2>
+              </div>
+              <span>{view.rows.length} positions found</span>
+            </div>
+            <div className="tabs" role="tablist" aria-label="Inbox filter">
+              {filters.map(({ id, label }) => {
+                const count =
+                  id === "all"
+                    ? view.rows.length
+                    : view.rows.filter((row) => row.filter.includes(id)).length;
+                return (
+                  <button
+                    role="tab"
+                    aria-selected={filter === id}
+                    key={id}
+                    onClick={() => setFilter(id)}
+                  >
+                    {label} {count}
+                  </button>
+                );
+              })}
+            </div>
+            {view.completeness !== "complete" ? (
+              <p className="scan-warning" role="status">
+                {view.completeness} scan · totals may be incomplete
+              </p>
+            ) : null}
+            <div className="ledger" role="table" aria-label="Settlement positions">
+              <div className="ledger-head" role="row">
+                <span>market</span>
+                <span>your position</span>
+                <span>status</span>
+                <span>amount</span>
+                <span>details</span>
+              </div>
+              {visibleRows.map((row) => {
+                const [side, quantity] = row.position.split(" · ");
+                return (
+                  <div className="ledger-row" role="row" key={row.identity}>
+                    <span className="market-cell">
+                      <i className={`rail-signal ${row.stationTone}`} />
+                      <span>
+                        <strong>{row.market}</strong>
+                        <small>{row.reason}</small>
+                      </span>
+                    </span>
+                    <span className="position-cell" data-label="your position">
+                      <strong>{side}</strong>
+                      <small>
+                        {quantity} contracts · {row.window}
+                      </small>
+                    </span>
+                    <span data-label="status">
+                      <i className={`status-square ${row.stationTone}`} />
+                      {row.station}
+                    </span>
+                    <span className={`${row.returnTone}-text`} data-label="amount">
+                      {row.returnValue}
+                    </span>
+                    <span data-label="details">
+                      <Link href={`/markets/${row.marketId}${view.fixture ? "?fixture=1" : ""}`}>
+                        {row.action}
+                      </Link>
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            {visibleRows.length === 0 ? (
+              <div className="empty-state">No positions in this view.</div>
+            ) : null}
+          </section>
+          <ClaimTray
+            view={view}
+            open={trayOpen}
+            onToggle={() => setTrayOpen((current) => !current)}
+          />
         </div>
-        {visibleRows.length === 0 ? (
-          <div className="empty-state">No positions at this station.</div>
-        ) : null}
       </main>
-      <ClaimTray view={view} open={trayOpen} onToggle={() => setTrayOpen((current) => !current)} />
       <footer className="status-footer">
         <span>
           {view.completeness === "complete" ? "index complete" : `index ${view.completeness}`} ·
-          observed {new Date(view.observedAt).toLocaleTimeString()}
+          updated {new Date(view.observedAt).toLocaleTimeString()}
         </span>
         <span>independent ClaimRail interface</span>
       </footer>

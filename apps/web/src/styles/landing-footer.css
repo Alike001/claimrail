@@ -1,0 +1,31 @@
+.landing-footer {
+  min-height: 160px;
+  padding-top: 38px;
+  padding-bottom: 38px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  align-items: start;
+  gap: 50px;
+  border-top: 1px solid var(--landing-line);
+}
+.footer-brand {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+.landing-footer p {
+  max-width: 380px;
+  color: var(--landing-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.landing-footer nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 26px;
+}
+.landing-footer nav a {
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}

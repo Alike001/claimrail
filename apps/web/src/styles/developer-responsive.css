@@ -1,0 +1,84 @@
+@media (max-width: 900px) {
+  .developer-hero,
+  .developer-section-heading,
+  .developer-tool-layout,
+  .developer-flow {
+    grid-template-columns: 1fr;
+  }
+  .developer-hero {
+    gap: 54px;
+  }
+  .developer-trust-strip {
+    grid-template-columns: 1fr;
+  }
+  .developer-trust-strip p,
+  .developer-trust-strip p:first-child {
+    padding: 18px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .developer-api-card {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 700px) {
+  .developer-main {
+    padding-inline: 16px;
+  }
+  .developer-hero {
+    min-height: auto;
+    padding: 58px 0 74px;
+  }
+  .developer-hero-copy h1 {
+    font-size: 42px;
+  }
+  .developer-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .developer-event-preview {
+    padding: 22px;
+    box-shadow: 10px 12px 0 #dde4ce;
+  }
+  .developer-event-preview h2 {
+    font-size: 25px;
+  }
+  .developer-tools,
+  .developer-flow {
+    padding: 64px 0;
+  }
+  .developer-section-heading h2,
+  .developer-flow h2 {
+    font-size: 35px;
+  }
+  .developer-tool-layout {
+    margin-top: 38px;
+  }
+  .developer-api-card {
+    min-height: auto;
+    grid-template-columns: 1fr;
+  }
+  .developer-api-card > div {
+    min-height: 330px;
+    padding: 24px;
+  }
+  .developer-api-card h3 {
+    margin-top: 40px;
+  }
+  .developer-api-card pre {
+    min-height: 250px;
+    margin: 0;
+    padding: 24px;
+  }
+  .developer-tool-stack article {
+    min-height: 240px;
+    padding: 24px;
+  }
+  .developer-flow {
+    gap: 38px;
+  }
+  .developer-flow li {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

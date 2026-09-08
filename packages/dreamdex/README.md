@@ -11,6 +11,11 @@ The package deliberately separates three sources:
 - Current Somnia chain reads verify market wiring, lifecycle, and ERC-6909 balances.
 - `BinarySettlement` verifies finalization, remaining backing, fees, and payout vectors.
 
+The public indexer's combined SDK `MarketResolution` query can exceed its fixed timeout under load.
+The adapter therefore reads the smaller resolution-event and reference-link collections in parallel,
+validates their runtime shape, and relies on direct Somnia reads for the authoritative payout and
+closing value. It does not guess when optional oracle detail is unavailable.
+
 `ClaimRailReadService.readWallet(address)` is the main application boundary. It
 accepts any public address and returns an honest `complete`, `partial`, or `failed`
 scan, normalized positions, reconciled markets, and only fully verified claim

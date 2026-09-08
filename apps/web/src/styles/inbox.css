@@ -1,11 +1,22 @@
 .app-shell {
   min-height: 100vh;
-  padding-bottom: 185px;
+  padding-bottom: 48px;
   background: var(--page);
 }
+.position-main {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 32px 26px 92px;
+}
+.position-overview,
+.inbox,
+.claim-tray {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
 .wallet-band {
-  min-height: 114px;
-  padding: 16px 26px;
+  min-height: 102px;
+  padding: 13px 26px;
   display: grid;
   grid-template-columns: minmax(480px, 1.6fr) minmax(200px, 0.55fr) minmax(200px, 0.5fr) minmax(
       255px,
@@ -64,7 +75,7 @@
 }
 .metric strong {
   display: block;
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 500;
   line-height: 1.25;
   white-space: nowrap;
@@ -72,7 +83,7 @@
 }
 .metric.provenance strong {
   color: var(--protocol);
-  font-size: 17px;
+  font-size: 15px;
 }
 .metric.provenance i {
   color: var(--muted);
@@ -80,14 +91,14 @@
 }
 .lifecycle {
   position: relative;
-  min-height: 190px;
-  padding: 42px 30px 0;
+  min-height: 136px;
+  padding: 25px 30px 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
 .track {
   position: absolute;
-  top: 63px;
+  top: 46px;
   left: 31px;
   right: 31px;
   height: 30px;
@@ -102,27 +113,27 @@
   color: var(--text);
 }
 .station-node {
-  width: 51px;
-  height: 51px;
+  width: 43px;
+  height: 43px;
   display: grid;
   place-items: center;
-  background: var(--page);
+  background: var(--surface);
   border: 1px solid currentColor;
 }
 .station-node i {
-  width: 19px;
-  height: 19px;
+  width: 15px;
+  height: 15px;
   background: var(--text);
 }
 .station strong {
-  margin-top: 13px;
-  font-size: 19px;
+  margin-top: 9px;
+  font-size: 16px;
   font-weight: 500;
 }
 .station small {
   margin-top: 3px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 12px;
 }
 .station.signal {
   color: var(--signal);
@@ -136,16 +147,68 @@
   color: var(--muted);
 }
 .inbox {
-  padding: 0 26px;
+  min-width: 0;
+  padding: 24px;
+}
+.inbox-heading {
+  min-height: 122px;
+  padding: 28px 30px 22px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.6fr);
+  align-items: end;
+  gap: 40px;
+  border-bottom: 1px solid var(--border);
+}
+.inbox-heading .eyebrow {
+  margin-bottom: 9px;
+  font-size: 10px;
 }
 .inbox h1 {
   margin: 0;
-  font-size: 25px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: clamp(25px, 2.5vw, 34px);
+  font-weight: 550;
+  letter-spacing: -0.045em;
+}
+.position-workspace {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 22px;
+}
+.position-list-heading {
+  min-height: 64px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.position-list-heading .eyebrow {
+  margin-bottom: 4px;
+  font-size: 9px;
+}
+.position-list-heading h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 550;
+  letter-spacing: -0.035em;
+}
+.position-list-heading > span {
+  padding: 6px 8px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.inbox-heading > p {
+  max-width: 560px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
 }
 .tabs {
-  height: 52px;
+  height: 48px;
   display: flex;
   gap: 26px;
   border-bottom: 1px solid var(--border);
@@ -157,7 +220,7 @@
   background: none;
   border: 0;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 13px;
 }
 .tabs button[aria-selected="true"] {
   color: var(--signal);
@@ -180,27 +243,53 @@
 .ledger-head,
 .ledger-row {
   display: grid;
-  grid-template-columns: 1.25fr 1.15fr 0.65fr 0.9fr 2.15fr 1.15fr 0.8fr;
+  grid-template-columns:
+    minmax(260px, 1.6fr) minmax(120px, 0.75fr) minmax(105px, 0.65fr) minmax(130px, 0.7fr)
+    70px;
   align-items: center;
   column-gap: 18px;
 }
 .ledger-head {
-  min-height: 56px;
-  padding-inline: 86px 10px;
+  min-height: 48px;
+  padding-inline: 17px;
   color: var(--muted);
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 10px;
 }
 .ledger-row {
-  min-height: 57px;
+  min-height: 78px;
+  padding-inline: 17px;
   border-top: 1px solid var(--border);
-  font-size: 15px;
+  font-size: 14px;
 }
 .ledger-row:last-child {
   border-bottom: 1px solid var(--border);
 }
 .ledger-row > span {
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.market-cell > span,
+.market-cell strong,
+.market-cell small,
+.position-cell strong,
+.position-cell small {
+  display: block;
+}
+.market-cell > span {
+  min-width: 0;
+}
+.market-cell strong,
+.position-cell strong {
+  font-weight: 550;
+}
+.market-cell small,
+.position-cell small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -215,19 +304,19 @@
 .rail-signal {
   position: relative;
   flex: 0 0 auto;
-  width: 70px;
-  height: 20px;
-  margin-right: 18px;
+  width: 42px;
+  height: 16px;
+  margin-right: 13px;
   border-block: 2px solid var(--muted);
 }
 .rail-signal::after {
   content: "";
   position: absolute;
-  left: 25px;
-  top: -6px;
-  width: 20px;
-  height: 28px;
-  background: var(--page);
+  left: 14px;
+  top: -5px;
+  width: 14px;
+  height: 22px;
+  background: var(--surface);
   border: 1px solid currentColor;
 }
 .rail-signal.success,
@@ -250,24 +339,13 @@
   border-bottom: 1px solid var(--border);
 }
 .claim-tray {
-  position: fixed;
+  position: sticky;
   z-index: 15;
-  inset: auto 0 48px;
-  min-height: 128px;
-  border-top: 1px solid var(--border);
-  background: var(--page);
+  top: 92px;
+  min-height: 380px;
 }
 .tray-handle {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  width: 72px;
-  height: 20px;
-  translate: -50% 0;
-  border: 1px solid var(--border);
-  border-bottom: 0;
-  background: var(--page);
-  cursor: pointer;
+  display: none;
 }
 .tray-handle::after {
   content: "";
@@ -279,27 +357,32 @@
   background: var(--muted);
 }
 .tray-collapsed {
-  min-height: 128px;
-  padding: 20px 36px;
+  min-height: 378px;
+  padding: 28px;
   display: grid;
-  grid-template-columns: 320px 1fr 370px;
-  grid-template-rows: 72px 20px;
-  align-items: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto auto;
+  align-items: start;
 }
 .ready-count {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 14px;
   color: var(--signal);
-  font-size: 19px;
-  border-right: 1px solid var(--border);
+  font-size: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 22px;
+}
+.ready-count .rail-mark {
+  width: 72px;
 }
 .tray-total {
-  text-align: center;
+  padding-top: 42px;
+  text-align: left;
 }
 .tray-total strong {
   display: block;
-  font-size: 40px;
+  font-size: 29px;
   font-weight: 600;
 }
 .tray-total small,
@@ -307,13 +390,22 @@
   color: var(--muted);
 }
 .tray-collapsed > small {
-  grid-column: 3;
-  text-align: center;
+  margin-top: 10px;
+  text-align: left;
+}
+.tray-collapsed .primary-action {
+  width: 100%;
 }
 .claim-tray.expanded {
-  max-height: calc(100vh - 70px);
+  position: fixed;
+  inset: 88px max(24px, calc((100vw - 1180px) / 2)) 24px;
+  max-height: none;
   overflow: auto;
   border: 1px solid var(--border);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+}
+.claim-tray.expanded .tray-handle {
+  display: block;
 }
 .tray-expanded {
   padding: 20px 38px 26px;
@@ -329,7 +421,7 @@
   border-bottom: 1px solid var(--border);
 }
 .tray-title strong {
-  font-size: 28px;
+  font-size: 24px;
 }
 .tray-title button,
 .text-link {
@@ -354,7 +446,14 @@
 }
 .tray-expanded h3 {
   margin: 0 0 15px;
-  font-size: 17px;
+  font-size: 15px;
+}
+.plan-intro {
+  max-width: 620px;
+  margin: -4px 0 22px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
 }
 .included {
   min-height: 65px;
@@ -414,6 +513,23 @@
   grid-template-columns: 190px 1fr;
   column-gap: 18px;
   margin: 0;
+}
+.technical-details {
+  margin: 8px 0 18px;
+  border-block: 1px solid var(--border);
+}
+.technical-details summary {
+  padding: 13px 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 12px;
+}
+.technical-details[open] summary {
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.technical-details dl {
+  padding-bottom: 14px;
 }
 .transaction-plan dd {
   margin: 0;

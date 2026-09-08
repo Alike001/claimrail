@@ -1,5 +1,134 @@
 # ClaimRail build notes
 
+## 2026-09-08 — Hackathon deployment and evidence handoff
+
+- Added a Render Blueprint for one paid Node web service, one paid continuous worker, and a shared
+  free PostgreSQL database in Frankfurt. The web release applies migrations before deploy and exposes
+  a database/schema-aware `/api/health` check.
+- Rewrote the repository README around the non-technical Find → Understand → Claim story, while
+  separating working implementation from the remaining live proof.
+- Prepared a submission-ready DreamDEX SDK/documentation feedback report from the reproducible
+  Shannon evidence, a timed 2:45 demo script, and a September 8–11 readiness board.
+- Rehearsed the deployment commands against a fresh PostgreSQL 17 container: migrations applied,
+  the worker completed a cycle with database/schema readiness, the production server started with
+  the corrected Render command, `/api/health` returned ready, and OpenAPI responded.
+- Captured and visually inspected eight local/sample presentation assets. Each fixture asset is
+  explicitly separated from the still-required live claim and delivery proof.
+- Reran the exact repository gates: `pnpm verify` passed with 164 unit tests, 98 Core coverage tests,
+  26 DreamDEX coverage tests at 85.12% statement coverage, six signer-free integrations, 14
+  PostgreSQL integrations, and the production build; Playwright passed 27 desktop/mobile checks
+  with one intentional desktop skip.
+- Hardened market-resolution reads against a reproducible public-indexer timeout by splitting the
+  SDK's combined GraphQL query into two bounded parallel requests while retaining direct Somnia
+  settlement and payout reads as authoritative. The fresh signer-free Shannon smoke then passed at
+  block `482901281` with all 1,044 rows across 11 pages, seven current normalized positions, and two
+  verified claim candidates.
+- Kept the final Devpost draft blocked until the repository's hackathon workflow state is initialized
+  with `$start-hackathon`; no portal submission was created or implied.
+
+## 2026-09-08 — Audience-first Learn documentation
+
+Delivered:
+
+- Replaced the long technical Learn page with a conventional documentation layout inspired by the
+  information architecture of Somnia Docs: persistent section navigation, a focused article
+  column, a compact on-page index, clear chapter labels, and previous/next navigation.
+- Split the reading journey into “Use ClaimRail” for DreamDEX position holders and “Build with
+  ClaimRail” for product developers. Consumer lookup, status, claim, alert, receipt, and safety
+  guidance now comes before API and webhook detail.
+- Added a mobile documentation menu, two explicit audience entry paths, a four-status glossary,
+  custody/permission boundaries, a typed-client quick start, grouped endpoint reference, and direct
+  paths into the event tester and delivery console.
+- Preserved the existing `/docs#api`, `/docs#client`, `/docs#webhooks`, and `/docs#bot-kit` links and
+  split the implementation by navigation, consumer content, developer content, and responsive
+  styles to keep new files within the project file-size policy.
+
+Verified:
+
+- Web strict typechecking passes.
+- Desktop and mobile Chromium screenshots were inspected directly against the Somnia Docs reference.
+- The documentation and signing-boundary browser test passes in both desktop and mobile Chromium.
+
+## 2026-09-07 — Unified product and developer experience
+
+Delivered:
+
+- Reorganized the public page into one continuous product story: what remains after a DreamDEX
+  market closes, how ClaimRail resolves it, the working position view, the custody boundary, and one
+  final action. Replaced the earlier collection of similarly weighted sections with a connected
+  market-to-wallet flow and a realistic workspace preview.
+- Removed developer operations from the trader's primary navigation and created one dedicated
+  `/developers` entry point for the API reference, signed-event tester, and delivery console.
+- Rebuilt that developer entry point around a verified event preview, one featured API quick-start,
+  and secondary testing/operations tools instead of three equal generic cards.
+- Reworked the position inbox around everyday questions: what finished, what happened, how much is
+  ready, and what the owner needs to do next. Raw module, hash, scope, and calldata information stays
+  available inside optional technical details.
+- Converted the claim tray from a permanent bottom bar into a contextual desktop sidebar that
+  stacks naturally below the position list on narrow screens, and reduced the settlement ledger to
+  five scannable columns.
+- Humanized shared position-state and oracle comparison copy without changing payout calculations,
+  eligibility, simulations, or submission behavior.
+- Reduced oversized landing, docs, alerts, history, receipt, and test-tool typography; standardized
+  ordinary copy on the product sans font; and tightened main-app navigation, metrics, lifecycle,
+  tables, and claim controls.
+- Added browser coverage for the developer hub and updated the existing inbox, claim, evidence,
+  delivery, and event journeys for the clearer language.
+
+Verified:
+
+- Direct browser inspection passed for the refined landing, main position app, and developer hub.
+- Critical redesigned journeys passed 8/8 across desktop and mobile Chromium before the full run.
+- Root `pnpm verify` passed after the redesign: format, lint, strict typecheck, API schema drift, 161
+  unit tests, Core and DreamDEX coverage, signer-free integrations, 14 PostgreSQL integrations, and
+  the production build.
+- The final full browser run passed 27 checks across desktop and mobile Chromium with one
+  intentional desktop skip for the mobile-only menu test.
+- A fresh signer-free Shannon smoke passed at block `482051762`, including the configured finalized
+  market/topic, an exhaustive 1,044-row wallet scan over 11 pages, eight normalized positions, and
+  two verified claim candidates.
+
+## 2026-09-07 — Consumer landing page and plain-language frontend direction
+
+Delivered:
+
+- Researched plain-language financial and wallet interfaces, then recorded a new public-facing
+  “financial clarity” direction that keeps technical proof available without leading with it.
+- Replaced the operator-style empty screen with a complete landing page: outcome-led explanation,
+  public wallet lookup, clearly labeled sample position, three-step journey, direct custody story,
+  benefits, and a final call to action.
+- Added Manrope, Instrument Serif, and IBM Plex Mono through Next.js font optimization. Monospace is
+  now reserved for addresses and evidence instead of dominating ordinary product copy.
+- Humanized navigation labels and added a skip-to-content control, clearer metadata, helpful wallet
+  validation, responsive landing behavior, and an honest fixture-backed example path.
+- Split landing styles by responsibility so each new authored file stays below the 300-line policy.
+
+Verified:
+
+- Web typechecking, workspace lint, and the Next.js production build pass.
+- 25 Playwright checks pass across desktop and mobile Chromium, including a new landing-page
+  comprehension, trust-copy, sample-label, and invalid-address regression. One desktop skip remains
+  intentional for the mobile-only navigation check.
+- Desktop and mobile landing screenshots were inspected directly. The existing settlement inbox was
+  also inspected after the typography change and retains its ledger and claim-tray layout.
+
+## 2026-09-07 — Verification audit and PostgreSQL harness race fixed
+
+Verified:
+
+- Completed the project-wide acceptance audit with a conditional pass. The remaining submission
+  blockers are deployment, one owner-signed paying or void redemption, one real external delivery,
+  and a fresh deployed demo rehearsal.
+- Ran the complete root `pnpm verify` gate successfully: formatting, lint, strict workspace
+  typechecking, API artifact drift, 161 unit tests, Core and DreamDEX coverage, six signer-free
+  integrations, 14 PostgreSQL integrations, and the production build.
+
+Fixed:
+
+- The ephemeral PostgreSQL readiness loop could observe the image's temporary Unix-socket server
+  during initialization and start migrations during its planned shutdown. The probe now requires
+  the final TCP listener, removing the startup race.
+
 ## 2026-09-04 — Explicit-only wallet prompt boundary
 
 Delivered:

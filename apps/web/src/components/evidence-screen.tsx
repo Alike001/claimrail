@@ -92,17 +92,15 @@ export function EvidenceScreen({
       <Header />
       <div className="evidence-context">
         <span>
-          settlement inbox /{" "}
+          positions /{" "}
           <b>
             {market.display.asset}/{market.display.collateralSymbol}
           </b>{" "}
           / {market.display.interval}
         </span>
-        <strong>
-          {market.lifecycle} · {market.settlementFinalized ? "claimable" : "waiting"}
-        </strong>
+        <strong>{market.settlementFinalized ? "funds available" : "still waiting"}</strong>
         <span>
-          verified block <b>{verifiedBlock}</b>
+          checked at block <b>{verifiedBlock}</b>
         </span>
         <span className="protocol-text">
           DreamDEX · built on Somnia
@@ -111,7 +109,7 @@ export function EvidenceScreen({
       </div>
       <main className="evidence-main">
         <section className="evidence-ladder">
-          <h1>verifiable evidence ladder</h1>
+          <h1>Why this result is trustworthy</h1>
           {steps.map(([label, value, source], index) => (
             <div className="evidence-step" key={label}>
               <span className="step-number">{index + 1}</span>
@@ -121,7 +119,7 @@ export function EvidenceScreen({
               </div>
               <div className="verified-label">
                 <i className="status-square success" />
-                <strong>verified</strong>
+                <strong>checked</strong>
                 <small>at block {verifiedBlock}</small>
               </div>
               <div className="step-source">
@@ -134,7 +132,7 @@ export function EvidenceScreen({
           ))}
         </section>
         <aside className="proof-list">
-          <h2>evidence proof</h2>
+          <h2>On-chain details</h2>
           {proof.map(([label, value]) => (
             <div className="proof-row" key={label}>
               <span>{label}</span>
@@ -156,7 +154,7 @@ export function EvidenceScreen({
         </section>
       </main>
       <footer className="status-footer">
-        <Link href={fixture ? `/wallet/${fixtureAddress}?fixture=1` : "/"}>back to inbox</Link>
+        <Link href={fixture ? `/wallet/${fixtureAddress}?fixture=1` : "/"}>back to positions</Link>
         <span>independent ClaimRail interface · on-chain state verified</span>
       </footer>
     </div>

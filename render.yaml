@@ -1,0 +1,66 @@
+services:
+  - type: web
+    name: claimrail-web
+    runtime: node
+    region: frankfurt
+    plan: 0.5c-512mb
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @claimrail/web build
+    preDeployCommand: pnpm --filter @claimrail/db db:migrate
+    startCommand: pnpm --filter @claimrail/web start --hostname 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: DATABASE_URL
+        fromDatabase:
+          name: claimrail-postgres
+          property: connectionString
+      - fromGroup: claimrail-shared-secrets
+      - key: CLAIMRAIL_VAPID_PUBLIC_KEY
+        sync: false
+      - key: CLAIMRAIL_TELEGRAM_BOT_USERNAME
+        sync: false
+      - key: CLAIMRAIL_TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET
+        sync: false
+
+  - type: worker
+    name: claimrail-worker
+    runtime: node
+    region: frankfurt
+    plan: 0.5c-512mb
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @claimrail/worker build
+    startCommand: pnpm dev:worker
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: DATABASE_URL
+        fromDatabase:
+          name: claimrail-postgres
+          property: connectionString
+      - fromGroup: claimrail-shared-secrets
+      - key: CLAIMRAIL_SYNC_WALLET
+        sync: false
+      - key: CLAIMRAIL_VAPID_SUBJECT
+        sync: false
+      - key: CLAIMRAIL_VAPID_PUBLIC_KEY
+        sync: false
+      - key: CLAIMRAIL_VAPID_PRIVATE_KEY
+        sync: false
+      - key: CLAIMRAIL_TELEGRAM_BOT_TOKEN
+        sync: false
+
+databases:
+  - name: claimrail-postgres
+    databaseName: claimrail
+    user: claimrail
+    region: frankfurt
+    plan: free
+    ipAllowList: []
+
+envVarGroups:
+  - name: claimrail-shared-secrets
+    envVars:
+      - key: CLAIMRAIL_SECRET_ENCRYPTION_KEY
+        generateValue: true

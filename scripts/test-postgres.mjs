@@ -15,7 +15,17 @@ function docker(args, options = {}) {
 
 async function waitUntilReady() {
   for (let attempt = 0; attempt < 60; attempt += 1) {
-    const ready = docker(["exec", container, "pg_isready", "-U", "claimrail", "-d", "claimrail"]);
+    const ready = docker([
+      "exec",
+      container,
+      "pg_isready",
+      "-h",
+      "127.0.0.1",
+      "-U",
+      "claimrail",
+      "-d",
+      "claimrail",
+    ]);
     if (ready.status === 0) return;
     await delay(500);
   }

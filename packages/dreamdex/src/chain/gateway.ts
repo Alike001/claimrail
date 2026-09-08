@@ -28,6 +28,7 @@ import type {
   MarketReadBundle,
   SettlementRecord,
 } from "./types.js";
+import { fetchMarketResolutionSummary } from "../indexer/market-resolution.js";
 
 export class DreamDexSdkGateway
   implements DreamDexReadGateway, DreamDexClaimGateway, DreamDexReceiptGateway
@@ -62,13 +63,7 @@ export class DreamDexSdkGateway
   }
 
   async getMarketResolution(marketId: string) {
-    const result = await this.exchange.client.getMarketResolution(marketId);
-    return {
-      events: result.events,
-      reference: result.reference,
-      closingAnswer: result.closingAnswer,
-      openingAnswer: result.openingAnswer,
-    };
+    return fetchMarketResolutionSummary(this.deployment.indexerUrl, marketId);
   }
 
   getMarketStatusHistory(marketId: string) {

@@ -2,13 +2,23 @@
 @import "../src/styles/inbox.css";
 @import "../src/styles/evidence.css";
 @import "../src/styles/docs.css";
+@import "../src/styles/docs-content.css";
+@import "../src/styles/docs-responsive.css";
 @import "../src/styles/receipt.css";
 @import "../src/styles/history.css";
 @import "../src/styles/notifications.css";
 @import "../src/styles/deliveries.css";
 @import "../src/styles/events.css";
+@import "../src/styles/developer.css";
+@import "../src/styles/developer-responsive.css";
 @import "../src/styles/test-position.css";
+@import "../src/styles/landing.css";
+@import "../src/styles/landing-preview.css";
+@import "../src/styles/landing-sections.css";
+@import "../src/styles/landing-product.css";
+@import "../src/styles/landing-footer.css";
 @import "../src/styles/responsive.css";
+@import "../src/styles/landing-responsive.css";
 
 :root {
   color-scheme: dark;
@@ -23,7 +33,9 @@
   --success: #00d98b;
   --loss: #e83f6f;
   --warning: #ff9f1c;
-  --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --sans: var(--font-manrope), "Avenir Next", "Segoe UI", sans-serif;
+  --display: var(--font-instrument-serif), Georgia, serif;
+  --mono: var(--font-ibm-plex-mono), "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 * {
@@ -37,10 +49,25 @@ body {
   color: var(--text);
 }
 body {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 15px;
   line-height: 1.45;
   letter-spacing: -0.015em;
+}
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  left: 12px;
+  padding: 10px 14px;
+  color: var(--page);
+  background: var(--signal);
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 180ms ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
 }
 button,
 input {
@@ -80,7 +107,7 @@ a {
   height: 70px;
   padding: 0 26px;
   display: grid;
-  grid-template-columns: 320px 1fr auto auto;
+  grid-template-columns: 270px 1fr auto auto;
   align-items: center;
   gap: 28px;
   border-bottom: 1px solid var(--border);
@@ -91,7 +118,7 @@ a {
   align-items: center;
   gap: 13px;
   width: fit-content;
-  font-size: 24px;
+  font-size: 21px;
   text-decoration: none;
   font-weight: 600;
   letter-spacing: -0.04em;
@@ -100,7 +127,7 @@ a {
   height: 100%;
   display: flex;
   justify-content: center;
-  gap: 46px;
+  gap: 34px;
 }
 .site-header nav a,
 .site-header nav span {
@@ -108,7 +135,8 @@ a {
   display: flex;
   align-items: center;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 600;
 }
 .site-header nav .active::after {
   content: "";
@@ -134,6 +162,7 @@ a {
 .wallet-short {
   white-space: nowrap;
   color: #d9dbd6;
+  font-size: 13px;
 }
 .menu-button {
   display: none;
@@ -221,12 +250,12 @@ a {
   color: var(--signal);
 }
 .primary-action {
-  min-height: 62px;
-  padding: 0 42px;
+  min-height: 54px;
+  padding: 0 30px;
   border: 1px solid var(--signal);
   background: var(--signal);
   color: var(--page);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.03em;
   cursor: pointer;

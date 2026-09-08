@@ -89,14 +89,14 @@ export function EventPlayground({
 
   return (
     <div className="event-playground-shell">
-      <Header active="developers" />
+      <Header active="developer-events" variant="developer" />
       <main className="event-playground-main">
         <section className="event-head">
           <div>
-            <p className="eyebrow">developer tools / canonical events</p>
-            <h1>Canonical Event Playground</h1>
-            <p>Inspect one event truth, then verify the exact signed delivery bytes.</p>
-            <a href="/developers/deliveries">← delivery operations</a>
+            <p className="eyebrow">developer tools / signed events</p>
+            <h1>Webhook event tester</h1>
+            <p>See what an event means, then verify the exact message ClaimRail sends.</p>
+            <a href="/developers">← developer overview</a>
           </div>
           <dl>
             <div>
@@ -144,7 +144,7 @@ export function EventPlayground({
 
           <div className="event-inspector">
             <section className="event-explanation">
-              <p className="panel-kicker">plain-language handoff</p>
+              <p className="panel-kicker">what happened</p>
               <h2>{selected.event.type}</h2>
               <p>{selected.happened}</p>
               <div>
@@ -163,7 +163,7 @@ export function EventPlayground({
             </section>
 
             <section className="event-body-panel">
-              <p className="panel-kicker">exact raw request body</p>
+              <p className="panel-kicker">message sent to your app</p>
               <textarea
                 aria-label="Raw webhook body"
                 spellCheck={false}
@@ -184,7 +184,7 @@ export function EventPlayground({
             </section>
 
             <section className="signature-lab">
-              <p className="panel-kicker">receiver verification lab</p>
+              <p className="panel-kicker">signature check</p>
               <label>
                 timestamp
                 <input

@@ -15,7 +15,7 @@
 }
 .notifications-intro h1 {
   margin: 0;
-  font-size: clamp(48px, 6.4vw, 94px);
+  font-size: clamp(42px, 5.4vw, 76px);
   font-weight: 550;
   line-height: 0.96;
   letter-spacing: -0.065em;
@@ -27,9 +27,7 @@
   max-width: 760px;
   margin: 30px 0 42px;
   color: var(--muted);
-  font:
-    18px/1.65 Arial,
-    sans-serif;
+  font: 16px/1.65 var(--sans);
 }
 .delivery-rail {
   display: grid;

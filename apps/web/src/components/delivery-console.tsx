@@ -378,14 +378,18 @@ export function DeliveryConsole({
   const unlocked = fixture || consoleList !== undefined;
   return (
     <div className="delivery-console-shell">
-      <Header address={connection.address ?? consoleList?.owner} active="developers" />
+      <Header
+        address={connection.address ?? consoleList?.owner}
+        active="developer-deliveries"
+        variant="developer"
+      />
       <main className="delivery-console-main">
         <section className="console-head">
           <div>
-            <p className="eyebrow">developer operations</p>
-            <h1>Developer Delivery Console</h1>
-            <p>Inspect notification delivery, test routes, and replay dead letters.</p>
-            <Link href="/developers/events">event playground →</Link>
+            <p className="eyebrow">developer tools / delivery</p>
+            <h1>Delivery operations</h1>
+            <p>See what was sent, find failed routes, and safely try a delivery again.</p>
+            <Link href="/developers">developer overview →</Link>
           </div>
           {consoleList ? (
             <dl className="console-summary">
