@@ -1,5 +1,6 @@
 node_modules/
 .vercel/
+.neon
 .next/
 dist/
 coverage/
@@ -16,3 +17,4 @@ test-results/
 # Reproducible upstream clones used during protocol research. Their findings and
 # extracted SDK evidence live in context/, docs/, and research/reference-packages/.
 research/reference-repos/
+.vercel
