@@ -97,6 +97,7 @@ approval and redemption transactions.
 
 - [Live ClaimRail product](https://claimrail-alike001s-projects.vercel.app)
 - [Verified production worker run](https://github.com/Alike001/claimrail/actions/runs/34251482576)
+- [Live browser-delivery proof](docs/hackathon/assets/live-browser-delivery-2026-09-08.png)
 - [No-card Vercel, Neon, and GitHub Actions guide](docs/operations/free-deployment.md)
 - [Render deployment guide](docs/operations/render-deployment.md)
 - [Owner launch and live-proof checklist](docs/operations/owner-launch-checklist.md)

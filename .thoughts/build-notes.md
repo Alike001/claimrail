@@ -2,6 +2,11 @@
 
 # 2026-09-08 — No-card judging deployment path
 
+- Completed a real production browser delivery. The owner enabled push for the deployed Vercel
+  origin, authorized the delivery console, and queued `notification.test` for one active route.
+  GitHub Actions run `34256791403` delivered it on the first attempt with no retry or dead letter.
+  The deployed console then showed `pending 0`, `delivered 1`, and `attempts 1/8`; the owner's
+  screenshot is preserved at `docs/hackathon/assets/live-browser-delivery-2026-09-08.png`.
 - Added the owner wallet `0xdE67A35B322e5A31e8215B5245CA4e48d7977F71` to GitHub's encrypted
   worker configuration and completed the first production run successfully:
   `https://github.com/Alike001/claimrail/actions/runs/34251482576`.
@@ -24,8 +29,8 @@
   database split, production environment variables, live health checks, and proof sequence.
 - Added a GitHub Actions worker with a manual demo trigger, optional one-time migration step,
   concurrency protection, secret validation, and an intentionally offset 15-minute schedule.
-- Scheduled execution stays disabled until `CLAIMRAIL_WORKER_ENABLED=true`, preventing database
-  usage before the owner has completed migrations and verified one manual cycle.
+- Scheduled execution stayed disabled until the owner completed migrations and verified one manual
+  cycle; `CLAIMRAIL_WORKER_ENABLED=true` is now active.
 - Kept the Render Blueprint as an optional paid always-on route and updated the README, readiness
   board, and owner checklist to describe the selected no-card trade-off honestly.
 - `pnpm verify`, actionlint, and the two-viewport Playwright suite pass after the deployment changes
