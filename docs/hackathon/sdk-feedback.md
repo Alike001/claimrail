@@ -1,16 +1,17 @@
 # DreamDEX SDK and documentation feedback
 
-Prepared for the Somnia × DreamDEX Event Contracts Hackathon from live, read-only Shannon testnet
-research performed on September 3, 2026.
+Prepared for the Somnia × DreamDEX Event Contracts Hackathon from live Shannon testnet research
+performed September 3–8, 2026. The investigation began read-only and concluded with one controlled,
+owner-signed `redeemMany` claim whose receipt was independently reconciled by ClaimRail.
 
 ## Test environment
 
-| Item     | Value                                                                                |
-| -------- | ------------------------------------------------------------------------------------ |
-| Package  | `@somnia-chain/markets-sdk@0.29.0`                                                   |
-| Network  | Somnia Shannon testnet                                                               |
-| Chain ID | `50312`                                                                              |
-| Method   | Public indexer, RPC, WebSocket RPC, contract reads, logs, and `eth_call` simulations |
+| Item     | Value                                                                             |
+| -------- | --------------------------------------------------------------------------------- |
+| Package  | `@somnia-chain/markets-sdk@0.29.0`                                                |
+| Network  | Somnia Shannon testnet                                                            |
+| Chain ID | `50312`                                                                           |
+| Method   | Indexer, RPC, WebSocket RPC, reads, logs, simulations, and one owner-signed claim |
 
 The reproducible collector and simulator are under [`probes/event-contracts`](../../probes/event-contracts/README.md).
 They accept no private key and cannot broadcast transactions.
@@ -105,6 +106,28 @@ consumers request resolution events without oracle-answer joins. ClaimRail now r
 bounded collections in parallel, validates every returned field, and uses direct Somnia reads for
 the authoritative payout and closing value. Missing oracle detail remains visibly missing.
 
+### 8. Document `Redeemed.holder` semantics for `redeemMany` — high priority
+
+A successful Shannon `redeemMany` transaction showed that the binary module first receives the
+owner's ERC-6909 outcome tokens, then invokes settlement redemption. The resulting `Redeemed` log
+names the trusted binary module as `holder`, while `to` remains the owner receiving collateral. A
+verifier that assumes `holder === owner` will reject a valid batch claim even when its recipient,
+market, outcome, amount, receipt status, post-balance, and settlement backing all agree.
+
+Recommendation: document the difference between direct settlement redemption and the
+`BinaryMarketModule.redeemMany` path, include decoded event examples for both, and expose a supported
+receipt-decoding helper or invariant checklist. ClaimRail accepts only the planned owner or planned
+binary module as holder and still requires the exact owner recipient and post-state checks.
+
+Live evidence:
+
+- transaction: [`0x03172396…39666c11`](https://shannon-explorer.somnia.network/tx/0x03172396dd2ba45d1f6c6d119d01029a2eb0b6fc8c13592c832293fe39666c11);
+- block: `483279926`;
+- burned outcome units: `1,001,000`;
+- collateral delivered: `1,001,000` base units (`1.001000 USDso`);
+- owner post-balance for the redeemed outcome: `0`;
+- fallback owed: `0`.
+
 ## Documentation improvements with the largest adoption impact
 
 1. Add a five-minute Event Contract quickstart that follows one position from trade to settlement to
@@ -124,5 +147,6 @@ the authoritative payout and closing value. Missing oracle detail remains visibl
 - Pagination probe: [`probes/event-contracts/src/probe-pagination.ts`](../../probes/event-contracts/src/probe-pagination.ts)
 - Deployed event probe: [`probes/event-contracts/src/probe.ts`](../../probes/event-contracts/src/probe.ts)
 
-This report separates observed behavior from recommendations. No private key, owner signature, or
-claim transaction was used to produce these findings.
+This report separates observed behavior from recommendations. ClaimRail never received a private
+key: the browser wallet signed the controlled claim, and the worker independently verified the
+public transaction, logs, payout, and post-state before marking its receipt confirmed.

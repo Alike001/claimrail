@@ -64,10 +64,10 @@ Developers can reuse the same signed events through the API, webhooks, or Bot Ki
 
 Do not record the final submission video until all boxes below are true:
 
-- [ ] the public site and worker are healthy;
-- [ ] the position and claim are real Shannon testnet state;
-- [ ] the receipt is `confirmed`, not fixture or merely mined;
-- [ ] at least one real delivery is visible;
+- [x] the public site and worker are healthy;
+- [x] the position and claim are real Shannon testnet state;
+- [x] the receipt is `confirmed`, not fixture or merely mined;
+- [x] at least one real delivery is visible;
 - [ ] the complete take is between 2:00 and 3:00;
 - [ ] every secret and personal identifier is absent.
 
