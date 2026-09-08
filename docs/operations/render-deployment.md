@@ -16,22 +16,19 @@ ClaimRail needs a process that continuously reconciles receipts and delivers not
 
 ## 1. Prepare the owner-only values
 
-Never commit these values. Generate the VAPID pair and Telegram webhook secret locally:
+The first deployment uses browser push for the required external-delivery proof, which keeps the
+Blueprint form small. Never commit these values. Generate the VAPID pair locally:
 
 ```bash
 pnpm --filter @claimrail/worker exec web-push generate-vapid-keys
-openssl rand -hex 32
 ```
 
-Create a Telegram bot with BotFather if Telegram is the chosen delivery proof. You will enter:
+You will enter:
 
 - `CLAIMRAIL_SYNC_WALLET`: the dedicated Shannon test wallet's public address;
 - `CLAIMRAIL_VAPID_SUBJECT`: a contact URI such as `mailto:you@example.com`;
 - `CLAIMRAIL_VAPID_PUBLIC_KEY`: the generated public VAPID key on both services;
-- `CLAIMRAIL_VAPID_PRIVATE_KEY`: the private VAPID key on the worker only;
-- `CLAIMRAIL_TELEGRAM_BOT_USERNAME`: the username without `@` on the web service;
-- `CLAIMRAIL_TELEGRAM_BOT_TOKEN`: the same BotFather token on both services;
-- `CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET`: the generated random value on the web service.
+- `CLAIMRAIL_VAPID_PRIVATE_KEY`: the private VAPID key on the worker only.
 
 The Blueprint generates one shared database-encryption key automatically. Do not replace it on only
 one service.
@@ -41,8 +38,7 @@ one service.
 1. Push the verified repository revision to GitHub.
 2. In Render, choose **New → Blueprint** and connect `Alike001/claimrail`.
 3. Confirm that Render detects the root `render.yaml`.
-4. Enter the prompted values above. Use the same VAPID public key and Telegram token wherever they
-   appear.
+4. Enter the prompted values above. Use the same VAPID public key wherever it appears.
 5. Approve creation of the web service, worker, and database.
 
 The paid web service runs the Drizzle migrations through `preDeployCommand` before a new release.
@@ -67,9 +63,12 @@ Then check the Render worker logs. The first JSON line must show:
 
 The logs must not contain a database URL, Telegram token, VAPID private key, or encryption key.
 
-## 4. Register Telegram after HTTPS is live
+## 4. Add Telegram later only if needed
 
-Follow [Stage 5 of the owner launch checklist](./owner-launch-checklist.md#stage-5--register-telegram-only-after-the-https-site-is-live).
+Browser push is enough for the first real delivery proof. Telegram remains implemented and can be
+enabled after the HTTPS deployment succeeds by adding its environment variables manually, then
+following
+[Stage 5 of the owner launch checklist](./owner-launch-checklist.md#stage-5--register-telegram-only-after-the-https-site-is-live).
 The webhook URL is the deployed site plus `/api/v1/subscriptions/telegram/webhook`.
 
 ## 5. Preserve proof
