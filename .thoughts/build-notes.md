@@ -2,6 +2,16 @@
 
 # 2026-09-08 — No-card judging deployment path
 
+- Provisioned the isolated `claimrail` Vercel project and `claimrail-db` Neon Free resource, linked
+  the GitHub repository, applied all Drizzle migrations, and configured shared secrets without
+  printing or committing their values.
+- Verified the public production URL at `https://claimrail-alike001s-projects.vercel.app`: health is
+  `ready`, PostgreSQL is reachable with schema ready, OpenAPI exposes 20 paths, browser push is
+  available, and the production landing response contains no development sample banner.
+- Disabled Vercel Authentication for this project so judges can access production while signed out.
+- Added a root-scoped `.vercelignore`; the first Git build exposed an overly broad `fixtures/`
+  pattern, so it was corrected to `/fixtures/` to preserve the web app's runtime samples while
+  excluding only repository-root research evidence.
 - Added a Vercel Hobby + Neon Free deployment guide with the exact monorepo root, pooled/direct
   database split, production environment variables, live health checks, and proof sequence.
 - Added a GitHub Actions worker with a manual demo trigger, optional one-time migration step,

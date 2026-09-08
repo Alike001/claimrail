@@ -33,18 +33,18 @@ Shannon wallet and public transaction evidence._
 
 ## What is working
 
-| Capability                                               | Status                                          |
-| -------------------------------------------------------- | ----------------------------------------------- |
-| Public-wallet position discovery                         | Working against DreamDEX on Shannon testnet     |
-| Complete pagination and chain reconciliation             | Working; tested with 1,044 live indexed rows    |
-| Settlement explanation and evidence                      | Working                                         |
-| Safe owner-signed manual claim planning                  | Working and exact-call simulated                |
-| Durable receipt verification and history                 | Working in code and integration tests           |
-| Browser, Telegram, and signed-webhook delivery           | Working in code and integration tests           |
-| REST API, OpenAPI, schemas, client, and Bot Kit adapter  | Working                                         |
-| Public deployment                                        | Free deployment path prepared; live URL pending |
-| Owner-signed successful claim and real external delivery | Required live proof still pending               |
-| Final 2–3 minute video                                   | Script ready; recording pending live proof      |
+| Capability                                               | Status                                                            |
+| -------------------------------------------------------- | ----------------------------------------------------------------- |
+| Public-wallet position discovery                         | Working against DreamDEX on Shannon testnet                       |
+| Complete pagination and chain reconciliation             | Working; tested with 1,044 live indexed rows                      |
+| Settlement explanation and evidence                      | Working                                                           |
+| Safe owner-signed manual claim planning                  | Working and exact-call simulated                                  |
+| Durable receipt verification and history                 | Working in code and integration tests                             |
+| Browser, Telegram, and signed-webhook delivery           | Working in code and integration tests                             |
+| REST API, OpenAPI, schemas, client, and Bot Kit adapter  | Working                                                           |
+| Public deployment                                        | [Live on Vercel](https://claimrail-alike001s-projects.vercel.app) |
+| Owner-signed successful claim and real external delivery | Required live proof still pending                                 |
+| Final 2–3 minute video                                   | Script ready; recording pending live proof                        |
 
 Fixture data is visibly labelled and disabled in production. A mined transaction is not called
 successful until the worker verifies its envelope, receipt, `Redeemed` logs, payout, and post-claim
@@ -95,6 +95,7 @@ approval and redemption transactions.
 
 ## Deployment and submission
 
+- [Live ClaimRail product](https://claimrail-alike001s-projects.vercel.app)
 - [No-card Vercel, Neon, and GitHub Actions guide](docs/operations/free-deployment.md)
 - [Render deployment guide](docs/operations/render-deployment.md)
 - [Owner launch and live-proof checklist](docs/operations/owner-launch-checklist.md)
