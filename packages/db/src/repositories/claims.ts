@@ -96,7 +96,19 @@ export interface CompleteClaimReconciliationInput {
   readonly now?: Date;
 }
 
-interface LeasedClaimRow extends Record<string, unknown>, LeasedClaimTransaction {}
+type LeasedClaimRow = Omit<LeasedClaimTransaction, "submittedAt" | "leaseExpiresAt"> &
+  Record<string, unknown> & {
+    readonly submittedAt: Date | string;
+    readonly leaseExpiresAt: Date | string;
+  };
+
+function decodeTimestamp(value: Date | string, field: string): Date {
+  const timestamp = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(timestamp.getTime())) {
+    throw new TypeError(`database returned an invalid ${field} timestamp`);
+  }
+  return timestamp;
+}
 
 function planMetadata(plan: ClaimPlan): Record<string, unknown> {
   return toJsonObject({ plan });
@@ -315,7 +327,13 @@ export class ClaimRepository {
         ct.lease_owner as "leaseOwner",
         ct.lease_expires_at as "leaseExpiresAt"
     `);
-    return result.rows[0] ?? null;
+    const row = result.rows[0];
+    if (row === undefined) return null;
+    return {
+      ...row,
+      submittedAt: decodeTimestamp(row.submittedAt, "submittedAt"),
+      leaseExpiresAt: decodeTimestamp(row.leaseExpiresAt, "leaseExpiresAt"),
+    };
   }
 
   async deferReconciliation(options: {

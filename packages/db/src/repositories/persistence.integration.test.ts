@@ -363,6 +363,10 @@ describePostgres("PostgreSQL persistence", () => {
     if (first === undefined || first === null) throw new Error("expected a claim lease");
     expect(first).toMatchObject({ claimId, transactionHash, attempts: 1 });
     expect(first.plan.integrityHash).toBe(plan.integrityHash);
+    expect(first.submittedAt).toBeInstanceOf(Date);
+    expect(first.submittedAt).toEqual(submittedAt);
+    expect(first.leaseExpiresAt).toBeInstanceOf(Date);
+    expect(first.leaseExpiresAt).toEqual(new Date(leaseTime.getTime() + 1_000));
 
     expect(
       await repository.deferReconciliation({
