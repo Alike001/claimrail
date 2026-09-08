@@ -55,20 +55,19 @@ URL, VAPID public key, or Telegram bot username.
 Pass condition: the dedicated wallet is on chain `50312`, has STT for gas, and has at least one small
 DreamDEX test position.
 
-## Stage 2 — Choose the three deployment resources
+## Stage 2 — Create the three free deployment resources
 
-The checked-in [Render deployment guide](./render-deployment.md) and root `render.yaml` provide the
-recommended one-provider route. At the current listed price it uses a $7/month web service, a
-$7/month always-on worker, and a free 30-day PostgreSQL database. Create or choose:
+Use the [no-card deployment guide](./free-deployment.md). Create:
 
-- [ ] A managed PostgreSQL database with TLS and a connection string.
-- [ ] A Node.js web host that can run the Next.js application on Node 24.
-- [ ] An always-on Node.js worker service. A serverless request function is not enough for the
-      polling/retry worker.
-- [ ] One public HTTPS domain for the web application.
+- [ ] A Neon Free PostgreSQL project and its pooled and direct TLS connection strings.
+- [ ] A Vercel Hobby project connected to `Alike001/claimrail` with `apps/web` as its root.
+- [ ] GitHub Actions secrets for the scheduled and manually triggered worker.
+- [ ] One public Vercel HTTPS production URL.
 
-The web and worker must reach the same PostgreSQL database. The worker must remain running after the
-web request ends. Do not deploy until all four boxes are satisfied.
+The web and worker must use the same Neon database. This zero-card route runs a durable worker cycle
+every 15 minutes instead of keeping a process resident. Use the manual workflow trigger when an
+immediate result is needed during the demo. The paid Render configuration remains available only as
+an optional always-on alternative.
 
 ## Stage 3 — Generate notification credentials locally
 
@@ -77,52 +76,53 @@ From the repository root, run:
 ```bash
 openssl rand -base64 32
 pnpm --filter @claimrail/worker exec web-push generate-vapid-keys
-openssl rand -hex 32
 ```
 
-Store the three outputs immediately:
+Store the outputs immediately:
 
 1. First output → `CLAIMRAIL_SECRET_ENCRYPTION_KEY`.
 2. VAPID outputs → `CLAIMRAIL_VAPID_PUBLIC_KEY` and `CLAIMRAIL_VAPID_PRIVATE_KEY`.
-3. Final hexadecimal output → `CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET`.
 
-Then:
+Set `CLAIMRAIL_VAPID_SUBJECT` to a contact URI such as `mailto:you@example.com`.
+
+Telegram is optional and should not delay the browser-delivery proof. Only if Telegram is selected:
 
 - [ ] Open Telegram's verified `@BotFather` account.
 - [ ] Run `/newbot`, choose the ClaimRail bot name/username, and store the returned token as
       `CLAIMRAIL_TELEGRAM_BOT_TOKEN`.
 - [ ] Store the username without `@` as `CLAIMRAIL_TELEGRAM_BOT_USERNAME`.
-- [ ] Set `CLAIMRAIL_VAPID_SUBJECT` to a contact URI such as `mailto:you@example.com`.
+- [ ] Generate `CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET` with `openssl rand -hex 32`.
 
-Pass condition: all seven notification values exist in a private secret manager. None appears in
-Git or chat.
+Pass condition: the four browser notification values exist in a private secret manager. None
+appears in Git or chat.
 
 ## Stage 4 — Configure and deploy
 
 Use this exact environment split:
 
-| Variable                            | Web | Worker |
-| ----------------------------------- | :-: | :----: |
-| `DATABASE_URL`                      | yes |  yes   |
-| `CLAIMRAIL_SECRET_ENCRYPTION_KEY`   | yes |  yes   |
-| `CLAIMRAIL_VAPID_SUBJECT`           | no  |  yes   |
-| `CLAIMRAIL_VAPID_PUBLIC_KEY`        | yes |  yes   |
-| `CLAIMRAIL_VAPID_PRIVATE_KEY`       | no  |  yes   |
-| `CLAIMRAIL_TELEGRAM_BOT_USERNAME`   | yes |   no   |
-| `CLAIMRAIL_TELEGRAM_BOT_TOKEN`      | yes |  yes   |
-| `CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET` | yes |   no   |
+| Variable                            | Vercel web | GitHub worker  |
+| ----------------------------------- | :--------: | :------------: |
+| `DATABASE_URL`                      |    yes     |      yes       |
+| `DATABASE_URL_UNPOOLED`             |     no     | migration only |
+| `CLAIMRAIL_SYNC_WALLET`             |     no     |      yes       |
+| `CLAIMRAIL_SECRET_ENCRYPTION_KEY`   |    yes     |      yes       |
+| `CLAIMRAIL_VAPID_SUBJECT`           |     no     |      yes       |
+| `CLAIMRAIL_VAPID_PUBLIC_KEY`        |    yes     |      yes       |
+| `CLAIMRAIL_VAPID_PRIVATE_KEY`       |     no     |      yes       |
+| `CLAIMRAIL_TELEGRAM_BOT_USERNAME`   |  optional  |       no       |
+| `CLAIMRAIL_TELEGRAM_BOT_TOKEN`      |  optional  |    optional    |
+| `CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET` |  optional  |       no       |
 
 The encryption key must be identical on web and worker. The VAPID key pair must stay unchanged after
 users subscribe; rotating it invalidates existing browser routes.
 
 - [ ] Install with `pnpm install --frozen-lockfile`.
 - [ ] Run `pnpm verify` before deployment.
-- [ ] Apply migrations once with
-      `DATABASE_URL="<private-url>" pnpm --filter @claimrail/db db:migrate` from a trusted shell or
-      provider release job. Do not put the real URL in documentation.
-- [ ] Build/start the web service with `pnpm --filter @claimrail/web build` and
-      `pnpm --filter @claimrail/web start`.
-- [ ] Start the worker with `pnpm dev:worker`.
+- [ ] Add the repository secrets listed in the no-card deployment guide.
+- [ ] Manually run **ClaimRail worker** with `apply_migrations` selected.
+- [ ] Confirm its final JSON reports `ready`, then create `CLAIMRAIL_WORKER_ENABLED=true` as a
+      GitHub Actions repository variable.
+- [ ] Deploy the Vercel project with `apps/web` as the Root Directory.
 - [ ] Open `/api/v1/openapi.json`; it must return an OpenAPI document.
 - [ ] Open `/api/health`; it must return `status: "ready"`, database `reachable`, and schema `ready`.
 - [ ] Open `/api/v1/subscriptions/browser/config`; it must say `available: true`.

@@ -1,5 +1,18 @@
 # ClaimRail build notes
 
+# 2026-09-08 — No-card judging deployment path
+
+- Added a Vercel Hobby + Neon Free deployment guide with the exact monorepo root, pooled/direct
+  database split, production environment variables, live health checks, and proof sequence.
+- Added a GitHub Actions worker with a manual demo trigger, optional one-time migration step,
+  concurrency protection, secret validation, and an intentionally offset 15-minute schedule.
+- Scheduled execution stays disabled until `CLAIMRAIL_WORKER_ENABLED=true`, preventing database
+  usage before the owner has completed migrations and verified one manual cycle.
+- Kept the Render Blueprint as an optional paid always-on route and updated the README, readiness
+  board, and owner checklist to describe the selected no-card trade-off honestly.
+- `pnpm verify`, actionlint, and the two-viewport Playwright suite pass after the deployment changes
+  (27 passed, 1 intentionally skipped).
+
 ## 2026-09-08 — Hackathon deployment and evidence handoff
 
 - Added a Render Blueprint for one paid Node web service, one paid continuous worker, and a shared

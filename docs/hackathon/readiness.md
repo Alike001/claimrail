@@ -11,15 +11,15 @@ Everything technical should support that sentence, not compete with it.
 
 ## Must finish before submission
 
-| Order | Deliverable                    | Status                                     | Pass condition                                              | Owner action needed                               |
-| ----: | ------------------------------ | ------------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------- |
-|     1 | Public web, PostgreSQL, worker | Local rehearsal passed; ready to provision | `/api/health` is `200`; worker logs `ready`                 | Create/confirm Render Blueprint and enter secrets |
-|     2 | Real claim and receipt         | Blocked on a claimable owner position      | owner-signed `redeemMany`; receipt becomes `confirmed`      | Hold the test position and approve wallet prompts |
-|     3 | Real delivery                  | Ready after deployment                     | browser, Telegram, or webhook receives a real worker event  | Approve/link one destination and confirm receipt  |
-|     4 | SDK/docs feedback              | Draft complete                             | report checked for accuracy and attached/linked             | Final owner review                                |
-|     5 | README and materials           | In progress                                | public repository explains product and live proof honestly  | Push the verified revision                        |
-|     6 | 2–3 minute video               | Script complete; recording blocked         | deployed end-to-end take between 2:00 and 3:00              | Record wallet/device interaction and upload       |
-|     7 | Secondary UI polish            | Deferred                                   | History, Alerts, Evidence, Receipts share final visual pass | None until 1–6 pass                               |
+| Order | Deliverable                    | Status                                | Pass condition                                              | Owner action needed                               |
+| ----: | ------------------------------ | ------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------- |
+|     1 | Public web, PostgreSQL, worker | Free deployment configuration ready   | `/api/health` is `200`; manual worker run is `ready`        | Create Neon/Vercel projects and GitHub secrets    |
+|     2 | Real claim and receipt         | Blocked on a claimable owner position | owner-signed `redeemMany`; receipt becomes `confirmed`      | Hold the test position and approve wallet prompts |
+|     3 | Real delivery                  | Ready after deployment                | browser, Telegram, or webhook receives a real worker event  | Approve/link one destination and confirm receipt  |
+|     4 | SDK/docs feedback              | Draft complete                        | report checked for accuracy and attached/linked             | Final owner review                                |
+|     5 | README and materials           | In progress                           | public repository explains product and live proof honestly  | Push the verified revision                        |
+|     6 | 2–3 minute video               | Script complete; recording blocked    | deployed end-to-end take between 2:00 and 3:00              | Record wallet/device interaction and upload       |
+|     7 | Secondary UI polish            | Deferred                              | History, Alerts, Evidence, Receipts share final visual pass | None until 1–6 pass                               |
 
 ## September 8–11 execution order
 
@@ -27,8 +27,9 @@ Everything technical should support that sentence, not compete with it.
 
 - [ ] Run the complete local verification suite.
 - [ ] Review and push the deployment-ready revision.
-- [ ] Create the Render Blueprint from `render.yaml`.
-- [ ] Confirm web health, migrations, and continuous worker readiness.
+- [ ] Create the Neon Free database and Vercel Hobby project.
+- [ ] Add GitHub Actions secrets, run migrations, and enable the scheduled worker.
+- [ ] Confirm web health and a successful manual worker cycle.
 
 ### September 9 — create public proof
 

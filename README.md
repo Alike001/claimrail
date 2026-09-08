@@ -33,18 +33,18 @@ Shannon wallet and public transaction evidence._
 
 ## What is working
 
-| Capability                                               | Status                                               |
-| -------------------------------------------------------- | ---------------------------------------------------- |
-| Public-wallet position discovery                         | Working against DreamDEX on Shannon testnet          |
-| Complete pagination and chain reconciliation             | Working; tested with 1,044 live indexed rows         |
-| Settlement explanation and evidence                      | Working                                              |
-| Safe owner-signed manual claim planning                  | Working and exact-call simulated                     |
-| Durable receipt verification and history                 | Working in code and integration tests                |
-| Browser, Telegram, and signed-webhook delivery           | Working in code and integration tests                |
-| REST API, OpenAPI, schemas, client, and Bot Kit adapter  | Working                                              |
-| Public deployment                                        | Blueprint and local rehearsal pass; live URL pending |
-| Owner-signed successful claim and real external delivery | Required live proof still pending                    |
-| Final 2–3 minute video                                   | Script ready; recording pending live proof           |
+| Capability                                               | Status                                          |
+| -------------------------------------------------------- | ----------------------------------------------- |
+| Public-wallet position discovery                         | Working against DreamDEX on Shannon testnet     |
+| Complete pagination and chain reconciliation             | Working; tested with 1,044 live indexed rows    |
+| Settlement explanation and evidence                      | Working                                         |
+| Safe owner-signed manual claim planning                  | Working and exact-call simulated                |
+| Durable receipt verification and history                 | Working in code and integration tests           |
+| Browser, Telegram, and signed-webhook delivery           | Working in code and integration tests           |
+| REST API, OpenAPI, schemas, client, and Bot Kit adapter  | Working                                         |
+| Public deployment                                        | Free deployment path prepared; live URL pending |
+| Owner-signed successful claim and real external delivery | Required live proof still pending               |
+| Final 2–3 minute video                                   | Script ready; recording pending live proof      |
 
 Fixture data is visibly labelled and disabled in production. A mined transaction is not called
 successful until the worker verifies its envelope, receipt, `Redeemed` logs, payout, and post-claim
@@ -95,15 +95,17 @@ approval and redemption transactions.
 
 ## Deployment and submission
 
+- [No-card Vercel, Neon, and GitHub Actions guide](docs/operations/free-deployment.md)
 - [Render deployment guide](docs/operations/render-deployment.md)
 - [Owner launch and live-proof checklist](docs/operations/owner-launch-checklist.md)
 - [Hackathon readiness board](docs/hackathon/readiness.md)
 - [2–3 minute demo script](docs/hackathon/demo-script.md)
 - [DreamDEX SDK and documentation feedback](docs/hackathon/sdk-feedback.md)
 
-The root [`render.yaml`](render.yaml) provisions a paid always-on web service, paid continuous worker,
-and free hackathon-window PostgreSQL database in one region. Secrets are entered in the provider and
-must never be committed.
+The recommended hackathon path uses Vercel Hobby, Neon Free, and the checked-in GitHub Actions
+worker. It has no card requirement, but the worker is periodic rather than continuously resident.
+The root [`render.yaml`](render.yaml) remains an optional paid, always-on alternative. Secrets are
+entered only in provider secret stores and must never be committed.
 
 ## Developer entry points
 

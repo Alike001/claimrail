@@ -1,0 +1,82 @@
+name: ClaimRail worker
+
+on:
+  schedule:
+    # Offset from the top of the hour to reduce GitHub's busiest scheduling window.
+    # Fifteen minutes lets Neon's free compute return to idle between short runs.
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+    inputs:
+      apply_migrations:
+        description: Apply database migrations before the worker cycle
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: claimrail-production-worker
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    if: github.event_name == 'workflow_dispatch' || vars.CLAIMRAIL_WORKER_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      CLAIMRAIL_SYNC_WALLET: ${{ secrets.CLAIMRAIL_SYNC_WALLET }}
+      CLAIMRAIL_SECRET_ENCRYPTION_KEY: ${{ secrets.CLAIMRAIL_SECRET_ENCRYPTION_KEY }}
+      CLAIMRAIL_VAPID_SUBJECT: ${{ secrets.CLAIMRAIL_VAPID_SUBJECT }}
+      CLAIMRAIL_VAPID_PUBLIC_KEY: ${{ secrets.CLAIMRAIL_VAPID_PUBLIC_KEY }}
+      CLAIMRAIL_VAPID_PRIVATE_KEY: ${{ secrets.CLAIMRAIL_VAPID_PRIVATE_KEY }}
+      CLAIMRAIL_TELEGRAM_BOT_TOKEN: ${{ secrets.CLAIMRAIL_TELEGRAM_BOT_TOKEN }}
+      CLAIMRAIL_WORKER_ID: github-actions-${{ github.run_id }}
+
+    steps:
+      - name: Check out ClaimRail
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.1
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate required worker secrets
+        shell: bash
+        run: |
+          missing=0
+          for name in DATABASE_URL CLAIMRAIL_SYNC_WALLET CLAIMRAIL_SECRET_ENCRYPTION_KEY CLAIMRAIL_VAPID_SUBJECT CLAIMRAIL_VAPID_PUBLIC_KEY CLAIMRAIL_VAPID_PRIVATE_KEY; do
+            if [[ -z "${!name:-}" ]]; then
+              echo "::error::Missing GitHub Actions secret: ${name}"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Apply database migrations
+        if: github.event_name == 'workflow_dispatch' && inputs.apply_migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+        shell: bash
+        run: |
+          if [[ -z "${DATABASE_URL:-}" ]]; then
+            echo "::error::Missing GitHub Actions secret: DATABASE_URL_UNPOOLED"
+            exit 1
+          fi
+          pnpm --filter @claimrail/db db:migrate
+
+      - name: Reconcile DreamDEX state and deliveries
+        run: pnpm --filter @claimrail/worker sync:shannon
