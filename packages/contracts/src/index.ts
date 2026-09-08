@@ -1,4 +1,5 @@
 export * from "./http/schemas.js";
+export * from "./siwe.js";
 export * from "./events/webhook.js";
 export * from "./subscriptions/challenge.js";
 export * from "./subscriptions/browser.js";

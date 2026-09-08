@@ -10,6 +10,7 @@ import {
 import { createDatabase, encryptSecret, hashSecret, SubscriptionRepository } from "@claimrail/db";
 import { SHANNON_DREAMDEX } from "@claimrail/dreamdex";
 import { createPublicClient, getAddress, http, type Hex } from "viem";
+import type { SignatureOrigin } from "./signature-origin";
 
 const CHALLENGE_TTL_MS = 10 * 60_000;
 const LINK_TTL_MS = 10 * 60_000;
@@ -37,7 +38,10 @@ function database() {
   });
 }
 
-export async function createTelegramChallenge(input: TelegramSubscriptionRequest) {
+export async function createTelegramChallenge(
+  input: TelegramSubscriptionRequest,
+  origin: SignatureOrigin,
+) {
   const username = required("CLAIMRAIL_TELEGRAM_BOT_USERNAME");
   required("CLAIMRAIL_TELEGRAM_BOT_TOKEN");
   required("CLAIMRAIL_SECRET_ENCRYPTION_KEY");
@@ -54,8 +58,11 @@ export async function createTelegramChallenge(input: TelegramSubscriptionRequest
     challengeId,
     owner,
     chainId: SHANNON_DREAMDEX.chain.id,
+    domain: origin.domain,
+    uri: origin.uri,
     eventTypes: input.eventTypes,
-    nonce: randomBytes(18).toString("base64url"),
+    nonce: randomBytes(16).toString("hex"),
+    issuedAt: createdAt,
     expiresAt,
   });
   const context = database();
@@ -99,10 +106,11 @@ export async function verifyTelegramChallenge(
       chain: SHANNON_DREAMDEX.chain,
       transport: http(SHANNON_DREAMDEX.rpcHttpUrl),
     });
-    const valid = await client.verifyMessage({
+    const valid = await client.verifySiweMessage({
       address: getAddress(challenge.ownerAddress),
       message: input.message,
       signature: input.signature as Hex,
+      time: now,
     });
     if (!valid) throw new Error("wallet signature does not match the Telegram owner");
     const linkToken = randomBytes(24).toString("base64url");

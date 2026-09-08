@@ -12,9 +12,10 @@ const settlement = await claimrail.explainSettlement("0x...");
 const plan = await claimrail.buildRedemptionPlan("0x...");
 ```
 
-`subscribeToWallet` creates the readable ownership challenge, passes the exact message to an
-application-supplied wallet signer, and consumes the signature. The callback boundary works with
-Wagmi, viem, an embedded wallet, or a bot operator without giving ClaimRail custody.
+`subscribeToWallet` creates a domain-bound, expiring Sign-In with Ethereum ownership challenge,
+passes the exact message to an application-supplied wallet signer, and consumes the signature. The
+callback boundary works with Wagmi, viem, an embedded wallet, or a bot operator without giving
+ClaimRail custody.
 
 ```ts
 const route = await claimrail.subscribeToWallet({

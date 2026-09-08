@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { parseSiweMessage } from "viem/siwe";
 import {
   browserPushSubscriptionSchema,
   buildBrowserSubscriptionChallengeMessage,
@@ -26,14 +27,20 @@ describe("browser notification contracts", () => {
       challengeId: "0d904bb5-4a5f-442d-a3fe-734646d50d58",
       owner: "0xe1da3bdd4189fdefb2ef8a73bd37a4083f284477",
       chainId: 50_312,
+      domain: "claimrail.example",
+      uri: "https://claimrail.example/notifications",
       endpointFingerprint: "ab".repeat(32),
       eventTypes: ["wallet.claimable"],
-      nonce: "nonce",
+      nonce: "nonceabc123",
+      issuedAt: new Date("2026-09-03T21:50:00.000Z"),
       expiresAt: new Date("2026-09-03T22:00:00.000Z"),
     });
-    expect(message).toContain(`Endpoint fingerprint: ${"ab".repeat(32)}`);
+    const parsed = parseSiweMessage(message);
+    expect(parsed.domain).toBe("claimrail.example");
+    expect(parsed.uri).toBe("https://claimrail.example/notifications");
+    expect(parsed.resources).toContain(`urn:claimrail:browser-endpoint:${"ab".repeat(32)}`);
     expect(message).toContain(
-      "does not authorize trades, claims, token approvals, or gas spending",
+      "does not authorize transactions, token approvals, claims, or gas spending",
     );
   });
 });

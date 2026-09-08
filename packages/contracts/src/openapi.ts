@@ -217,10 +217,10 @@ export function createClaimRailOpenApiDocument() {
       "/api/v1/subscriptions/challenges": {
         post: {
           operationId: "createWebhookChallenge",
-          summary: "Create an owner-bound HTTPS webhook challenge",
+          summary: "Create a domain-bound SIWE challenge for an HTTPS webhook",
           requestBody: requestBody("WebhookSubscriptionRequest"),
           responses: {
-            "201": response("Readable challenge to sign", "SubscriptionChallengeResponse"),
+            "201": response("ERC-4361 challenge to sign", "SubscriptionChallengeResponse"),
             "400": response("Invalid request", "ApiError"),
             "409": response("A verified route already exists", "ApiError"),
           },
@@ -253,10 +253,10 @@ export function createClaimRailOpenApiDocument() {
       "/api/v1/subscriptions/browser/challenges": {
         post: {
           operationId: "createBrowserChallenge",
-          summary: "Create an owner-bound browser notification challenge",
+          summary: "Create a domain-bound SIWE challenge for browser notifications",
           requestBody: requestBody("BrowserSubscriptionRequest"),
           responses: {
-            "201": response("Readable browser challenge", "BrowserSubscriptionChallengeResponse"),
+            "201": response("ERC-4361 browser challenge", "BrowserSubscriptionChallengeResponse"),
             "400": response("Invalid request", "ApiError"),
             "503": response("Browser delivery unavailable", "ApiError"),
           },
@@ -279,10 +279,10 @@ export function createClaimRailOpenApiDocument() {
       "/api/v1/subscriptions/telegram/challenges": {
         post: {
           operationId: "createTelegramChallenge",
-          summary: "Create an owner-bound Telegram challenge",
+          summary: "Create a domain-bound SIWE challenge for Telegram",
           requestBody: requestBody("TelegramSubscriptionRequest"),
           responses: {
-            "201": response("Readable Telegram challenge", "TelegramSubscriptionChallengeResponse"),
+            "201": response("ERC-4361 Telegram challenge", "TelegramSubscriptionChallengeResponse"),
             "503": response("Telegram unavailable", "ApiError"),
           },
         },
@@ -301,10 +301,10 @@ export function createClaimRailOpenApiDocument() {
       "/api/v1/access/challenges": {
         post: {
           operationId: "createDeliveryAccessChallenge",
-          summary: "Create a delivery-console ownership challenge",
+          summary: "Create a domain-bound SIWE challenge for delivery-console access",
           requestBody: requestBody("DeliveryConsoleChallengeRequest"),
           responses: {
-            "201": response("Readable access challenge", "DeliveryConsoleChallengeResponse"),
+            "201": response("ERC-4361 access challenge", "DeliveryConsoleChallengeResponse"),
           },
         },
       },

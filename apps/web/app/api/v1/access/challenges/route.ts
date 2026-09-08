@@ -3,6 +3,7 @@ import {
   deliveryConsoleChallengeResponseSchema,
 } from "@claimrail/contracts";
 import { createDeliveryConsoleChallenge } from "@/src/server/deliveries";
+import { signatureOrigin } from "@/src/server/signature-origin";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,10 @@ export async function POST(request: Request) {
     );
   }
   try {
-    const challenge = await createDeliveryConsoleChallenge(parsed.data.owner);
+    const challenge = await createDeliveryConsoleChallenge(
+      parsed.data.owner,
+      signatureOrigin(request, "/developers/deliveries"),
+    );
     return Response.json(deliveryConsoleChallengeResponseSchema.parse(challenge), {
       status: 201,
       headers: { "cache-control": "no-store" },

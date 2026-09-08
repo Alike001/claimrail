@@ -3,6 +3,7 @@ import {
   browserSubscriptionRequestSchema,
 } from "@claimrail/contracts";
 import { createBrowserSubscriptionChallenge } from "@/src/server/subscriptions";
+import { signatureOrigin } from "@/src/server/signature-origin";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,10 @@ export async function POST(request: Request) {
     );
   }
   try {
-    const challenge = await createBrowserSubscriptionChallenge(parsed.data);
+    const challenge = await createBrowserSubscriptionChallenge(
+      parsed.data,
+      signatureOrigin(request, "/notifications"),
+    );
     return Response.json(browserSubscriptionChallengeResponseSchema.parse(challenge), {
       status: 201,
       headers: { "cache-control": "no-store" },

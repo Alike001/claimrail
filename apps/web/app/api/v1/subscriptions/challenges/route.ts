@@ -3,6 +3,7 @@ import {
   webhookSubscriptionRequestSchema,
 } from "@claimrail/contracts";
 import { createWebhookSubscriptionChallenge } from "@/src/server/subscriptions";
+import { signatureOrigin } from "@/src/server/signature-origin";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,10 @@ export async function POST(request: Request) {
     );
   }
   try {
-    const challenge = await createWebhookSubscriptionChallenge(parsed.data);
+    const challenge = await createWebhookSubscriptionChallenge(
+      parsed.data,
+      signatureOrigin(request, "/notifications"),
+    );
     return Response.json(subscriptionChallengeResponseSchema.parse(challenge), {
       status: 201,
       headers: { "cache-control": "no-store" },

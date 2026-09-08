@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { canonicalEventTypeSchema } from "../events/webhook.js";
 import { evmAddressSchema } from "../http/schemas.js";
+import { buildClaimRailSiweMessage, type ClaimRailSiweContext } from "../siwe.js";
 import { subscriptionVerificationRequestSchema } from "./challenge.js";
 
 export const telegramSubscriptionRequestSchema = z
@@ -33,26 +34,24 @@ export const telegramLinkResponseSchema = z.object({
 });
 
 export function buildTelegramChallengeMessage(input: {
-  readonly challengeId: string;
-  readonly owner: string;
-  readonly chainId: number;
+  readonly challengeId: ClaimRailSiweContext["challengeId"];
+  readonly owner: ClaimRailSiweContext["owner"];
+  readonly chainId: ClaimRailSiweContext["chainId"];
+  readonly domain: ClaimRailSiweContext["domain"];
+  readonly uri: ClaimRailSiweContext["uri"];
   readonly eventTypes: readonly string[];
-  readonly nonce: string;
-  readonly expiresAt: Date;
+  readonly nonce: ClaimRailSiweContext["nonce"];
+  readonly issuedAt: ClaimRailSiweContext["issuedAt"];
+  readonly expiresAt: ClaimRailSiweContext["expiresAt"];
 }) {
-  return [
-    "ClaimRail Telegram notifications",
-    "",
-    "Prove that you control this wallet before linking a private Telegram chat.",
-    "This signature does not authorize trades, claims, token approvals, or gas spending.",
-    "",
-    `Wallet: ${input.owner}`,
-    `Chain ID: ${input.chainId}`,
-    `Events: ${[...input.eventTypes].sort().join(", ")}`,
-    `Challenge ID: ${input.challengeId}`,
-    `Nonce: ${input.nonce}`,
-    `Expires: ${input.expiresAt.toISOString()}`,
-  ].join("\n");
+  return buildClaimRailSiweMessage(
+    input,
+    "Link a private Telegram chat to ClaimRail alerts. This does not authorize transactions, token approvals, claims, or gas spending.",
+    [
+      "urn:claimrail:permission:telegram-notifications",
+      ...[...input.eventTypes].sort().map((event) => `urn:claimrail:event:${event}`),
+    ],
+  );
 }
 
 export type TelegramSubscriptionRequest = z.infer<typeof telegramSubscriptionRequestSchema>;

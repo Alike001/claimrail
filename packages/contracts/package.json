@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@claimrail/core": "workspace:*",
+    "viem": "catalog:",
     "zod": "4.5.4"
   }
 }

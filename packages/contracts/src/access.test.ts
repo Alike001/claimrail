@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { parseSiweMessage } from "viem/siwe";
 import {
   accessVerificationResponseSchema,
   buildDeliveryConsoleChallengeMessage,
@@ -10,13 +11,28 @@ describe("developer console access contracts", () => {
       challengeId: "0d904bb5-4a5f-442d-a3fe-734646d50d58",
       owner: "0xe1da3bdd4189fdefb2ef8a73bd37a4083f284477",
       chainId: 50_312,
-      nonce: "nonce_abc",
+      domain: "claimrail.example",
+      uri: "https://claimrail.example/developers/deliveries",
+      nonce: "nonceabc123",
+      issuedAt: new Date("2026-09-03T17:50:00.000Z"),
       expiresAt: new Date("2026-09-03T18:00:00.000Z"),
     });
-    expect(message).toContain("inspect, test, and replay its notification deliveries");
+    const parsed = parseSiweMessage(message);
+    expect(message).toContain("Inspect, test, and replay this wallet's ClaimRail deliveries");
     expect(message).toContain(
-      "does not authorize trades, claims, token approvals, or gas spending",
+      "does not authorize transactions, token approvals, claims, or gas spending",
     );
+    expect(parsed).toMatchObject({
+      domain: "claimrail.example",
+      uri: "https://claimrail.example/developers/deliveries",
+      chainId: 50_312,
+      nonce: "nonceabc123",
+    });
+    expect(parsed.resources).toEqual([
+      "urn:claimrail:permission:deliveries-read",
+      "urn:claimrail:permission:deliveries-replay",
+      "urn:claimrail:permission:notifications-test",
+    ]);
   });
 
   it("accepts only the three narrow delivery scopes", () => {

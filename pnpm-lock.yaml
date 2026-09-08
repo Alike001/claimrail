@@ -150,6 +150,9 @@ importers:
       "@claimrail/core":
         specifier: workspace:*
         version: link:../core
+      viem:
+        specifier: "catalog:"
+        version: 2.56.3(typescript@5.9.3)(zod@4.5.4)
       zod:
         specifier: 4.5.4
         version: 4.5.4

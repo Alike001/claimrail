@@ -325,7 +325,7 @@
     "/api/v1/subscriptions/challenges": {
       "post": {
         "operationId": "createWebhookChallenge",
-        "summary": "Create an owner-bound HTTPS webhook challenge",
+        "summary": "Create a domain-bound SIWE challenge for an HTTPS webhook",
         "requestBody": {
           "required": true,
           "content": {
@@ -338,7 +338,7 @@
         },
         "responses": {
           "201": {
-            "description": "Readable challenge to sign",
+            "description": "ERC-4361 challenge to sign",
             "content": {
               "application/json": {
                 "schema": {
@@ -439,7 +439,7 @@
     "/api/v1/subscriptions/browser/challenges": {
       "post": {
         "operationId": "createBrowserChallenge",
-        "summary": "Create an owner-bound browser notification challenge",
+        "summary": "Create a domain-bound SIWE challenge for browser notifications",
         "requestBody": {
           "required": true,
           "content": {
@@ -452,7 +452,7 @@
         },
         "responses": {
           "201": {
-            "description": "Readable browser challenge",
+            "description": "ERC-4361 browser challenge",
             "content": {
               "application/json": {
                 "schema": {
@@ -525,7 +525,7 @@
     "/api/v1/subscriptions/telegram/challenges": {
       "post": {
         "operationId": "createTelegramChallenge",
-        "summary": "Create an owner-bound Telegram challenge",
+        "summary": "Create a domain-bound SIWE challenge for Telegram",
         "requestBody": {
           "required": true,
           "content": {
@@ -538,7 +538,7 @@
         },
         "responses": {
           "201": {
-            "description": "Readable Telegram challenge",
+            "description": "ERC-4361 Telegram challenge",
             "content": {
               "application/json": {
                 "schema": {
@@ -601,7 +601,7 @@
     "/api/v1/access/challenges": {
       "post": {
         "operationId": "createDeliveryAccessChallenge",
-        "summary": "Create a delivery-console ownership challenge",
+        "summary": "Create a domain-bound SIWE challenge for delivery-console access",
         "requestBody": {
           "required": true,
           "content": {
@@ -614,7 +614,7 @@
         },
         "responses": {
           "201": {
-            "description": "Readable access challenge",
+            "description": "ERC-4361 access challenge",
             "content": {
               "application/json": {
                 "schema": {

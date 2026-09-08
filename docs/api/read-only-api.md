@@ -26,17 +26,18 @@ from a partial or failed scan.
 - `GET /api/v1/subscriptions/browser/config` — reports whether VAPID browser delivery is configured
   and returns only the public application-server key.
 - `POST /api/v1/subscriptions/browser/challenges` — encrypts a standards-shaped PushSubscription and
-  returns a readable wallet challenge pinned to its endpoint fingerprint and event preferences.
+  returns a domain-bound Sign-In with Ethereum challenge pinned to its endpoint fingerprint and
+  event preferences.
 - `POST /api/v1/subscriptions/browser/verify` — consumes the ownership proof and activates delivery
   to that browser. Raw endpoint and browser encryption keys are never returned by list APIs.
 - `POST /api/v1/subscriptions/telegram/challenges` — creates a readable, owner-bound Telegram
-  notification challenge.
+  notification challenge using the same domain-bound Sign-In with Ethereum format.
 - `POST /api/v1/subscriptions/telegram/verify` — verifies the wallet proof and returns a ten-minute
   one-time `/start` link. Only the link-token hash is stored.
 - `POST /api/v1/subscriptions/telegram/webhook` — accepts Telegram updates only with the configured
   secret header, consumes the one-time token, and stores the resulting chat ID encrypted.
-- `POST /api/v1/access/challenges` — creates a short-lived, non-financial ownership message for the
-  delivery console.
+- `POST /api/v1/access/challenges` — creates a short-lived, non-financial Sign-In with Ethereum
+  ownership message for the delivery console.
 - `POST /api/v1/access/verify` — consumes that message once and returns a 15-minute opaque token
   scoped to delivery reads, a non-financial notification test, and dead-letter replay. Only its hash
   is stored.
@@ -79,7 +80,8 @@ Neither endpoint accepts a private key or signature. Production claim preparatio
 
 Public wallet monitoring remains signature-free, but webhook destinations and failures are private
 operational data. Delivery endpoints therefore reject address parameters as authority. The owner
-first signs a readable challenge that explicitly excludes trades, claims, token approvals, and gas
+first signs an ERC-4361 message bound to the exact ClaimRail origin. It names the narrow resources,
+expires after ten minutes, and explicitly excludes transactions, claims, token approvals, and gas
 spending. A successful proof yields a 15-minute token with `deliveries:read`,
 `notifications:test`, and `deliveries:replay` scopes. The web app keeps it only in memory, so a
 refresh requires a new proof.

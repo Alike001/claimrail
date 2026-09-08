@@ -37,8 +37,9 @@ export default function NotificationsPage() {
               <p className="eyebrow">what you sign</p>
               <h3>Permission to notify. Nothing financial.</h3>
               <p>
-                The message pins your wallet, destination, selected events, expiry, and one-time
-                nonce. It cannot move funds, approve tokens, or redeem a position.
+                A standard Sign-In with Ethereum message ties this permission to the ClaimRail
+                address you opened, your wallet, selected events, expiry, and one-time nonce. It
+                cannot move funds, approve tokens, or redeem a position.
               </p>
             </section>
           </aside>

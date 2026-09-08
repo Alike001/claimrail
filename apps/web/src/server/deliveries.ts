@@ -23,6 +23,7 @@ import {
 } from "@claimrail/db";
 import { SHANNON_DREAMDEX } from "@claimrail/dreamdex";
 import { createPublicClient, getAddress, http, type Hex } from "viem";
+import type { SignatureOrigin } from "./signature-origin";
 
 const CHALLENGE_TTL_MS = 10 * 60 * 1_000;
 const ACCESS_TTL_MS = 15 * 60 * 1_000;
@@ -68,6 +69,7 @@ function bearerToken(request: Request): string {
 
 export async function createDeliveryConsoleChallenge(
   ownerInput: string,
+  origin: SignatureOrigin,
 ): Promise<DeliveryConsoleChallengeResponse> {
   const owner = getAddress(ownerInput);
   const challengeId = randomUUID();
@@ -77,7 +79,10 @@ export async function createDeliveryConsoleChallenge(
     challengeId,
     owner,
     chainId: SHANNON_DREAMDEX.chain.id,
-    nonce: randomBytes(18).toString("base64url"),
+    domain: origin.domain,
+    uri: origin.uri,
+    nonce: randomBytes(16).toString("hex"),
+    issuedAt: createdAt,
     expiresAt,
   });
   const database = createDatabase(databaseUrl(), {
@@ -130,10 +135,11 @@ export async function verifyDeliveryConsoleAccess(input: {
       chain: SHANNON_DREAMDEX.chain,
       transport: http(SHANNON_DREAMDEX.rpcHttpUrl),
     });
-    const valid = await client.verifyMessage({
+    const valid = await client.verifySiweMessage({
       address: getAddress(challenge.ownerAddress),
       message: input.message,
       signature: input.signature as Hex,
+      time: now,
     });
     if (!valid) throw new Error("wallet signature does not match the access owner");
     const accessToken = randomBytes(32).toString("base64url");

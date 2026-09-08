@@ -1,5 +1,6 @@
 import { telegramSubscriptionRequestSchema } from "@claimrail/contracts";
 import { createTelegramChallenge } from "@/src/server/telegram";
+import { signatureOrigin } from "@/src/server/signature-origin";
 
 export async function POST(request: Request) {
   const parsed = telegramSubscriptionRequestSchema.safeParse(
@@ -17,10 +18,13 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   try {
-    return Response.json(await createTelegramChallenge(parsed.data), {
-      status: 201,
-      headers: { "cache-control": "no-store" },
-    });
+    return Response.json(
+      await createTelegramChallenge(parsed.data, signatureOrigin(request, "/notifications")),
+      {
+        status: 201,
+        headers: { "cache-control": "no-store" },
+      },
+    );
   } catch (error) {
     return Response.json(
       {

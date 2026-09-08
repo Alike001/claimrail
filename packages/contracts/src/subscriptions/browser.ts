@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { canonicalEventTypeSchema } from "../events/webhook.js";
 import { evmAddressSchema } from "../http/schemas.js";
+import { buildClaimRailSiweMessage, type ClaimRailSiweContext } from "../siwe.js";
 import {
   subscriptionChallengeResponseSchema,
   subscriptionVerificationRequestSchema,
@@ -68,28 +69,26 @@ export const browserSubscriptionVerificationResponseSchema = z.object({
 });
 
 export function buildBrowserSubscriptionChallengeMessage(input: {
-  readonly challengeId: string;
-  readonly owner: string;
-  readonly chainId: number;
+  readonly challengeId: ClaimRailSiweContext["challengeId"];
+  readonly owner: ClaimRailSiweContext["owner"];
+  readonly chainId: ClaimRailSiweContext["chainId"];
+  readonly domain: ClaimRailSiweContext["domain"];
+  readonly uri: ClaimRailSiweContext["uri"];
   readonly endpointFingerprint: string;
   readonly eventTypes: readonly string[];
-  readonly nonce: string;
-  readonly expiresAt: Date;
+  readonly nonce: ClaimRailSiweContext["nonce"];
+  readonly issuedAt: ClaimRailSiweContext["issuedAt"];
+  readonly expiresAt: ClaimRailSiweContext["expiresAt"];
 }): string {
-  return [
-    "ClaimRail browser notifications",
-    "",
-    "Prove that you control this wallet to enable notifications on this browser.",
-    "This signature does not authorize trades, claims, token approvals, or gas spending.",
-    "",
-    `Wallet: ${input.owner}`,
-    `Chain ID: ${input.chainId}`,
-    `Endpoint fingerprint: ${input.endpointFingerprint}`,
-    `Events: ${[...input.eventTypes].sort().join(", ")}`,
-    `Challenge ID: ${input.challengeId}`,
-    `Nonce: ${input.nonce}`,
-    `Expires: ${input.expiresAt.toISOString()}`,
-  ].join("\n");
+  return buildClaimRailSiweMessage(
+    input,
+    "Enable ClaimRail browser notifications. This does not authorize transactions, token approvals, claims, or gas spending.",
+    [
+      "urn:claimrail:permission:browser-notifications",
+      `urn:claimrail:browser-endpoint:${input.endpointFingerprint}`,
+      ...[...input.eventTypes].sort().map((event) => `urn:claimrail:event:${event}`),
+    ],
+  );
 }
 
 export type BrowserPushSubscription = z.infer<typeof browserPushSubscriptionSchema>;

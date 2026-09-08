@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { evmAddressSchema } from "./http/schemas.js";
+import { buildClaimRailSiweMessage, type ClaimRailSiweContext } from "./siwe.js";
 
 export const deliveryConsoleChallengeRequestSchema = z.object({ owner: evmAddressSchema }).strict();
 
@@ -32,24 +33,24 @@ export const accessVerificationResponseSchema = z.object({
 });
 
 export function buildDeliveryConsoleChallengeMessage(input: {
-  readonly challengeId: string;
-  readonly owner: string;
-  readonly chainId: number;
-  readonly nonce: string;
-  readonly expiresAt: Date;
+  readonly challengeId: ClaimRailSiweContext["challengeId"];
+  readonly owner: ClaimRailSiweContext["owner"];
+  readonly chainId: ClaimRailSiweContext["chainId"];
+  readonly domain: ClaimRailSiweContext["domain"];
+  readonly uri: ClaimRailSiweContext["uri"];
+  readonly nonce: ClaimRailSiweContext["nonce"];
+  readonly issuedAt: ClaimRailSiweContext["issuedAt"];
+  readonly expiresAt: ClaimRailSiweContext["expiresAt"];
 }): string {
-  return [
-    "ClaimRail developer console",
-    "",
-    "Prove that you control this wallet to inspect, test, and replay its notification deliveries.",
-    "This signature does not authorize trades, claims, token approvals, or gas spending.",
-    "",
-    `Wallet: ${input.owner}`,
-    `Chain ID: ${input.chainId}`,
-    `Challenge ID: ${input.challengeId}`,
-    `Nonce: ${input.nonce}`,
-    `Expires: ${input.expiresAt.toISOString()}`,
-  ].join("\n");
+  return buildClaimRailSiweMessage(
+    input,
+    "Inspect, test, and replay this wallet's ClaimRail deliveries. This does not authorize transactions, token approvals, claims, or gas spending.",
+    [
+      "urn:claimrail:permission:deliveries-read",
+      "urn:claimrail:permission:deliveries-replay",
+      "urn:claimrail:permission:notifications-test",
+    ],
+  );
 }
 
 export type DeliveryConsoleChallengeResponse = z.infer<

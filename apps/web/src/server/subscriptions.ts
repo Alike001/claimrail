@@ -23,6 +23,7 @@ import {
 } from "@claimrail/db";
 import { SHANNON_DREAMDEX } from "@claimrail/dreamdex";
 import { createPublicClient, getAddress, http, type Hex } from "viem";
+import type { SignatureOrigin } from "./signature-origin";
 
 const CHALLENGE_TTL_MS = 10 * 60 * 1_000;
 
@@ -68,6 +69,7 @@ export function browserNotificationConfiguration(): BrowserConfigurationResponse
 
 export async function createBrowserSubscriptionChallenge(
   input: BrowserSubscriptionRequest,
+  origin: SignatureOrigin,
 ): Promise<BrowserSubscriptionChallengeResponse> {
   if (vapidPublicKey() === null) throw new Error("browser notification delivery is unavailable");
   const owner = getAddress(input.owner);
@@ -79,9 +81,12 @@ export async function createBrowserSubscriptionChallenge(
     challengeId,
     owner,
     chainId: SHANNON_DREAMDEX.chain.id,
+    domain: origin.domain,
+    uri: origin.uri,
     endpointFingerprint,
     eventTypes: input.eventTypes,
-    nonce: randomBytes(18).toString("base64url"),
+    nonce: randomBytes(16).toString("hex"),
+    issuedAt: createdAt,
     expiresAt,
   });
   const database = createDatabase(databaseUrl(), {
@@ -135,10 +140,11 @@ export async function verifyBrowserSubscription(
       chain: SHANNON_DREAMDEX.chain,
       transport: http(SHANNON_DREAMDEX.rpcHttpUrl),
     });
-    const valid = await publicClient.verifyMessage({
+    const valid = await publicClient.verifySiweMessage({
       address: getAddress(challenge.ownerAddress),
       message: input.message,
       signature: input.signature as Hex,
+      time: verifiedAt,
     });
     if (!valid) throw new Error("wallet signature does not match the browser subscription owner");
     const activated = await repository.activateBrowser({
@@ -165,6 +171,7 @@ export async function verifyBrowserSubscription(
 
 export async function createWebhookSubscriptionChallenge(
   input: WebhookSubscriptionRequest,
+  origin: SignatureOrigin,
 ): Promise<SubscriptionChallengeResponse> {
   const owner = getAddress(input.owner);
   const challengeId = randomUUID();
@@ -174,9 +181,12 @@ export async function createWebhookSubscriptionChallenge(
     challengeId,
     owner,
     chainId: SHANNON_DREAMDEX.chain.id,
+    domain: origin.domain,
+    uri: origin.uri,
     destination: input.destination,
     eventTypes: input.eventTypes,
-    nonce: randomBytes(18).toString("base64url"),
+    nonce: randomBytes(16).toString("hex"),
+    issuedAt: createdAt,
     expiresAt,
   });
   const database = createDatabase(databaseUrl(), {
@@ -229,10 +239,11 @@ export async function verifyWebhookSubscription(
       chain: SHANNON_DREAMDEX.chain,
       transport: http(SHANNON_DREAMDEX.rpcHttpUrl),
     });
-    const valid = await publicClient.verifyMessage({
+    const valid = await publicClient.verifySiweMessage({
       address: getAddress(challenge.ownerAddress),
       message: input.message,
       signature: input.signature as Hex,
+      time: verifiedAt,
     });
     if (!valid) throw new Error("wallet signature does not match the subscription owner");
     const webhookSecret = generateWebhookSecret();

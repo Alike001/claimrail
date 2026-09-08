@@ -425,7 +425,7 @@ export function DeliveryConsole({
                   {busy === "authorizing" ? "check wallet…" : "sign to inspect"} →
                 </button>
               )}
-              <small>15-minute access · no gas · no financial authority</small>
+              <small>site-bound wallet proof · 15-minute access · no financial authority</small>
             </section>
           )}
         </section>

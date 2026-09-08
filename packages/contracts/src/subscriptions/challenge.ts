@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { canonicalEventTypeSchema } from "../events/webhook.js";
 import { evmAddressSchema } from "../http/schemas.js";
+import { buildClaimRailSiweMessage, type ClaimRailSiweContext } from "../siwe.js";
 
 export const webhookSubscriptionRequestSchema = z
   .object({
@@ -60,26 +61,24 @@ export type SubscriptionVerificationResponse = z.infer<
 >;
 
 export function buildSubscriptionChallengeMessage(input: {
-  readonly challengeId: string;
-  readonly owner: string;
-  readonly chainId: number;
+  readonly challengeId: ClaimRailSiweContext["challengeId"];
+  readonly owner: ClaimRailSiweContext["owner"];
+  readonly chainId: ClaimRailSiweContext["chainId"];
+  readonly domain: ClaimRailSiweContext["domain"];
+  readonly uri: ClaimRailSiweContext["uri"];
   readonly destination: string;
   readonly eventTypes: readonly string[];
-  readonly nonce: string;
-  readonly expiresAt: Date;
+  readonly nonce: ClaimRailSiweContext["nonce"];
+  readonly issuedAt: ClaimRailSiweContext["issuedAt"];
+  readonly expiresAt: ClaimRailSiweContext["expiresAt"];
 }): string {
-  return [
-    "ClaimRail notification subscription",
-    "",
-    "Prove that you control this wallet to create a webhook subscription.",
-    "This signature does not authorize trades, claims, token approvals, or gas spending.",
-    "",
-    `Wallet: ${input.owner}`,
-    `Chain ID: ${input.chainId}`,
-    `Destination: ${input.destination}`,
-    `Events: ${[...input.eventTypes].sort().join(", ")}`,
-    `Challenge ID: ${input.challengeId}`,
-    `Nonce: ${input.nonce}`,
-    `Expires: ${input.expiresAt.toISOString()}`,
-  ].join("\n");
+  return buildClaimRailSiweMessage(
+    input,
+    "Create a ClaimRail webhook notification route. This does not authorize transactions, token approvals, claims, or gas spending.",
+    [
+      "urn:claimrail:permission:webhook-notifications",
+      input.destination,
+      ...[...input.eventTypes].sort().map((event) => `urn:claimrail:event:${event}`),
+    ],
+  );
 }

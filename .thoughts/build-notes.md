@@ -2,6 +2,13 @@
 
 # 2026-09-08 — No-card judging deployment path
 
+- Replaced custom notification and delivery-console ownership text with standard ERC-4361 Sign-In
+  with Ethereum messages. Browser, Telegram, webhook, and console permissions now name the exact
+  HTTPS origin, product URI, Somnia chain, checksum wallet, purpose, one-time alphanumeric nonce,
+  issue/expiry times, request ID, and narrow permission resources. Verification now uses viem's
+  SIWE parser, lifetime validation, wallet matching, and EOA/smart-account signature path. This
+  follows MetaMask's recognized authentication format and reduces ambiguous-signature UX without
+  granting any financial authority.
 - Completed a real production browser delivery. The owner enabled push for the deployed Vercel
   origin, authorized the delivery console, and queued `notification.test` for one active route.
   GitHub Actions run `34256791403` delivered it on the first attempt with no retry or dead letter.
