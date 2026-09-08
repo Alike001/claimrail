@@ -154,7 +154,13 @@ export async function reconcileClaimReceipt(
         !usedLogs.has(event.logIndex) &&
         event.marketKey === key &&
         event.outcomeIndex === entry.outcomeIndex &&
-        event.holder.toLowerCase() === input.plan.owner.toLowerCase() &&
+        // A direct settlement redemption names the owner as holder. DreamDEX's
+        // redeemMany path first moves the outcome tokens into the binary module,
+        // so the settlement singleton names that trusted module as holder while
+        // preserving the wallet as the payout recipient.
+        [input.plan.owner, input.plan.binaryModule].some(
+          (holder) => holder.toLowerCase() === event.holder.toLowerCase(),
+        ) &&
         event.to.toLowerCase() === input.plan.recipient.toLowerCase(),
     );
     if (redemption === undefined) {

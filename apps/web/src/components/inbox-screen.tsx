@@ -2,7 +2,7 @@
 
 import type { InboxFilter, InboxViewModel } from "@claimrail/ui";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Header } from "./header";
 import { ManualClaimFlow } from "./manual-claim-flow";
 import { RailMark } from "./rail-mark";
@@ -49,7 +49,12 @@ function ClaimTray({
   readonly onToggle: () => void;
 }) {
   return (
-    <aside className={`claim-tray ${open ? "expanded" : ""}`} aria-label="Claim plan preview">
+    <aside
+      className={`claim-tray ${open ? "expanded" : ""}`}
+      aria-label="Claim plan preview"
+      role={open ? "dialog" : undefined}
+      aria-modal={open ? true : undefined}
+    >
       <button className="tray-handle" type="button" onClick={onToggle} aria-expanded={open}>
         <span className="sr-only">{open ? "Close" : "Review"} claim plan</span>
       </button>
@@ -59,7 +64,7 @@ function ClaimTray({
             <span>claim review</span>
             <span>{view.counts.ready} positions</span>
             <strong>{view.claimable}</strong>
-            <button type="button" onClick={onToggle}>
+            <button type="button" onClick={onToggle} autoFocus>
               close
             </button>
           </div>
@@ -169,6 +174,19 @@ function ClaimTray({
 export function InboxScreen({ view }: { readonly view: InboxViewModel }) {
   const [filter, setFilter] = useState<InboxFilter>("all");
   const [trayOpen, setTrayOpen] = useState(false);
+  useEffect(() => {
+    if (!trayOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setTrayOpen(false);
+    };
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [trayOpen]);
   const visibleRows = useMemo(
     () => view.rows.filter((row) => row.filter.includes(filter)),
     [view.rows, filter],
@@ -287,6 +305,14 @@ export function InboxScreen({ view }: { readonly view: InboxViewModel }) {
               <div className="empty-state">No positions in this view.</div>
             ) : null}
           </section>
+          {trayOpen ? (
+            <button
+              className="claim-tray-backdrop"
+              type="button"
+              aria-label="Close claim review"
+              onClick={() => setTrayOpen(false)}
+            />
+          ) : null}
           <ClaimTray
             view={view}
             open={trayOpen}

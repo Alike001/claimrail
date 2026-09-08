@@ -187,6 +187,29 @@ describe("DreamDEX claim receipt reconciliation", () => {
     expect(result.postSettlementBacking).toHaveLength(1);
   });
 
+  it("accepts redeemMany settlement evidence held temporarily by the binary module", async () => {
+    const moduleHolderTopic =
+      `0x${"0".repeat(24)}${SHANNON_DREAMDEX.addresses.binaryModule.slice(2).toLowerCase()}` as `0x${string}`;
+    const moduleReceipt: TransactionReceiptSnapshot = {
+      ...successfulReceipt,
+      logs: successfulReceipt.logs.map((log) => ({
+        ...log,
+        topics: [log.topics[0]!, log.topics[1]!, moduleHolderTopic, log.topics[3]!],
+      })),
+    };
+
+    const result = await reconcileClaimReceipt(input(moduleReceipt));
+
+    expect(result).toMatchObject({
+      status: "confirmed",
+      receipt: {
+        owner: OWNER.toLowerCase(),
+        recipient: OWNER.toLowerCase(),
+        actualCollateral: AMOUNT,
+      },
+    });
+  });
+
   it("refuses success when the post-balance does not show the burn", async () => {
     const mismatch = input(successfulReceipt);
     const result = await reconcileClaimReceipt({

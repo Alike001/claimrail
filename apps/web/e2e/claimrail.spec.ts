@@ -83,11 +83,18 @@ test("renders and filters the position inbox", async ({ page }) => {
 test("opens a safe, non-signing claim preview", async ({ page }) => {
   await page.goto(fixtureInbox);
   await page.getByRole("button", { name: "review funds →" }).click();
+  const dialog = page.getByRole("dialog", { name: "Claim plan preview" });
+  await expect(dialog).toBeVisible();
+  await expect(page.getByRole("button", { name: "Close claim review" })).toBeVisible();
+  await expect(page.locator("body")).toHaveCSS("overflow", "hidden");
   await expect(page.getByText("wallet steps")).toBeVisible();
   await page.getByText("See technical transaction details").click();
   await expect(page.getByText("module-wide")).toBeVisible();
   await expect(page.getByRole("button", { name: "allow DreamDEX →" })).toBeDisabled();
   await expect(page.getByText("no transaction will be sent")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
 });
 
 test("shows settlement evidence and copies proof values", async ({ page }) => {
