@@ -15,7 +15,7 @@ export default function ShannonPositionToolPage() {
       <Header />
       <main className="test-position-main">
         <header className="test-position-intro">
-          <p className="eyebrow">local test tool / Shannon only</p>
+          <p className="eyebrow">private proof tool / Shannon only</p>
           <h1>Open one position. Leave it for ClaimRail.</h1>
           <p>
             This private development screen finds a live DreamDEX Event Contract, builds a trade

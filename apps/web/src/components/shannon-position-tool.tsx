@@ -33,7 +33,7 @@ const TEST_USDC: Address = (() => {
 const TEST_COLLATERAL = TEST_USDC.toLowerCase();
 const DREAMDEX_TEST_VENUE = "0x679795a0195a1b76cdebb7c51d74e058aee92919b8c3389af86ef24535e8a28c";
 const STAKE = 1_000_000n;
-const MINIMUM_SECONDS_LEFT = 180;
+const MINIMUM_SECONDS_LEFT = 600;
 
 const erc20Abi = [
   {
@@ -130,7 +130,7 @@ function isDreamDexCandidate(market: UnifiedMarket, now: number): boolean {
 function candidateOrder(left: UnifiedMarket, right: UnifiedMarket): number {
   if (!isBinaryMarket(left.info) || !isBinaryMarket(right.info)) return 0;
   const preferredInterval = (seconds: number) =>
-    seconds === 900 ? 0 : seconds === 3600 ? 1 : seconds === 300 ? 2 : 3;
+    seconds === 3600 ? 0 : seconds === 900 ? 1 : seconds === 300 ? 2 : 3;
   return (
     preferredInterval(Number(left.info.intervalSec)) -
       preferredInterval(Number(right.info.intervalSec)) ||
@@ -195,7 +195,7 @@ async function buildPlan(direction: Direction, marketId?: string): Promise<Posit
     }
     throw new Error(
       marketId === undefined
-        ? `No liquid ${direction.toUpperCase()} market has at least three minutes remaining. Try Preview again when the next window opens.`
+        ? `No liquid ${direction.toUpperCase()} market has at least ten minutes remaining. Try Preview again when the next window opens.`
         : "That market is no longer safely tradable. Build a new preview.",
     );
   } finally {
@@ -515,7 +515,7 @@ export function ShannonPositionTool() {
         </p>
         {primaryAction}
         <small className="phase-note">
-          local development only · Shannon chain 50312 · exact allowance · no private key input
+          temporary proof tool · Shannon chain 50312 · exact allowance · no private key input
         </small>
       </div>
     </section>
