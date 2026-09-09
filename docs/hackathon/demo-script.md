@@ -4,6 +4,27 @@ Record the deployed product at 1080p. Use the dedicated Shannon wallet and real 
 Keep provider dashboards, secrets, personal notifications, and wallet recovery information out of
 the recording.
 
+The successful claim is already complete. Do not create or redeem another position for the final
+video. Use the preserved live positions and wallet-review captures for the pre-claim state, then open
+the deployed confirmed receipt and Somnia explorer transaction as the post-claim proof.
+
+## Recording tabs
+
+Open these before recording, in this order:
+
+1. `https://claimrail-alike001s-projects.vercel.app`
+2. `docs/hackathon/assets/live-positions.png`
+3. `https://claimrail-alike001s-projects.vercel.app/markets/0x0000000000000000000000000000000000000000000000000000000000017232`
+4. `docs/hackathon/assets/live-wallet-review.png`
+5. `https://claimrail-alike001s-projects.vercel.app/claims/claim:0xa8420df93e2289abf4d0242ef540548bb49ce76e6053643346012b5f401c84ab`
+6. `docs/hackathon/assets/live-browser-delivery-2026-09-08.png`
+7. `docs/hackathon/assets/live-telegram-delivery-2026-09-09.png`
+8. `https://claimrail-alike001s-projects.vercel.app/developers`
+9. `https://claimrail-alike001s-projects.vercel.app/docs`
+
+For local image paths, open the corresponding file from the GitHub repository if the recorder cannot
+display local files cleanly. Hide bookmarks, personal tabs, notifications, and the desktop dock.
+
 ## 0:00–0:20 — The problem
 
 **Show:** Landing page and its wallet lookup.
@@ -31,8 +52,10 @@ proof remains available.”
 
 ## 1:20–1:55 — Owner-controlled claim
 
-**Show:** Claim review, operator warning if shown, wallet confirmation, pending state, and confirmed
-receipt. Do not cut across the wallet confirmation in a way that hides the network or target.
+**Show:** The preserved live wallet review, then the deployed confirmed receipt and its Somnia
+transaction link. State clearly that the first screen is the captured pre-signing state and the
+receipt is the completed result. Do not imply that a new transaction is being broadcast during the
+recording.
 
 **Say:** “ClaimRail never holds the funds or a private key. It removes zero-paying entries, simulates
 the exact DreamDEX `redeemMany` action, and asks the owner wallet to approve it. A transaction is not
@@ -68,6 +91,7 @@ Do not record the final submission video until all boxes below are true:
 - [x] the position and claim are real Shannon testnet state;
 - [x] the receipt is `confirmed`, not fixture or merely mined;
 - [x] at least one real delivery is visible;
+- [x] pre-claim positions, wallet review, evidence, delivery, and receipt proof are preserved;
 - [ ] the complete take is between 2:00 and 3:00;
 - [ ] every secret and personal identifier is absent.
 
