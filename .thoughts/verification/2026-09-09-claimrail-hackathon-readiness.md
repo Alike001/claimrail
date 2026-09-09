@@ -11,10 +11,10 @@ completed through the deployed worker path. The remaining blockers are submissio
 official rule verification, not core product engineering.
 
 The final hackathon package is incomplete because the required 2–3 minute video has not been
-recorded or linked, the portal-specific submission has not been finalized, and the official Devpost
-workflow has not been initialized in this repository. The known requirements supplied by the owner
-are covered except for those submission artifacts; this audit does not claim that unknown portal
-fields or official rules have been verified.
+recorded or linked and the DoraHacks BUIDL submission has not been finalized. The known requirements
+supplied by the owner and repeated in public event listings are covered except for those submission
+artifacts. DoraHacks currently returns an automated-access security challenge, so any event-specific
+form fields marked as required must be checked in the owner's signed-in browser before submission.
 
 ## Artifacts Checked
 
@@ -49,7 +49,7 @@ fields or official rules have been verified.
 | Product rather than demo           | Verified                 | Persistent database, workers, receipts, alerts, retry operations, generated API contracts, client package, and public documentation  |
 | Ecosystem relevance                | Verified                 | ClaimRail turns DreamDEX positions and Somnia settlement truth into discovery, explanation, claiming, receipts, and integrations     |
 | 2–3 minute demo video              | Missing                  | Script exists, but no recorded public video URL is present                                                                           |
-| Final portal submission            | Incomplete               | Submission copy and official portal requirements have not been finalized                                                             |
+| DoraHacks BUIDL submission         | Incomplete               | Copy is being prepared; signed-in form fields and final submission have not been completed                                           |
 
 ## Acceptance Criteria Coverage
 
@@ -63,7 +63,7 @@ fields or official rules have been verified.
 | Telegram alert delivery                         | Verified live | Linked private chat received the clearly labelled non-financial test event                   |
 | Webhook/API developer product                   | Verified      | Signed event envelopes, OpenAPI 3.1, JSON Schemas, client, examples, and delivery operations |
 | Desktop and mobile primary journeys             | Verified      | Playwright coverage across both viewport projects; isolated mobile claim preview passed      |
-| Submission presentation                         | Incomplete    | Three clean live UI captures and the final video remain                                      |
+| Submission presentation                         | Incomplete    | Live proof captures are complete; the final video remains                                    |
 
 ## Quality Gates
 
@@ -97,10 +97,10 @@ fields or official rules have been verified.
 ## Gaps And Risks
 
 1. **Blocking:** no public 2–3 minute demo video exists yet.
-2. **Blocking:** official Devpost rules and portal fields are not verified because
-   `.devpost-hackathon-state.json` is absent.
-3. **Presentation:** `live-positions.png`, `live-evidence.png`, and `live-wallet-review.png` remain to
-   be captured from the deployed product.
+2. **Blocking:** DoraHacks BUIDL form fields must be checked in the owner's signed-in browser; the
+   public event page currently blocks automated inspection with a security challenge.
+3. **Presentation:** the required live proof captures are preserved; they still need to be selected
+   and arranged in the DoraHacks BUIDL without exposing unrelated desktop details.
 4. **Operations:** the free scheduled worker is not continuously resident and has variable cron
    latency.
 5. **Cleanup:** `CLAIMRAIL_ENABLE_TEST_POSITION_TOOL` should be disabled after the final demo is
@@ -110,17 +110,15 @@ fields or official rules have been verified.
 
 ## Follow-ups
 
-1. Initialize the official hackathon workflow with `$start-hackathon`, then run the official rules
-   review and capture every required portal field.
-2. Capture the three remaining clean live product screenshots with no secrets or private account
-   material.
-3. Record the prepared demo as one 2–3 minute deployed take: 30-second story, wallet lookup,
+1. Open the official DoraHacks BUIDL form while signed in and capture every event-specific required
+   field without submitting yet.
+2. Record the prepared demo as one 2–3 minute deployed take: 30-second story, wallet lookup,
    evidence, owner-controlled claim/confirmed receipt, browser and Telegram proof, then developer
    integration.
-4. Upload the video, add its public URL to the readiness file and README, and finalize the submission
+3. Upload the video, add its public URL to the readiness file and README, and finalize the submission
    copy.
-5. Disable the temporary production proof tool and run a final public smoke check.
-6. Freeze core scope; perform only submission-critical wording or visual corrections after these
+4. Disable the temporary production proof tool and run a final public smoke check.
+5. Freeze core scope; perform only submission-critical wording or visual corrections after these
    steps.
 
 ## Evidence Log
@@ -136,6 +134,9 @@ fields or official rules have been verified.
   reconciliation fallback: `0`.
 - Browser proof: `docs/hackathon/assets/live-browser-delivery-2026-09-08.png`
 - Telegram proof: `docs/hackathon/assets/live-telegram-delivery-2026-09-09.png`
+- Live positions: `docs/hackathon/assets/live-positions.png`
+- Live wallet review: `docs/hackathon/assets/live-wallet-review.png`
+- Live evidence: `docs/hackathon/assets/live-evidence.png`
 - Telegram event: `0x704249ed97805109cb56924f82b43062028190b64c47263485d49a8c5760f6e6`
 - Telegram worker run: `https://github.com/Alike001/claimrail/actions/runs/34315378481`
 - Verified receipt capture: `docs/hackathon/assets/live-confirmed-receipt-2026-09-08.png`

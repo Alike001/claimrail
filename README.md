@@ -109,6 +109,7 @@ messages bound to the exact ClaimRail origin. They cannot authorize a transactio
 - [Render deployment guide](docs/operations/render-deployment.md)
 - [Owner launch and live-proof checklist](docs/operations/owner-launch-checklist.md)
 - [Hackathon readiness board](docs/hackathon/readiness.md)
+- [DoraHacks submission draft](docs/hackathon/dorahacks-submission.md)
 - [2–3 minute demo script](docs/hackathon/demo-script.md)
 - [DreamDEX SDK and documentation feedback](docs/hackathon/sdk-feedback.md)
 

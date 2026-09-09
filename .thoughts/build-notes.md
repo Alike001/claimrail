@@ -66,8 +66,8 @@
   settlement and payout reads as authoritative. The fresh signer-free Shannon smoke then passed at
   block `482901281` with all 1,044 rows across 11 pages, seven current normalized positions, and two
   verified claim candidates.
-- Kept the final Devpost draft blocked until the repository's hackathon workflow state is initialized
-  with `$start-hackathon`; no portal submission was created or implied.
+- Kept the final portal draft blocked until its required fields could be verified; the project owner
+  later confirmed that the submission platform is DoraHacks, not Devpost.
 
 ## 2026-09-08 — Audience-first Learn documentation
 

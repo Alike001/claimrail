@@ -16,14 +16,12 @@ Only files beginning `live-` may be presented as deployed testnet proof.
 | `live-browser-delivery-2026-09-08.png`  | Deployed Vercel product after a real worker cycle       | Submission proof: browser route delivered 1/1   |
 | `live-confirmed-receipt-2026-09-08.png` | Deployed receipt after real owner-signed `redeemMany`   | Submission proof: payout independently verified |
 | `live-telegram-delivery-2026-09-09.png` | Production `@claimrailbot` private chat                 | Submission proof: Telegram route delivered 1/1  |
+| `live-positions.png`                    | Deployed wallet page before the successful claim        | Submission proof: one real position was ready   |
+| `live-wallet-review.png`                | Deployed owner-controlled review before wallet signing  | Submission proof: exact non-custodial flow      |
+| `live-evidence.png`                     | Fresh deployed market evidence page                     | Submission proof: result checked on Somnia      |
 
-Before submission, complete the remaining live assets:
-
-- `live-positions.png`;
-- `live-evidence.png`;
-- `live-wallet-review.png`.
-
-Browser and Telegram delivery proofs are preserved alongside the confirmed receipt.
+The planned live product captures are complete. Browser and Telegram delivery proofs are preserved
+alongside the positions, evidence, wallet review, and confirmed receipt.
 
 Every live image must be captured from the deployed HTTPS site and must contain no secret, provider
 credential, private account identifier, or wallet recovery material.
