@@ -40,7 +40,7 @@ Shannon wallet and public transaction evidence._
 | Settlement explanation and evidence                     | Working                                                                                                                               |
 | Safe owner-signed manual claim planning                 | Working; exercised with a real Shannon `redeemMany`                                                                                   |
 | Durable receipt verification and history                | Real claim independently confirmed in production                                                                                      |
-| Browser, Telegram, and signed-webhook delivery          | Browser live; Telegram ready in code and awaiting bot credentials                                                                     |
+| Browser, Telegram, and signed-webhook delivery          | Browser and Telegram verified live; signed webhook tested in code                                                                     |
 | REST API, OpenAPI, schemas, client, and Bot Kit adapter | Working                                                                                                                               |
 | Public deployment                                       | [Live on Vercel](https://claimrail-alike001s-projects.vercel.app)                                                                     |
 | Real browser delivery                                   | Verified live on the deployed product                                                                                                 |
@@ -103,6 +103,7 @@ messages bound to the exact ClaimRail origin. They cannot authorize a transactio
 - [Verified production worker run](https://github.com/Alike001/claimrail/actions/runs/34284779776)
 - [Confirmed owner-signed claim receipt](https://claimrail-alike001s-projects.vercel.app/claims/claim:0xa8420df93e2289abf4d0242ef540548bb49ce76e6053643346012b5f401c84ab)
 - [Live browser-delivery proof](docs/hackathon/assets/live-browser-delivery-2026-09-08.png)
+- [Live Telegram delivery worker run](https://github.com/Alike001/claimrail/actions/runs/34315378481)
 - [No-card Vercel, Neon, and GitHub Actions guide](docs/operations/free-deployment.md)
 - [Render deployment guide](docs/operations/render-deployment.md)
 - [Owner launch and live-proof checklist](docs/operations/owner-launch-checklist.md)

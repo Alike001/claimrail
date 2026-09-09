@@ -21,6 +21,7 @@ Before submission, complete the remaining live assets:
 - `live-positions.png`;
 - `live-evidence.png`;
 - `live-wallet-review.png`;
+- `live-telegram-delivery-2026-09-09.png`.
 
 Browser delivery proof is preserved as `live-browser-delivery-2026-09-08.png`.
 
