@@ -1,0 +1,68 @@
+name: ClaimRail Telegram webhook
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.CLAIMRAIL_TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_WEBHOOK_SECRET: ${{ secrets.CLAIMRAIL_TELEGRAM_WEBHOOK_SECRET }}
+      TELEGRAM_BOT_USERNAME: claimrailbot
+      TELEGRAM_WEBHOOK_URL: https://claimrail-alike001s-projects.vercel.app/api/v1/subscriptions/telegram/webhook
+
+    steps:
+      - name: Validate Telegram secrets
+        shell: bash
+        run: |
+          missing=0
+          for name in TELEGRAM_BOT_TOKEN TELEGRAM_WEBHOOK_SECRET; do
+            if [[ -z "${!name:-}" ]]; then
+              echo "::error::Missing GitHub Actions secret: ${name}"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Verify bot identity
+        shell: bash
+        run: |
+          response="$(curl --fail-with-body --silent --show-error \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getMe")"
+          jq -e --arg username "$TELEGRAM_BOT_USERNAME" \
+            '.ok == true and (.result.is_bot == true) and ((.result.username | ascii_downcase) == $username)' \
+            <<<"$response" >/dev/null
+          jq '{ok, username: .result.username, is_bot: .result.is_bot}' <<<"$response"
+
+      - name: Register HTTPS webhook
+        shell: bash
+        run: |
+          response="$(curl --fail-with-body --silent --show-error \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+            --data-urlencode "url=${TELEGRAM_WEBHOOK_URL}" \
+            --data-urlencode "secret_token=${TELEGRAM_WEBHOOK_SECRET}" \
+            --data-urlencode 'allowed_updates=["message"]')"
+          jq -e '.ok == true and .result == true' <<<"$response" >/dev/null
+          jq '{ok, result, description}' <<<"$response"
+
+      - name: Verify webhook status
+        shell: bash
+        run: |
+          response="$(curl --fail-with-body --silent --show-error \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo")"
+          jq -e --arg url "$TELEGRAM_WEBHOOK_URL" \
+            '.ok == true and .result.url == $url and (.result.allowed_updates | index("message") != null)' \
+            <<<"$response" >/dev/null
+          jq '{
+            ok,
+            url: .result.url,
+            pending_update_count: .result.pending_update_count,
+            last_error_date: .result.last_error_date,
+            last_error_message: .result.last_error_message,
+            allowed_updates: .result.allowed_updates
+          }' <<<"$response"
