@@ -47,7 +47,7 @@ Shannon wallet and public transaction evidence._
 | Owner-signed successful claim                           | [Confirmed on Shannon](https://shannon-explorer.somnia.network/tx/0x03172396dd2ba45d1f6c6d119d01029a2eb0b6fc8c13592c832293fe39666c11) |
 | Final 2–3 minute video                                  | Script and live proof ready; recording pending                                                                                        |
 
-Fixture data is visibly labelled and disabled in production. A mined transaction is not called
+Sample data is visibly labelled and cannot trigger a live transaction. A mined transaction is not called
 successful until the worker verifies its envelope, receipt, `Redeemed` logs, payout, and post-claim
 state.
 
@@ -103,7 +103,8 @@ messages bound to the exact ClaimRail origin. They cannot authorize a transactio
 - [Verified production worker run](https://github.com/Alike001/claimrail/actions/runs/34284779776)
 - [Confirmed owner-signed claim receipt](https://claimrail-alike001s-projects.vercel.app/claims/claim:0xa8420df93e2289abf4d0242ef540548bb49ce76e6053643346012b5f401c84ab)
 - [Live browser-delivery proof](docs/hackathon/assets/live-browser-delivery-2026-09-08.png)
-- [Live Telegram delivery worker run](https://github.com/Alike001/claimrail/actions/runs/34315378481)
+- [Live Telegram-delivery proof](docs/hackathon/assets/live-telegram-delivery-2026-09-09.png)
+- [Telegram delivery worker run](https://github.com/Alike001/claimrail/actions/runs/34315378481)
 - [No-card Vercel, Neon, and GitHub Actions guide](docs/operations/free-deployment.md)
 - [Render deployment guide](docs/operations/render-deployment.md)
 - [Owner launch and live-proof checklist](docs/operations/owner-launch-checklist.md)

@@ -44,7 +44,7 @@ balances.”
 **Show:** The real browser, Telegram, or external webhook message, then the matching delivery record.
 
 **Say:** “The same verified lifecycle can reach a person or another product. Here is a real delivery
-from the continuous worker, with its canonical event and successful attempt recorded.”
+from the deployed worker, with its canonical event and successful attempt recorded.”
 
 ## 2:20–2:40 — Why it matters to the ecosystem
 
