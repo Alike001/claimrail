@@ -18,10 +18,10 @@ and guiding the owner through the claim.
 The same verified lifecycle can also reach browser push, Telegram, signed webhooks, APIs, bots, and
 agents.
 
-![ClaimRail position workspace using clearly labelled development sample data](docs/hackathon/assets/positions-sample.png)
+![ClaimRail showing a real DreamDEX position ready to claim on Somnia Shannon](docs/hackathon/assets/live-positions.png)
 
-_Development sample shown for interface review. Final submission proof will use the dedicated live
-Shannon wallet and public transaction evidence._
+_Deployed ClaimRail product before the owner-signed claim. The resulting transaction and independently
+verified receipt are linked below._
 
 ## Why it belongs in the DreamDEX ecosystem
 
