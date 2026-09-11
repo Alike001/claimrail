@@ -99,6 +99,7 @@ messages bound to the exact ClaimRail origin. They cannot authorize a transactio
 
 ## Deployment and submission
 
+- **DoraHacks status:** submitted for review on September 11, 2026; public BUIDL URL pending.
 - [Live ClaimRail product](https://claimrail-alike001s-projects.vercel.app)
 - [Verified production worker run](https://github.com/Alike001/claimrail/actions/runs/34284779776)
 - [Confirmed owner-signed claim receipt](https://claimrail-alike001s-projects.vercel.app/claims/claim:0xa8420df93e2289abf4d0242ef540548bb49ce76e6053643346012b5f401c84ab)
@@ -109,7 +110,7 @@ messages bound to the exact ClaimRail origin. They cannot authorize a transactio
 - [Render deployment guide](docs/operations/render-deployment.md)
 - [Owner launch and live-proof checklist](docs/operations/owner-launch-checklist.md)
 - [Hackathon readiness board](docs/hackathon/readiness.md)
-- [DoraHacks submission draft](docs/hackathon/dorahacks-submission.md)
+- [DoraHacks submission record](docs/hackathon/dorahacks-submission.md)
 - [2:13 ClaimRail demo video](https://youtu.be/WfGL002GSs8)
 - [2–3 minute demo script](docs/hackathon/demo-script.md)
 - [DreamDEX SDK and documentation feedback](docs/hackathon/sdk-feedback.md)

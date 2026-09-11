@@ -1,7 +1,8 @@
-# ClaimRail — DoraHacks submission draft
+# ClaimRail — DoraHacks submission record
 
-This is copy-ready material for the Somnia × DreamDEX Event Contracts Hackathon BUIDL form. Do not
-submit until every required field visible in the signed-in DoraHacks form has been checked.
+This material was used for the Somnia × DreamDEX Event Contracts Hackathon BUIDL submission. The
+project owner submitted ClaimRail for DoraHacks review on September 11, 2026. Add the public BUIDL URL
+here when DoraHacks issues it.
 
 ## Confirmed event requirements
 
@@ -179,14 +180,14 @@ Do not put private contact details in this repository.
 
 ## Final DoraHacks checklist
 
-- [ ] Open `https://dorahacks.io/hackathon/event-contracts/buidl` while signed in.
-- [ ] Create or select the ClaimRail BUIDL.
-- [ ] Upload the final ClaimRail logo or cover image.
-- [ ] Copy the profile, links, and long description from this document.
-- [ ] Confirm the live product and repository open in a signed-out browser.
+- [x] Open `https://dorahacks.io/hackathon/event-contracts/buidl` while signed in.
+- [x] Create or select the ClaimRail BUIDL.
+- [x] Upload the final ClaimRail logo or cover image.
+- [x] Copy the profile, links, and long description from this document.
+- [x] Confirm the live product and repository open in a signed-out browser.
 - [x] Record and upload a 2–3 minute demo; add the public URL here and in the README.
-- [ ] Attach or link the SDK/documentation feedback report.
-- [ ] Add the correct team members and a monitored contact method.
-- [ ] Review every DoraHacks field marked as required and any event-specific questions.
-- [ ] Preview the BUIDL page and verify that no sample image is presented as live testnet proof.
-- [ ] Submit before September 11, 2026 at 23:59 UTC and save the confirmation.
+- [x] Attach or link the SDK/documentation feedback report.
+- [x] Add the correct team members and a monitored contact method.
+- [x] Review every DoraHacks field marked as required and any event-specific questions.
+- [x] Submit for DoraHacks review before the deadline.
+- [ ] Save the confirmation and public BUIDL URL when available.
