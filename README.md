@@ -45,7 +45,7 @@ verified receipt are linked below._
 | Public deployment                                       | [Live on Vercel](https://claimrail-alike001s-projects.vercel.app)                                                                     |
 | Real browser delivery                                   | Verified live on the deployed product                                                                                                 |
 | Owner-signed successful claim                           | [Confirmed on Shannon](https://shannon-explorer.somnia.network/tx/0x03172396dd2ba45d1f6c6d119d01029a2eb0b6fc8c13592c832293fe39666c11) |
-| Final 2–3 minute video                                  | Script and live proof ready; recording pending                                                                                        |
+| Final 2–3 minute video                                  | [Published on YouTube — 2:13](https://youtu.be/WfGL002GSs8)                                                                           |
 
 Sample data is visibly labelled and cannot trigger a live transaction. A mined transaction is not called
 successful until the worker verifies its envelope, receipt, `Redeemed` logs, payout, and post-claim
@@ -110,6 +110,7 @@ messages bound to the exact ClaimRail origin. They cannot authorize a transactio
 - [Owner launch and live-proof checklist](docs/operations/owner-launch-checklist.md)
 - [Hackathon readiness board](docs/hackathon/readiness.md)
 - [DoraHacks submission draft](docs/hackathon/dorahacks-submission.md)
+- [2:13 ClaimRail demo video](https://youtu.be/WfGL002GSs8)
 - [2–3 minute demo script](docs/hackathon/demo-script.md)
 - [DreamDEX SDK and documentation feedback](docs/hackathon/sdk-feedback.md)
 

@@ -11,15 +11,15 @@ Everything technical should support that sentence, not compete with it.
 
 ## Must finish before submission
 
-| Order | Deliverable                    | Status                           | Pass condition                                              | Owner action needed                         |
-| ----: | ------------------------------ | -------------------------------- | ----------------------------------------------------------- | ------------------------------------------- |
-|     1 | Public web, PostgreSQL, worker | Live and verified                | `/api/health` is `200`; manual worker run is `ready`        | None                                        |
-|     2 | Real claim and receipt         | Live and independently confirmed | owner-signed `redeemMany`; receipt becomes `confirmed`      | None                                        |
-|     3 | Real delivery                  | Browser and Telegram live        | browser, Telegram, or webhook receives a real worker event  | None                                        |
-|     4 | SDK/docs feedback              | Updated with live claim findings | report checked for accuracy and attached/linked             | Final owner review                          |
-|     5 | README and materials           | DoraHacks draft ready            | public repository explains product and live proof honestly  | Review signed-in DoraHacks fields           |
-|     6 | 2–3 minute video               | Script and live proof ready      | deployed end-to-end take between 2:00 and 3:00              | Record wallet/device interaction and upload |
-|     7 | Secondary UI polish            | Deferred                         | History, Alerts, Evidence, Receipts share final visual pass | None until 1–6 pass                         |
+| Order | Deliverable                    | Status                           | Pass condition                                              | Owner action needed               |
+| ----: | ------------------------------ | -------------------------------- | ----------------------------------------------------------- | --------------------------------- |
+|     1 | Public web, PostgreSQL, worker | Live and verified                | `/api/health` is `200`; manual worker run is `ready`        | None                              |
+|     2 | Real claim and receipt         | Live and independently confirmed | owner-signed `redeemMany`; receipt becomes `confirmed`      | None                              |
+|     3 | Real delivery                  | Browser and Telegram live        | browser, Telegram, or webhook receives a real worker event  | None                              |
+|     4 | SDK/docs feedback              | Updated with live claim findings | report checked for accuracy and attached/linked             | Final owner review                |
+|     5 | README and materials           | DoraHacks draft ready            | public repository explains product and live proof honestly  | Review signed-in DoraHacks fields |
+|     6 | 2–3 minute video               | Published — 2:13                 | deployed end-to-end take between 2:00 and 3:00              | None                              |
+|     7 | Secondary UI polish            | Deferred                         | History, Alerts, Evidence, Receipts share final visual pass | None until 1–6 pass               |
 
 ## September 8–11 execution order
 
@@ -43,7 +43,7 @@ Everything technical should support that sentence, not compete with it.
 - [x] Perform the small owner-signed claim only after ClaimRail marks it claimable.
 - [x] Wait for the worker-verified `confirmed` receipt and preserve the explorer link.
 - [x] Confirm `claim.confirmed` reaches the real destination.
-- [ ] Rehearse once, then record and upload the 2–3 minute demo.
+- [x] Record, upload, and verify the 2–3 minute demo.
 - [x] Draft DoraHacks submission copy, SDK feedback link, and repository URL.
 - [ ] Add the public video URL and verify every signed-in DoraHacks required field.
 
@@ -73,7 +73,7 @@ private wallet material here.
 | SDK feedback        | `docs/hackathon/sdk-feedback.md`                                                   | Ready for review            |
 | DoraHacks draft     | `docs/hackathon/dorahacks-submission.md`                                           | Copy ready; form review due |
 | Presentation assets | `docs/hackathon/assets/`                                                           | Live proof set complete     |
-| Demo video          | pending public URL                                                                 | Missing                     |
+| Demo video          | `https://youtu.be/WfGL002GSs8`                                                     | Public; 2:13; verified      |
 
 ## Scope guard
 

@@ -2,7 +2,7 @@
 
 ## Verdict
 
-**Product implementation: Pass. Submission readiness: Incomplete.**
+**Product implementation: Pass. Submission readiness: Ready for final DoraHacks form review.**
 
 ClaimRail is a working Somnia Shannon product with meaningful DreamDEX Event Contract integration,
 not a disconnected demo. A public wallet can be inspected without an account, a real owner-signed
@@ -10,11 +10,11 @@ not a disconnected demo. A public wallet can be inspected without an account, a 
 completed through the deployed worker path. The remaining blockers are submission artifacts and
 official rule verification, not core product engineering.
 
-The final hackathon package is incomplete because the required 2–3 minute video has not been
-recorded or linked and the DoraHacks BUIDL submission has not been finalized. The known requirements
-supplied by the owner and repeated in public event listings are covered except for those submission
-artifacts. DoraHacks currently returns an automated-access security challenge, so any event-specific
-form fields marked as required must be checked in the owner's signed-in browser before submission.
+The 2:13 demo is publicly available and the DoraHacks submission copy is complete. The only remaining
+submission step is to review the signed-in DoraHacks BUIDL fields, add the prepared material, and
+submit. The known requirements supplied by the owner and repeated in public event listings are
+covered. DoraHacks currently returns an automated-access security challenge, so event-specific form
+fields marked as required must be checked in the owner's signed-in browser before submission.
 
 ## Artifacts Checked
 
@@ -48,7 +48,7 @@ form fields marked as required must be checked in the owner's signed-in browser 
 | Understandable in about 30 seconds | Strong manual evidence   | Landing page leads with wallet outcome and one action; technical material is separated into Learn and developer surfaces             |
 | Product rather than demo           | Verified                 | Persistent database, workers, receipts, alerts, retry operations, generated API contracts, client package, and public documentation  |
 | Ecosystem relevance                | Verified                 | ClaimRail turns DreamDEX positions and Somnia settlement truth into discovery, explanation, claiming, receipts, and integrations     |
-| 2–3 minute demo video              | Missing                  | Script exists, but no recorded public video URL is present                                                                           |
+| 2–3 minute demo video              | Verified                 | Public 2:13 YouTube demo: `https://youtu.be/WfGL002GSs8`                                                                             |
 | DoraHacks BUIDL submission         | Incomplete               | Copy is being prepared; signed-in form fields and final submission have not been completed                                           |
 
 ## Acceptance Criteria Coverage
@@ -63,7 +63,7 @@ form fields marked as required must be checked in the owner's signed-in browser 
 | Telegram alert delivery                         | Verified live | Linked private chat received the clearly labelled non-financial test event                   |
 | Webhook/API developer product                   | Verified      | Signed event envelopes, OpenAPI 3.1, JSON Schemas, client, examples, and delivery operations |
 | Desktop and mobile primary journeys             | Verified      | Playwright coverage across both viewport projects; isolated mobile claim preview passed      |
-| Submission presentation                         | Incomplete    | Live proof captures are complete; the final video remains                                    |
+| Submission presentation                         | Verified      | Live proof captures and the public 2:13 demo are complete                                    |
 
 ## Quality Gates
 
@@ -78,6 +78,9 @@ form fields marked as required must be checked in the owner's signed-in browser 
   application assertion failure.
 - Production smoke checks returned HTTP 200 for the landing page, Learn page, and confirmed receipt.
 - Production `/api/health` returned `ready` with the database reachable and schema ready.
+- The public YouTube URL resolves with the intended ClaimRail title; the local upload source is
+  1920×1080, 2:12.8, H.264/AAC, and a sampled visual review found no exposed recovery material,
+  provider credential, or secret.
 - No private key, Telegram token, webhook secret, database URL, or recovery material is present in
   the documented public evidence.
 
@@ -96,29 +99,25 @@ form fields marked as required must be checked in the owner's signed-in browser 
 
 ## Gaps And Risks
 
-1. **Blocking:** no public 2–3 minute demo video exists yet.
-2. **Blocking:** DoraHacks BUIDL form fields must be checked in the owner's signed-in browser; the
+1. **Blocking:** DoraHacks BUIDL form fields must be checked in the owner's signed-in browser; the
    public event page currently blocks automated inspection with a security challenge.
-3. **Presentation:** the required live proof captures are preserved; they still need to be selected
+2. **Presentation:** the required live proof captures are preserved; they still need to be selected
    and arranged in the DoraHacks BUIDL without exposing unrelated desktop details.
-4. **Operations:** the free scheduled worker is not continuously resident and has variable cron
+3. **Operations:** the free scheduled worker is not continuously resident and has variable cron
    latency.
-5. **Cleanup:** `CLAIMRAIL_ENABLE_TEST_POSITION_TOOL` should be disabled after the final demo is
+4. **Cleanup:** `CLAIMRAIL_ENABLE_TEST_POSITION_TOOL` should be disabled after the final demo is
    recorded unless the submission explicitly needs the controlled proof tool.
-6. **Scope risk:** additional secondary visual polishing before the video and submission would add
+5. **Scope risk:** additional secondary visual polishing before the submission would add
    schedule risk without improving the already-proven core integration.
 
 ## Follow-ups
 
 1. Open the official DoraHacks BUIDL form while signed in and capture every event-specific required
    field without submitting yet.
-2. Record the prepared demo as one 2–3 minute deployed take: 30-second story, wallet lookup,
-   evidence, owner-controlled claim/confirmed receipt, browser and Telegram proof, then developer
-   integration.
-3. Upload the video, add its public URL to the readiness file and README, and finalize the submission
-   copy.
-4. Disable the temporary production proof tool and run a final public smoke check.
-5. Freeze core scope; perform only submission-critical wording or visual corrections after these
+2. Copy the prepared project details and public video URL into DoraHacks, then preview the BUIDL.
+3. Disable the temporary production proof tool and run a final public smoke check.
+4. Submit before the deadline and save the confirmation.
+5. Freeze core scope; perform only submission-critical wording or visual corrections before these
    steps.
 
 ## Evidence Log
@@ -140,3 +139,4 @@ form fields marked as required must be checked in the owner's signed-in browser 
 - Telegram event: `0x704249ed97805109cb56924f82b43062028190b64c47263485d49a8c5760f6e6`
 - Telegram worker run: `https://github.com/Alike001/claimrail/actions/runs/34315378481`
 - Verified receipt capture: `docs/hackathon/assets/live-confirmed-receipt-2026-09-08.png`
+- Public demo video: `https://youtu.be/WfGL002GSs8` (2:13)

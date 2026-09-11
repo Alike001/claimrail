@@ -1,8 +1,7 @@
 # ClaimRail — DoraHacks submission draft
 
 This is copy-ready material for the Somnia × DreamDEX Event Contracts Hackathon BUIDL form. Do not
-submit until the video URL is public and every required field visible in the signed-in DoraHacks form
-has been checked.
+submit until every required field visible in the signed-in DoraHacks form has been checked.
 
 ## Confirmed event requirements
 
@@ -58,7 +57,7 @@ core product is a deterministic settlement and claim experience rather than an A
   `https://shannon-explorer.somnia.network/tx/0x03172396dd2ba45d1f6c6d119d01029a2eb0b6fc8c13592c832293fe39666c11`
 - SDK/documentation feedback:
   `https://github.com/Alike001/claimrail/blob/main/docs/hackathon/sdk-feedback.md`
-- Demo video: **pending**
+- Demo video: `https://youtu.be/WfGL002GSs8`
 
 ## Long description
 
@@ -185,7 +184,7 @@ Do not put private contact details in this repository.
 - [ ] Upload the final ClaimRail logo or cover image.
 - [ ] Copy the profile, links, and long description from this document.
 - [ ] Confirm the live product and repository open in a signed-out browser.
-- [ ] Record and upload a 2–3 minute demo; add the public URL here and in the README.
+- [x] Record and upload a 2–3 minute demo; add the public URL here and in the README.
 - [ ] Attach or link the SDK/documentation feedback report.
 - [ ] Add the correct team members and a monitored contact method.
 - [ ] Review every DoraHacks field marked as required and any event-specific questions.

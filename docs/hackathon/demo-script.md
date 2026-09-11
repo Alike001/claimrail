@@ -92,8 +92,10 @@ Do not record the final submission video until all boxes below are true:
 - [x] the receipt is `confirmed`, not fixture or merely mined;
 - [x] at least one real delivery is visible;
 - [x] pre-claim positions, wallet review, evidence, delivery, and receipt proof are preserved;
-- [ ] the complete take is between 2:00 and 3:00;
-- [ ] every secret and personal identifier is absent.
+- [x] the published take is 2:13, between 2:00 and 3:00;
+- [x] a sampled visual review found no wallet recovery material, provider secret, or credential.
+
+Published demo: `https://youtu.be/WfGL002GSs8`
 
 If a claimable owner position is still unavailable, record a private rehearsal with clearly labelled
 sample data, but do not present that rehearsal as the final live proof.
